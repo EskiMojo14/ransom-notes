@@ -22,6 +22,7 @@
     "normalize.css": "^8.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-redux": "^9.2.0",
     "safeway": "^1.1.0"
   },
   "devDependencies": {
@@ -45,6 +46,8 @@
     "globals": "^16.3.0",
     "jiti": "^2.4.2",
     "jsdom": "^26.1.0",
+    "msw": "^2.10.4",
+    "msw-storybook-addon": "^2.0.5",
     "postcss": "^8.5.6",
     "postcss-extend-rule": "^4.0.0",
     "postcss-load-config": "^6.0.1",
@@ -58,5 +61,10 @@
     "web-vitals": "^4.2.4"
   },
   "prettier": {},
-  "packageManager": "pnpm@10.12.4+sha512.5ea8b0deed94ed68691c9bad4c955492705c5eeb8a87ef86bc62c74a26b037b08ff9570f108b2e4dbd1dd1a9186fea925e527f141c648e85af45631074680184"
+  "packageManager": "pnpm@10.12.4+sha512.5ea8b0deed94ed68691c9bad4c955492705c5eeb8a87ef86bc62c74a26b037b08ff9570f108b2e4dbd1dd1a9186fea925e527f141c648e85af45631074680184",
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
 }
