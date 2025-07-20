@@ -1,10 +1,13 @@
+import { useGetWordPoolQuery } from "./api";
 import styles from "./Words.module.css";
 
 export interface WordsProps {
-  words: Array<string>;
+  gameId: number;
+  userId: string;
 }
 
-export function Words({ words }: WordsProps) {
+export function Words({ gameId, userId }: WordsProps) {
+  const { data: words = [] } = useGetWordPoolQuery({ gameId, userId });
   return (
     <div className={styles.wordCollection}>
       {words.map((word) => (
