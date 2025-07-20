@@ -1,27 +1,29 @@
 %light {
   color-scheme: light;
-  --page: var(--page-light);
-  --paper-rgb: var(--paper-light-rgb);
-  --paper: var(--paper-light);
-  --on-paper: var(--on-paper-light);
-  --magnet: var(--magnet-light);
-  --on-magnet: var(--on-magnet-light);
-  --whiteboard-rgb: var(--whiteboard-light-rgb);
-  --whiteboard: var(--whiteboard-light);
-  --whiteboard-border: var(--whiteboard-border-light);
+
+  --page: var(--paper-50);
+  --paper-rgb: var(--paper-100-rgb);
+  --paper: rgb(var(--paper-rgb));
+  --on-paper: var(--black);
+  --magnet: var(--white);
+  --on-magnet: var(--black);
+  --whiteboard-rgb: var(--paper-900-rgb);
+  --whiteboard: rgb(var(--whiteboard-rgb));
+  --whiteboard-border: var(--black);
 }
 
 %dark {
   color-scheme: dark;
-  --page: var(--page-dark);
-  --paper-rgb: var(--paper-dark-rgb);
-  --paper: var(--paper-dark);
-  --on-paper: var(--on-paper-dark);
-  --magnet: var(--magnet-dark);
-  --on-magnet: var(--on-magnet-dark);
-  --whiteboard-rgb: var(--whiteboard-dark-rgb);
-  --whiteboard: var(--whiteboard-dark);
-  --whiteboard-border: var(--whiteboard-border-dark);
+
+  --page: var(--paper-900);
+  --paper-rgb: var(--paper-800-rgb);
+  --paper: rgb(var(--paper-rgb));
+  --on-paper: var(--paper-50);
+  --magnet: var(--paper-600);
+  --on-magnet: var(--white);
+  --whiteboard-rgb: var(--paper-900-rgb);
+  --whiteboard: rgb(var(--whiteboard-rgb));
+  --whiteboard-border: var(--black);
 }
 
 [data-theme="light"] {
