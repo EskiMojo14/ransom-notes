@@ -1,0 +1,39 @@
+%light {
+  color-scheme: light;
+  --paper: var(--paper-light);
+  --on-paper: var(--on-paper-light);
+  --magnet: var(--magnet-light);
+  --on-magnet: var(--on-magnet-light);
+  --whiteboard: var(--whiteboard-light);
+  --on-whiteboard: var(--on-whiteboard-light);
+}
+
+%dark {
+  color-scheme: dark;
+  --paper: var(--paper-dark);
+  --on-paper: var(--on-paper-dark);
+  --magnet: var(--magnet-dark);
+  --on-magnet: var(--on-magnet-dark);
+  --whiteboard: var(--whiteboard-dark);
+  --on-whiteboard: var(--on-whiteboard-dark);
+}
+
+[data-theme="light"] {
+  @extend %light;
+}
+
+[data-theme="dark"] {
+  @extend %dark;
+}
+
+@media (prefers-color-scheme: light) {
+  [data-theme="system"] {
+    @extend %light;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme="system"] {
+    @extend %dark;
+  }
+}

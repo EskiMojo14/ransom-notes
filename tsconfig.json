@@ -1,11 +1,19 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", ".storybook/**/*.ts"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".storybook/**/*.ts",
+    ".storybook/**/*.tsx",
+    "./postcss.config.js",
+    ".storybook/preview.tsx"
+  ],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
     "module": "ESNext",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
+    "allowJs": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
