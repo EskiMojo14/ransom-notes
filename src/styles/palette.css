@@ -1,0 +1,14 @@
+:root {
+  /* https://icolorpalette.com/color/antique-paper */
+  --page-light: #f8f6f1;
+  --paper-light: #f3efe6;
+  --on-paper-light: #000;
+  --magnet-light: #fff;
+  --on-magnet-light: #000;
+
+  --page-dark: #110e08;
+  --paper-dark: #2c2415;
+  --on-paper-dark: #f8f6f1;
+  --magnet-dark: #1c1910;
+  --on-magnet-dark: #f8f6f1;
+}

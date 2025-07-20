@@ -1,0 +1,17 @@
+@import "normalize.css";
+@import "@/styles/palette.css";
+
+@font-face {
+  font-family: "Underwood Champion";
+  font-style: normal;
+  font-weight: 400;
+  display: swap;
+  src: local("Underwood Champion"), url(./assets/fonts/uwch.ttf);
+}
+
+body {
+  font-family: "Underwood Champion", monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--page-light);
+}

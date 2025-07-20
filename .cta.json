@@ -1,0 +1,11 @@
+{
+  "chosenAddOns": [],
+  "framework": "react-cra",
+  "git": true,
+  "mode": "file-router",
+  "packageManager": "pnpm",
+  "projectName": "ransom-notes",
+  "tailwind": false,
+  "typescript": true,
+  "version": 1
+}

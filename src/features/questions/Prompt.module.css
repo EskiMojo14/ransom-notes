@@ -1,0 +1,26 @@
+.prompt {
+  background-color: var(--paper-light);
+  color: var(--on-paper-light);
+  padding: 1rem;
+  border-radius: 1rem;
+  min-height: 10rem;
+  min-width: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.prompt::before {
+  background-image: url(/assets/grime.jpg);
+  background-size: 512px 512px;
+  background-repeat: repeat;
+  background-blend-mode: multiply;
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+}
