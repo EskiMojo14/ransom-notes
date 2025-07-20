@@ -14,14 +14,15 @@
 }
 
 .submission::before {
-  background-image: url(/assets/grime.jpg);
   background-size: 512px 512px;
   background-repeat: repeat;
-  background-blend-mode: multiply;
+  background-blend-mode: darken;
+  background-color: rgba(var(--whiteboard-rgb), 0.75);
+  background-image: url(/assets/grime.jpg);
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.25;
+  opacity: 0.5;
 }
 
 .row {

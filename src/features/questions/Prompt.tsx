@@ -6,5 +6,9 @@ export interface PromptProps {
 }
 
 export function Prompt({ children }: PromptProps) {
-  return <div className={styles.prompt}>{children}</div>;
+  return (
+    <div className={styles.prompt}>
+      <span className={styles.text}>{children}</span>
+    </div>
+  );
 }

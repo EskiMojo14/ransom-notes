@@ -8,7 +8,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
   font-size: 1.5rem;
   position: relative;
   overflow: hidden;
@@ -16,13 +15,19 @@
 }
 
 .prompt::before {
-  background-image: url(/assets/grime.jpg);
   background-size: 512px 512px;
   background-repeat: repeat;
-  background-blend-mode: multiply;
+  background-blend-mode: darken;
+  background-color: rgba(var(--paper-rgb), 0.5);
+  background-image: url(/assets/grime.jpg);
   content: "";
   position: absolute;
   inset: 0;
   opacity: 0.25;
-  z-index: 0;
+}
+
+.text {
+  position: relative;
+  z-index: 1;
+  text-align: center;
 }
