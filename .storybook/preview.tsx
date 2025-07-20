@@ -4,7 +4,13 @@ import type { Theme } from "@/features/theme/storage";
 import { themeSchema, themeStore } from "@/features/theme/storage";
 import "../src/styles.css";
 
-initialize();
+initialize({
+  onUnhandledRequest(request, print) {
+    if (!(request.url.includes("/src/") || request.url.includes("/assets/"))) {
+      print.error();
+    }
+  },
+});
 
 const themeDecorator: Decorator<{ theme: Theme }> = (Story, { args }) => {
   themeStore.set(args.theme);
