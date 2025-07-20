@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { langChanged, selectLang } from "../game/slice";
+import { configChanged, selectLang } from "../game/slice";
 import { useGetPackLanguagesQuery } from "./api";
 
 const langDisplayName = new Intl.DisplayNames(undefined, { type: "language" });
@@ -13,7 +13,7 @@ export function PackPicker() {
   return (
     <select
       value={lang}
-      onChange={(e) => dispatch(langChanged(e.target.value))}
+      onChange={(e) => dispatch(configChanged("lang", e.target.value))}
       disabled={packs.length === 1}
     >
       {packs.map((pack) => (

@@ -1,4 +1,9 @@
-import { combineSlices, configureStore } from "@reduxjs/toolkit";
+import {
+  combineSlices,
+  configureStore,
+  type ThunkAction,
+  type UnknownAction,
+} from "@reduxjs/toolkit";
 import { gameSlice } from "./features/game/slice";
 import { api as supabaseApi } from "./supabase/api";
 
@@ -20,3 +25,9 @@ export const store = makeStore();
 
 export type AppStore = ReturnType<typeof makeStore>;
 export type AppDispatch = AppStore["dispatch"];
+export type AppThunk<Return = void> = ThunkAction<
+  Return,
+  RootState,
+  undefined,
+  UnknownAction
+>;

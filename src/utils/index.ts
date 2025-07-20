@@ -1,4 +1,5 @@
 import { buildStoreCreator } from "safeway";
+import type { AppThunk, RootState } from "@/store";
 
 export const createLocalAndDataStore = buildStoreCreator({
   storage: {
@@ -21,3 +22,8 @@ export const createLocalAndDataStore = buildStoreCreator({
     },
   },
 });
+
+export const selectFromState =
+  <TSelected>(selector: (state: RootState) => TSelected): AppThunk<TSelected> =>
+  (_dispatch, getState) =>
+    selector(getState());
