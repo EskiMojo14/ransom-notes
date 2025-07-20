@@ -1,21 +1,23 @@
 %light {
   color-scheme: light;
+  --page: var(--page-light);
   --paper: var(--paper-light);
   --on-paper: var(--on-paper-light);
   --magnet: var(--magnet-light);
   --on-magnet: var(--on-magnet-light);
   --whiteboard: var(--whiteboard-light);
-  --on-whiteboard: var(--on-whiteboard-light);
+  --whiteboard-border: var(--whiteboard-border-light);
 }
 
 %dark {
   color-scheme: dark;
+  --page: var(--page-dark);
   --paper: var(--paper-dark);
   --on-paper: var(--on-paper-dark);
   --magnet: var(--magnet-dark);
   --on-magnet: var(--on-magnet-dark);
   --whiteboard: var(--whiteboard-dark);
-  --on-whiteboard: var(--on-whiteboard-dark);
+  --whiteboard-border: var(--whiteboard-border-dark);
 }
 
 [data-theme="light"] {

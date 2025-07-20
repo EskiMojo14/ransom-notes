@@ -1,5 +1,6 @@
 .submission {
   background-color: var(--whiteboard);
+  border: 0.5rem solid var(--whiteboard-border);
   padding: 1rem;
   border-radius: 1rem;
   min-height: 10rem;
