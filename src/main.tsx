@@ -1,9 +1,12 @@
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
+import { SessionProvider } from "./features/auth/session";
+import { routeTree } from "./routeTree.gen";
+import { store } from "./store";
 
 // Import the generated route tree
-import { routeTree } from "./routeTree.gen";
 
 import "./styles.css";
 
@@ -30,7 +33,11 @@ if (rootElement && !rootElement.innerHTML) {
   const root = createRoot(rootElement);
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <SessionProvider>
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
+      </SessionProvider>
     </StrictMode>,
   );
 }

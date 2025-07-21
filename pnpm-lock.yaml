@@ -38,6 +38,9 @@ importers:
       react-redux:
         specifier: ^9.2.0
         version: 9.2.0(@types/react@19.1.8)(react@19.1.0)(redux@5.0.1)
+      required-react-context:
+        specifier: ^1.4.1
+        version: 1.4.1(react@19.1.0)
       safeway:
         specifier: ^1.1.0
         version: 1.1.0
@@ -2643,6 +2646,11 @@ packages:
   require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
+
+  required-react-context@1.4.1:
+    resolution: {integrity: sha512-u721N45Nyc+QB4HSkHa1NL6a41G6a+yx8fXthOHo0fiI63bKEszvFa3fd25CMdd5oUfXeQbO7f+LGvobpkXNsg==}
+    peerDependencies:
+      react: '>=16.8.0'
 
   requires-port@1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
@@ -6067,6 +6075,10 @@ snapshots:
       set-function-name: 2.0.2
 
   require-directory@2.1.1: {}
+
+  required-react-context@1.4.1(react@19.1.0):
+    dependencies:
+      react: 19.1.0
 
   requires-port@1.0.0: {}
 

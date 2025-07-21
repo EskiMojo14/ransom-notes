@@ -1,5 +1,6 @@
 import type { Decorator } from "@storybook/react-vite";
 import { Provider } from "react-redux";
+import { SessionProvider } from "@/features/auth/session";
 import type { AppStore, PreloadedState } from "@/store";
 import { makeStore } from "@/store";
 
@@ -17,3 +18,9 @@ export const withRedux =
       <Story />
     </Provider>
   );
+
+export const withSession: Decorator = (Story) => (
+  <SessionProvider>
+    <Story />
+  </SessionProvider>
+);

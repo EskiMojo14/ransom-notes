@@ -24,6 +24,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",
+    "required-react-context": "^1.4.1",
     "safeway": "^1.1.0"
   },
   "devDependencies": {
