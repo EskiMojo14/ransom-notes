@@ -16,4 +16,5 @@
   user-select: none;
   box-shadow: 0 0.25rem var(--black);
   font-size: 1.25rem;
+  line-height: 1;
 }
