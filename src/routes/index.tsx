@@ -10,7 +10,7 @@ function App() {
     void supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
-        redirectTo: window.location.origin + "/auth/callback",
+        redirectTo: new URL("/auth/callback", window.location.href).href,
       },
     });
   }
