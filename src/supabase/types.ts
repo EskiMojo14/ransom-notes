@@ -76,7 +76,6 @@ export type Database = {
           first_to: number;
           id: number;
           invite_code: string;
-          lang: string;
           max_submission_length: number;
           pool_size: number;
           voting_mode: Database["public"]["Enums"]["voting_mode"];
@@ -87,7 +86,6 @@ export type Database = {
           first_to?: number;
           id?: number;
           invite_code: string;
-          lang?: string;
           max_submission_length?: number;
           pool_size?: number;
           voting_mode?: Database["public"]["Enums"]["voting_mode"];
@@ -98,36 +96,9 @@ export type Database = {
           first_to?: number;
           id?: number;
           invite_code?: string;
-          lang?: string;
           max_submission_length?: number;
           pool_size?: number;
           voting_mode?: Database["public"]["Enums"]["voting_mode"];
-        };
-        Relationships: [
-          {
-            foreignKeyName: "games_lang_fkey";
-            columns: ["lang"];
-            isOneToOne: false;
-            referencedRelation: "packs";
-            referencedColumns: ["lang"];
-          },
-        ];
-      };
-      packs: {
-        Row: {
-          lang: string;
-          questions: string[];
-          words: string[];
-        };
-        Insert: {
-          lang: string;
-          questions: string[];
-          words: string[];
-        };
-        Update: {
-          lang?: string;
-          questions?: string[];
-          words?: string[];
         };
         Relationships: [];
       };
