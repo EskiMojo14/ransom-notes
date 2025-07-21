@@ -1,4 +1,4 @@
-import { client } from "@/supabase";
+import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
 import type { Tables } from "@/supabase/types";
 
@@ -12,7 +12,7 @@ export const packsApi = api
       getPackLanguages: build.query<Array<string>, void>({
         queryFn: supabaseQueryFn(
           () =>
-            client
+            supabase
               .from("packs")
               .select("lang")
               .order("lang", { ascending: true }),
@@ -22,7 +22,8 @@ export const packsApi = api
       }),
       getPackByLanguage: build.query<Pack, string>({
         queryFn: supabaseQueryFn(
-          (lang) => client.from("packs").select("*").eq("lang", lang).single(),
+          (lang) =>
+            supabase.from("packs").select("*").eq("lang", lang).single(),
           (pack) => pack,
         ),
         providesTags: (_res, _err, lang) => [{ type: "Pack", id: lang }],

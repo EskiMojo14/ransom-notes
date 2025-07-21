@@ -6,7 +6,13 @@ import "../src/styles.css";
 
 initialize({
   onUnhandledRequest(request, print) {
-    if (!(request.url.includes("/src/") || request.url.includes("/assets/"))) {
+    if (
+      !(
+        request.url.includes("/src/") ||
+        request.url.includes("/assets/") ||
+        request.url.startsWith("https://fonts.googleapis.com")
+      )
+    ) {
       print.error();
     }
   },

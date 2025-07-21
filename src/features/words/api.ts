@@ -1,4 +1,4 @@
-import { client } from "@/supabase";
+import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
 
 const wordsApi = api
@@ -11,7 +11,7 @@ const wordsApi = api
       >({
         queryFn: supabaseQueryFn(
           ({ gameId, userId }) =>
-            client
+            supabase
               .from("word_pools")
               .select("words")
               .eq("game_id", gameId)

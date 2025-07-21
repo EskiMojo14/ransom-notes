@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import * as v from "valibot";
-import { client } from "@/supabase";
+import { supabase } from "@/supabase";
 
 export const Route = createFileRoute("/auth/callback")({
   validateSearch: v.object({
@@ -8,7 +8,7 @@ export const Route = createFileRoute("/auth/callback")({
     next: v.optional(v.string()),
   }),
   async beforeLoad({ search: { code, next = "/" } }) {
-    const { error } = await client.auth.exchangeCodeForSession(code);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) throw redirect({ to: next });
     throw error;
   },
