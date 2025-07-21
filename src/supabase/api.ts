@@ -69,4 +69,5 @@ export const api = createApi({
   reducerPath: "supabase",
   baseQuery: fakeBaseQuery<SerializedPostgrestError>(),
   endpoints: () => ({}),
+  tagTypes: ["User"],
 });

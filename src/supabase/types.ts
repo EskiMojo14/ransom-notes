@@ -100,7 +100,15 @@ export type Database = {
           pool_size?: number;
           voting_mode?: Database["public"]["Enums"]["voting_mode"];
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "games_creator_fkey1";
+            columns: ["creator"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       participants: {
         Row: {
@@ -126,7 +134,32 @@ export type Database = {
             referencedRelation: "games";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "participants_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
         ];
+      };
+      profiles: {
+        Row: {
+          avatar_url: string | null;
+          display_name: string | null;
+          id: string;
+        };
+        Insert: {
+          avatar_url?: string | null;
+          display_name?: string | null;
+          id: string;
+        };
+        Update: {
+          avatar_url?: string | null;
+          display_name?: string | null;
+          id?: string;
+        };
+        Relationships: [];
       };
       rounds: {
         Row: {
@@ -158,6 +191,13 @@ export type Database = {
             referencedRelation: "games";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "rounds_judge_fkey1";
+            columns: ["judge"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
         ];
       };
       submissions: {
@@ -187,6 +227,13 @@ export type Database = {
             referencedRelation: "rounds";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "submissions_user_id_fkey1";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
         ];
       };
       user_packs: {
@@ -214,7 +261,15 @@ export type Database = {
           user_id?: string;
           words?: string[];
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "user_packs_user_id_fkey1";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       votes: {
         Row: {
@@ -243,6 +298,13 @@ export type Database = {
             referencedRelation: "rounds";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "votes_user_id_fkey1";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
         ];
       };
       word_pools: {
@@ -267,6 +329,13 @@ export type Database = {
             columns: ["game_id"];
             isOneToOne: false;
             referencedRelation: "games";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "word_pools_user_id_fkey1";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
         ];
