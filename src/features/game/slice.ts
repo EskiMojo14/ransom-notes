@@ -52,11 +52,16 @@ export const {
   },
 } = gameSlice;
 
-export const selectGameConfig = (state: RootState) => {
-  return {
-    first_to: selectFirstTo(state),
-    max_submission_length: selectMaxSubmissionLength(state),
-    pool_size: selectPoolSize(state),
-    voting_mode: selectVotingMode(state),
-  } satisfies Omit<TablesInsert<"games">, "creator" | "id" | "invite_code">;
-};
+export type GameConfig = Required<
+  Omit<
+    TablesInsert<"games">,
+    "id" | "invite_code" | "created_at" | "state" | "creator"
+  >
+>;
+
+export const selectGameConfig = (state: RootState): GameConfig => ({
+  first_to: selectFirstTo(state),
+  max_submission_length: selectMaxSubmissionLength(state),
+  pool_size: selectPoolSize(state),
+  voting_mode: selectVotingMode(state),
+});

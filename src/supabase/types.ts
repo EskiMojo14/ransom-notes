@@ -78,6 +78,7 @@ export type Database = {
           invite_code: string;
           max_submission_length: number;
           pool_size: number;
+          state: Database["public"]["Enums"]["game_state"];
           voting_mode: Database["public"]["Enums"]["voting_mode"];
         };
         Insert: {
@@ -88,6 +89,7 @@ export type Database = {
           invite_code: string;
           max_submission_length?: number;
           pool_size?: number;
+          state?: Database["public"]["Enums"]["game_state"];
           voting_mode?: Database["public"]["Enums"]["voting_mode"];
         };
         Update: {
@@ -98,6 +100,7 @@ export type Database = {
           invite_code?: string;
           max_submission_length?: number;
           pool_size?: number;
+          state?: Database["public"]["Enums"]["game_state"];
           voting_mode?: Database["public"]["Enums"]["voting_mode"];
         };
         Relationships: [
@@ -348,6 +351,7 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
+      game_state: "open" | "running" | "finished";
       voting_mode: "judge" | "jury";
     };
     CompositeTypes: {
@@ -482,6 +486,7 @@ export const Constants = {
   },
   public: {
     Enums: {
+      game_state: ["open", "running", "finished"],
       voting_mode: ["judge", "jury"],
     },
   },
