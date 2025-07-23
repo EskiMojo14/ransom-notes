@@ -71,6 +71,7 @@ export type Database = {
       };
       games: {
         Row: {
+          active_round: number | null;
           created_at: string;
           creator: string;
           first_to: number;
@@ -82,6 +83,7 @@ export type Database = {
           voting_mode: Database["public"]["Enums"]["voting_mode"];
         };
         Insert: {
+          active_round?: number | null;
           created_at?: string;
           creator: string;
           first_to?: number;
@@ -93,6 +95,7 @@ export type Database = {
           voting_mode?: Database["public"]["Enums"]["voting_mode"];
         };
         Update: {
+          active_round?: number | null;
           created_at?: string;
           creator?: string;
           first_to?: number;
@@ -104,6 +107,13 @@ export type Database = {
           voting_mode?: Database["public"]["Enums"]["voting_mode"];
         };
         Relationships: [
+          {
+            foreignKeyName: "games_active_round_fkey";
+            columns: ["active_round"];
+            isOneToOne: false;
+            referencedRelation: "rounds";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "games_creator_fkey1";
             columns: ["creator"];

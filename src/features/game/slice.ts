@@ -55,7 +55,7 @@ export const {
 export type GameConfig = Required<
   Omit<
     TablesInsert<"games">,
-    "id" | "invite_code" | "created_at" | "state" | "creator"
+    "id" | "invite_code" | "created_at" | "state" | "creator" | "active_round"
   >
 >;
 
