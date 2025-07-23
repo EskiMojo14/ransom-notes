@@ -1,10 +1,17 @@
 @import "normalize.css";
 @import "@/styles/palette.css";
+@import "@/styles/shape.css";
 @import "@/styles/tokens.css";
+
+@import "@/components/button/index.css";
 
 body {
   font-family: "Special Elite", monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--page);
+}
+
+* {
+  box-sizing: border-box;
 }

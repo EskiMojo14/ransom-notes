@@ -1,3 +1,4 @@
+import { Button } from "@/components/button";
 import { supabase } from "@/supabase";
 import { useSession } from "./session";
 
@@ -14,9 +15,5 @@ export function GithubSignin() {
   if (session) {
     return <span>{session.user.user_metadata.user_name}</span>;
   }
-  return (
-    <button type="button" onClick={signInWithGithub}>
-      Sign in with Github
-    </button>
-  );
+  return <Button onPress={signInWithGithub}>Sign in with Github</Button>;
 }

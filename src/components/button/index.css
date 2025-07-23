@@ -1,0 +1,41 @@
+.button {
+  appearance: none;
+  background-color: var(--button);
+  color: var(--on-button);
+  border: none;
+  border-radius: var(--shape-medium);
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  transition:
+    background-color 0.1s,
+    box-shadow 0.1s;
+  --shadow-offset: 0.25rem;
+  box-shadow: 0 0.25rem var(--black);
+  &[data-hovered] {
+    background-color: var(--button-hover);
+    box-shadow: 0 0.5rem var(--black);
+  }
+  &[data-focus-visible] {
+    background-color: var(--button-focus);
+    box-shadow: 0 0.5rem var(--black);
+  }
+  &:focus {
+    outline: none;
+  }
+  &[data-pressed] {
+    background-color: var(--button-hover);
+    box-shadow: 0 0.125rem var(--black);
+  }
+  &[data-disabled] {
+    box-shadow: 0 0 var(--black);
+    background-color: var(--paper);
+    color: var(--on-paper);
+    cursor: not-allowed;
+  }
+}

@@ -10,6 +10,11 @@
   --whiteboard-rgb: var(--paper-900-rgb);
   --whiteboard: rgb(var(--whiteboard-rgb));
   --whiteboard-border: var(--black);
+
+  --button: var(--teal-400);
+  --on-button: var(--black);
+  --button-hover: var(--teal-500);
+  --button-focus: var(--teal-a400);
 }
 
 %dark {
@@ -24,6 +29,11 @@
   --whiteboard-rgb: var(--paper-900-rgb);
   --whiteboard: rgb(var(--whiteboard-rgb));
   --whiteboard-border: var(--black);
+
+  --button: var(--teal-300);
+  --on-button: var(--black);
+  --button-hover: var(--teal-400);
+  --button-focus: var(--teal-a200);
 }
 
 [data-theme="light"] {

@@ -32,6 +32,7 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    layout: "centered",
   },
   decorators: [themeDecorator as Decorator],
   argTypes: {
