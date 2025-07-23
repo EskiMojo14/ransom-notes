@@ -24,6 +24,12 @@ const themeDecorator: Decorator<{ theme: Theme }> = (Story, { args }) => {
   return <Story />;
 };
 
+const rtlDecorator: Decorator<{ dir: "ltr" | "rtl" }> = (Story, { args }) => {
+  document.documentElement.dir = args.dir;
+
+  return <Story />;
+};
+
 const preview: Preview = {
   parameters: {
     controls: {
@@ -34,7 +40,7 @@ const preview: Preview = {
     },
     layout: "centered",
   },
-  decorators: [themeDecorator as Decorator],
+  decorators: [themeDecorator as Decorator, rtlDecorator as Decorator],
   argTypes: {
     theme: {
       control: {
@@ -42,9 +48,16 @@ const preview: Preview = {
       },
       options: themeSchema.options,
     },
+    dir: {
+      control: {
+        type: "inline-radio",
+      },
+      options: ["ltr", "rtl"],
+    },
   },
   args: {
     theme: themeStore.get() ?? "system",
+    dir: "ltr",
   },
   loaders: [mswLoader],
 };

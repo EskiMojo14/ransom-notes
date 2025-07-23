@@ -4,6 +4,7 @@
 @import "@/styles/tokens.css";
 
 @import "@/components/button/index.css";
+@import "@/components/symbol/index.css";
 
 body {
   font-family: "Special Elite", monospace;

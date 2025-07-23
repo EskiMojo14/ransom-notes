@@ -1,12 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
+import { Symbol } from "../symbol";
 import { Button } from ".";
 
 const meta = {
   component: Button,
   title: "Components/Button",
   args: {
-    children: "Button",
+    children: (
+      <>
+        <Symbol>edit</Symbol>
+        Edit
+      </>
+    ),
     onPress: fn(),
     isDisabled: false,
   },
