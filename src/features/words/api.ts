@@ -2,7 +2,7 @@ import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
 import type { Game } from "../game/api";
 
-const wordsApi = api
+export const wordsApi = api
   .enhanceEndpoints({ addTagTypes: ["Word"] })
   .injectEndpoints({
     endpoints: (build) => ({

@@ -6,7 +6,7 @@ import type { GameConfig } from "./slice";
 
 export interface Game extends Tables<"games"> {
   creator_profile: Pick<Tables<"profiles">, "display_name" | "avatar_url">;
-  participant_count: number;
+  participants: Array<Pick<Tables<"profiles">, "display_name" | "avatar_url">>;
 }
 
 export const gameApi = api
@@ -22,14 +22,14 @@ export const gameApi = api
                 `
                 *,
                 creator_profile:profiles(display_name, avatar_url),
-                participants(count)
+                participants(profiles(display_name, avatar_url))
                 `,
               )
               .eq("invite_code", inviteCode)
               .single(),
           ({ participants, ...game }) => ({
             ...game,
-            participant_count: participants[0]?.count ?? 0,
+            participants: participants.map(({ profiles }) => profiles),
           }),
         ),
         providesTags: (res, _err, inviteCode) => [
