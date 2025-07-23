@@ -1,5 +1,6 @@
 import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
+import type { Game } from "../game/api";
 
 const wordsApi = api
   .enhanceEndpoints({ addTagTypes: ["Word"] })
@@ -7,7 +8,7 @@ const wordsApi = api
     endpoints: (build) => ({
       getWordPool: build.query<
         Array<string>,
-        { gameId: number; userId: string }
+        { gameId: Game["id"]; userId: string }
       >({
         queryFn: supabaseQueryFn(
           ({ gameId, userId }) =>

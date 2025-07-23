@@ -1,5 +1,6 @@
 import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
+import type { Game } from "../game/api";
 
 interface Participant {
   id: string;
@@ -14,7 +15,7 @@ const participantsApi = api
   .enhanceEndpoints({ addTagTypes: ["Participant"] })
   .injectEndpoints({
     endpoints: (build) => ({
-      getParticipants: build.query<Array<Participant>, number>({
+      getParticipants: build.query<Array<Participant>, Game["id"]>({
         queryFn: supabaseQueryFn((gameId) =>
           supabase
             .from("participants")
