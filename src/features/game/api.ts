@@ -4,7 +4,7 @@ import type { Tables, TablesInsert } from "@/supabase/types";
 import type { Compute, PickRequired } from "@/utils/types";
 import type { GameConfig } from "./slice";
 
-interface Game extends Tables<"games"> {
+export interface Game extends Tables<"games"> {
   creator_profile: Pick<Tables<"profiles">, "display_name" | "avatar_url">;
   participant_count: number;
 }
