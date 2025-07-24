@@ -7,7 +7,8 @@
   min-width: 10rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  align-items: center;
+  gap: 2rem;
   position: relative;
   overflow: hidden;
   user-select: none;
@@ -25,11 +26,17 @@
   opacity: 0.5;
 }
 
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 1;
+}
+
 .row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  z-index: 1;
 }
 
 .word {
@@ -41,4 +48,9 @@
   padding: 0.5rem;
   user-select: none;
   box-shadow: 0 0.25rem var(--black);
+}
+
+.author {
+  color: var(--on-whiteboard);
+  z-index: 1;
 }

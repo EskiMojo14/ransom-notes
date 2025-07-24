@@ -10,6 +10,7 @@
   --whiteboard-rgb: var(--paper-900-rgb);
   --whiteboard: rgb(var(--whiteboard-rgb));
   --whiteboard-border: var(--black);
+  --on-whiteboard: var(--white);
 
   --button: var(--teal-400);
   --on-button: var(--black);
@@ -29,6 +30,7 @@
   --whiteboard-rgb: var(--paper-900-rgb);
   --whiteboard: rgb(var(--whiteboard-rgb));
   --whiteboard-border: var(--black);
+  --on-whiteboard: var(--white);
 
   --button: var(--teal-300);
   --on-button: var(--black);
