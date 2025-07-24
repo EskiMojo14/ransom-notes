@@ -3,6 +3,8 @@ import { http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
 import { env } from "@/env";
 import { withRedux } from "@/storybook/decorators";
+import type { QueryBuilderData } from "@/utils/types";
+import type { submissionQueries } from "./api";
 import { Submission } from "./Submission";
 
 const meta = {
@@ -17,7 +19,9 @@ const meta = {
     msw: {
       handlers: [
         http.get(env.VITE_SUPABASE_URL + "/rest/v1/submissions", () =>
-          HttpResponse.json([
+          HttpResponse.json<
+            QueryBuilderData<typeof submissionQueries, "getSubmissions">
+          >([
             {
               rows: ["I have elaborate booty chaos", "please not mad"],
               created_at: "2024-01-01T00:00:00Z",

@@ -1,4 +1,4 @@
-import { useGetActiveRoundQuery } from "../round/api";
+import { useGetActiveRoundQuery } from "./api";
 import styles from "./Prompt.module.css";
 
 export interface PromptProps {

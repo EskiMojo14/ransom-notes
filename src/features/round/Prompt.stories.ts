@@ -3,7 +3,8 @@ import { http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
 import { env } from "@/env";
 import { withRedux } from "@/storybook/decorators";
-import { questions } from "./constants";
+import type { QueryBuilderData } from "@/utils/types";
+import type { roundQueries } from "./api";
 import { Prompt } from "./Prompt";
 
 const meta = {
@@ -17,9 +18,15 @@ const meta = {
     msw: {
       handlers: [
         http.get(env.VITE_SUPABASE_URL + "/rest/v1/games", () => {
-          return HttpResponse.json({
+          return HttpResponse.json<
+            QueryBuilderData<typeof roundQueries, "getActiveRound">
+          >({
             active_round: {
-              question: questions[0],
+              id: 1,
+              question:
+                "Tell someone you've clogged their toilet during a party",
+              judge: null,
+              created_at: "2024-01-01T00:00:00Z",
             },
           });
         }),
