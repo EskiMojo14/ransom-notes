@@ -1,14 +1,17 @@
-import type { ReactNode } from "react";
+import { useGetActiveRoundQuery } from "../round/api";
 import styles from "./Prompt.module.css";
 
 export interface PromptProps {
-  children: ReactNode;
+  gameId: number;
 }
 
-export function Prompt({ children }: PromptProps) {
+export function Prompt({ gameId }: PromptProps) {
+  const { question } = useGetActiveRoundQuery(gameId, {
+    selectFromResult: ({ data }) => ({ question: data?.question }),
+  });
   return (
     <div className={styles.prompt}>
-      <h5 className={styles.text}>{children}</h5>
+      <h5 className={styles.text}>{question}</h5>
     </div>
   );
 }

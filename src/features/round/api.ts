@@ -62,3 +62,5 @@ export const roundApi = api
       }),
     }),
   });
+
+export const { useGetActiveRoundQuery, useGetGameRoundsQuery } = roundApi;
