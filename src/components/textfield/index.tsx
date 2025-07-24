@@ -22,7 +22,7 @@ interface TextFieldProps extends AriaTextFieldProps {
   placeholder?: string;
 }
 
-const classes = bemHelper("textfield");
+const cls = bemHelper("textfield");
 
 export function TextField({
   label,
@@ -37,23 +37,23 @@ export function TextField({
     <AriaTextField
       {...props}
       className={composeClasses(
-        classes({ modifiers: { multiline: !!multiline } }),
+        cls({ modifiers: { multiline: !!multiline } }),
         className,
       )}
     >
       <Label
-        className={classes({
+        className={cls({
           element: "label",
           extra: "body1",
         })}
       >
         {label}
       </Label>
-      <label className={classes("input-container")}>
-        {!!props.icon && <div className={classes("icon")}>{props.icon}</div>}
+      <label className={cls("input-container")}>
+        {!!props.icon && <div className={cls("icon")}>{props.icon}</div>}
         {multiline ? (
           <TextArea
-            className={classes({
+            className={cls({
               element: "input",
               modifier: "textarea",
               extra: "body1",
@@ -62,7 +62,7 @@ export function TextField({
           />
         ) : (
           <Input
-            className={classes({
+            className={cls({
               element: "input",
               modifier: "input",
               extra: "body1",
@@ -73,7 +73,7 @@ export function TextField({
       </label>
       {description && (
         <Text
-          className={classes({
+          className={cls({
             element: "description",
             extra: "caption",
           })}
@@ -83,7 +83,7 @@ export function TextField({
         </Text>
       )}
       <FieldError
-        className={classes({
+        className={cls({
           element: "error",
           extra: "caption",
         })}

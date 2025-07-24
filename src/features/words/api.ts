@@ -1,6 +1,6 @@
+import type { Game } from "@/features/game/api";
 import { supabase } from "@/supabase";
 import { api, supaEnhance } from "@/supabase/api";
-import type { Game } from "../game/api";
 
 export const wordsApi = api
   .enhanceEndpoints({ addTagTypes: ["Word"] })

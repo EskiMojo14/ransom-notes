@@ -1,7 +1,7 @@
 import type { QueryData } from "@supabase/supabase-js";
+import type { Game } from "@/features/game/api";
 import { supabase } from "@/supabase";
 import { api, cloneBuilder, supaEnhance } from "@/supabase/api";
-import type { Game } from "../game/api";
 
 const roundSelect = `
   question, 

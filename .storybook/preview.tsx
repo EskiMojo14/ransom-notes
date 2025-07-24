@@ -2,7 +2,7 @@ import type { Decorator, Preview } from "@storybook/react-vite";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import type { Theme } from "@/features/theme/storage";
 import { themeSchema, themeStore } from "@/features/theme/storage";
-import "../src/styles.css";
+import "@/styles.css";
 
 initialize({
   onUnhandledRequest(request, print) {

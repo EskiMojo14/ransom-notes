@@ -1,8 +1,8 @@
 import { createEntityAdapter } from "@reduxjs/toolkit";
 import type { QueryData } from "@supabase/supabase-js";
+import type { Round } from "@/features/round/api";
 import { supabase } from "@/supabase";
 import { api, cloneBuilder, supaEnhance } from "@/supabase/api";
-import type { Round } from "../round/api";
 
 const getSubmissions = supabase.from("submissions").select(`
   rows, 
