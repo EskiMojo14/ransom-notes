@@ -1,13 +1,16 @@
+import type { QueryData } from "@supabase/supabase-js";
 import { supabase } from "@/supabase";
-import { api, supaEnhance } from "@/supabase/api";
-import type { Tables, TablesInsert } from "@/supabase/types";
+import { api, cloneBuilder, supaEnhance } from "@/supabase/api";
+import type { TablesInsert } from "@/supabase/types";
 import type { Compute, PickRequired } from "@/utils/types";
 import type { GameConfig } from "./slice";
 
-export interface Game extends Tables<"games"> {
-  creator_profile: Pick<Tables<"profiles">, "display_name" | "avatar_url">;
-  participants: Array<Pick<Tables<"profiles">, "display_name" | "avatar_url">>;
-}
+const getGames = supabase.from("games").select(`
+  *,
+  creator_profile:profiles(display_name, avatar_url),
+  participants(profiles(display_name, avatar_url))
+`);
+export type Game = QueryData<typeof getGames>[number];
 
 export const gameApi = api
   .enhanceEndpoints({ addTagTypes: ["Game"] })
@@ -15,17 +18,7 @@ export const gameApi = api
     endpoints: supaEnhance((build) => ({
       getGameByInviteCode: build.query({
         query: (inviteCode: Game["invite_code"]) =>
-          supabase
-            .from("games")
-            .select(
-              `
-              *,
-              creator_profile:profiles(display_name, avatar_url),
-              participants(profiles(display_name, avatar_url))
-              `,
-            )
-            .eq("invite_code", inviteCode)
-            .single(),
+          cloneBuilder(getGames).eq("invite_code", inviteCode).single(),
         transformResponse: ({ participants, ...game }) => ({
           ...game,
           participants: participants.map(({ profiles }) => profiles),

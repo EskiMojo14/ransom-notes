@@ -8,6 +8,7 @@ import type {
   QueryDefinition,
 } from "@reduxjs/toolkit/query";
 import { createApi } from "@reduxjs/toolkit/query/react";
+import { PostgrestFilterBuilder } from "@supabase/postgrest-js";
 import type {
   PostgrestError,
   PostgrestSingleResponse,
@@ -199,3 +200,10 @@ export const api = createApi({
   endpoints: () => ({}),
   tagTypes: ["User"],
 });
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+type AnyFilterBuilder = PostgrestFilterBuilder<any, any, any, any, any>;
+/* eslint-enable @typescript-eslint/no-explicit-any */
+
+export const cloneBuilder = <T extends AnyFilterBuilder>(builder: T) =>
+  new PostgrestFilterBuilder(builder as never) as T;
