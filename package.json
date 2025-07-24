@@ -14,7 +14,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^2.8.2",
+    "@reduxjs/toolkit": "https://pkg.csb.dev/reduxjs/redux-toolkit/commit/89bb7334/@reduxjs/toolkit/_pkg.tgz",
     "@supabase/supabase-js": "^2.52.0",
     "@tanstack/react-router": "^1.128.6",
     "@tanstack/react-router-devtools": "^1.128.6",

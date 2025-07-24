@@ -1,10 +1,19 @@
 import type { SerializedError } from "@reduxjs/toolkit";
 import { miniSerializeError } from "@reduxjs/toolkit";
-import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import type {
+  BaseQueryFn,
+  EndpointBuilder,
+  EndpointDefinitions,
+  MutationDefinition,
+  QueryDefinition,
+} from "@reduxjs/toolkit/query";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import type {
   PostgrestError,
   PostgrestSingleResponse,
+  QueryData,
 } from "@supabase/supabase-js";
+import type { Compute, PickRequired } from "@/utils/types";
 
 export interface SerializedPostgrestError
   extends SerializedError,
@@ -34,55 +43,159 @@ interface QueryBuilder<Response>
   abortSignal?(signal: AbortSignal): this;
 }
 
-export interface QueryBuilderFn<TArg, TResponse, TRawResponse = TResponse> {
-  (
-    arg: TArg,
-    api: { signal: AbortSignal },
-  ): Promise<{ data: TResponse } | { error: SerializedPostgrestError }>;
-  buildQuery: (arg: TArg) => QueryBuilder<TRawResponse>;
-  transformResponse: (data: TRawResponse) => TResponse;
-}
+export const supaBaseQuery: BaseQueryFn<
+  QueryBuilder<unknown>,
+  unknown,
+  SerializedPostgrestError
+> = async (query, { signal }) => {
+  if (query.abortSignal) query = query.abortSignal(signal);
+  const { data, error, status, statusText } = await query;
+  return error
+    ? { error: serializePostgrestError(error, status, statusText) }
+    : { data };
+};
+type SupaBaseQuery = typeof supaBaseQuery;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type MockFor<T extends QueryBuilderFn<any, any>> = T extends {
-  buildQuery: (arg: never) => QueryBuilder<infer TRawResponse>;
-}
-  ? TRawResponse
-  : never;
-
-export function supabaseQueryFn<TArg, TResponse>(
-  buildQuery: (arg: TArg) => QueryBuilder<TResponse>,
-): QueryBuilderFn<TArg, TResponse>;
-export function supabaseQueryFn<TArg, TResponse, TTransformed = TResponse>(
-  buildQuery: (arg: TArg) => QueryBuilder<TResponse>,
-  transformResponse: (data: TResponse) => TTransformed,
-): QueryBuilderFn<TArg, TTransformed, TResponse>;
-export function supabaseQueryFn<TArg, TResponse, TTransformed = TResponse>(
-  buildQuery: (arg: TArg) => QueryBuilder<TResponse>,
-  transformResponse: (data: TResponse) => TTransformed = (data) =>
-    data as unknown as TTransformed,
-): QueryBuilderFn<TArg, TTransformed, TResponse> {
-  async function queryFn(
-    arg: TArg,
-    { signal }: { signal: AbortSignal },
-  ): Promise<{ data: TTransformed } | { error: SerializedPostgrestError }> {
-    let query = buildQuery(arg);
-    // the builder returned by .single doesn't know it has this, but it does
-    if (query.abortSignal) query = query.abortSignal(signal);
-
-    const { data, error, status, statusText } = await query;
-    return error
-      ? { error: serializePostgrestError(error, status, statusText) }
-      : { data: transformResponse(data) };
+type SupaQueryDefinition<
+  TagTypes extends string,
+  ReducerPath extends string,
+  QueryArg,
+  Builder extends QueryBuilder<unknown>,
+  TransformedResultType = QueryData<Builder>,
+> = Compute<
+  Omit<
+    Extract<
+      QueryDefinition<
+        QueryArg,
+        SupaBaseQuery,
+        TagTypes,
+        TransformedResultType,
+        ReducerPath,
+        QueryData<Builder>
+      >,
+      { query: {} }
+    >,
+    "query" | "type"
+  > & {
+    query: (arg: QueryArg) => Builder;
   }
-  queryFn.buildQuery = buildQuery;
-  queryFn.transformResponse = transformResponse;
-  return queryFn;
+>;
+
+type SupaMutationDefinition<
+  TagTypes extends string,
+  ReducerPath extends string,
+  QueryArg,
+  Builder extends QueryBuilder<unknown>,
+  TransformedResultType = QueryData<Builder>,
+> = Compute<
+  Omit<
+    Extract<
+      MutationDefinition<
+        QueryArg,
+        SupaBaseQuery,
+        TagTypes,
+        TransformedResultType,
+        ReducerPath,
+        QueryData<Builder>
+      >,
+      { query: {} }
+    >,
+    "query" | "type"
+  > & {
+    query: (arg: QueryArg) => Builder;
+  }
+>;
+
+interface SupaEndpointBuilder<
+  TagTypes extends string,
+  ReducerPath extends string,
+> {
+  query<Builder extends QueryBuilder<unknown>, QueryArg, TransformedResultType>(
+    definition: PickRequired<
+      SupaQueryDefinition<
+        TagTypes,
+        ReducerPath,
+        QueryArg,
+        Builder,
+        TransformedResultType
+      >,
+      "transformResponse"
+    >,
+  ): QueryDefinition<
+    QueryArg,
+    SupaBaseQuery,
+    TagTypes,
+    TransformedResultType,
+    ReducerPath,
+    QueryData<Builder>
+  >;
+  query<Builder extends QueryBuilder<unknown>, QueryArg>(
+    definition: Omit<
+      SupaQueryDefinition<TagTypes, ReducerPath, QueryArg, Builder>,
+      "transformResponse"
+    >,
+  ): QueryDefinition<
+    QueryArg,
+    SupaBaseQuery,
+    TagTypes,
+    QueryData<Builder>,
+    ReducerPath,
+    QueryData<Builder>
+  >;
+
+  mutation<
+    Builder extends QueryBuilder<unknown>,
+    QueryArg,
+    TransformedResultType,
+  >(
+    definition: PickRequired<
+      SupaMutationDefinition<
+        TagTypes,
+        ReducerPath,
+        QueryArg,
+        Builder,
+        TransformedResultType
+      >,
+      "transformResponse"
+    >,
+  ): MutationDefinition<
+    QueryArg,
+    SupaBaseQuery,
+    TagTypes,
+    TransformedResultType,
+    ReducerPath,
+    QueryData<Builder>
+  >;
+  mutation<Builder extends QueryBuilder<unknown>, QueryArg>(
+    definition: Omit<
+      SupaMutationDefinition<TagTypes, ReducerPath, QueryArg, Builder>,
+      "transformResponse"
+    >,
+  ): MutationDefinition<
+    QueryArg,
+    SupaBaseQuery,
+    TagTypes,
+    QueryData<Builder>,
+    ReducerPath,
+    QueryData<Builder>
+  >;
 }
+
+export const supaEnhance = <
+  TagTypes extends string,
+  ReducerPath extends string,
+  Definitions extends EndpointDefinitions,
+>(
+  buildCallback: (
+    build: SupaEndpointBuilder<TagTypes, ReducerPath>,
+  ) => Definitions,
+): ((
+  build: EndpointBuilder<SupaBaseQuery, TagTypes, ReducerPath>,
+) => Definitions) => buildCallback;
 
 export const api = createApi({
   reducerPath: "supabase",
-  baseQuery: fakeBaseQuery<SerializedPostgrestError>(),
+  baseQuery: supaBaseQuery,
   endpoints: () => ({}),
   tagTypes: ["User"],
 });

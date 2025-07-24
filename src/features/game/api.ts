@@ -1,5 +1,5 @@
 import { supabase } from "@/supabase";
-import { api, supabaseQueryFn } from "@/supabase/api";
+import { api, supaEnhance } from "@/supabase/api";
 import type { Tables, TablesInsert } from "@/supabase/types";
 import type { Compute, PickRequired } from "@/utils/types";
 import type { GameConfig } from "./slice";
@@ -9,47 +9,43 @@ export interface Game extends Tables<"games"> {
   participants: Array<Pick<Tables<"profiles">, "display_name" | "avatar_url">>;
 }
 
-export const gameQueries = {
-  getGameByInviteCode: supabaseQueryFn(
-    (inviteCode: Game["invite_code"]) =>
-      supabase
-        .from("games")
-        .select(
-          `
-        *,
-        creator_profile:profiles(display_name, avatar_url),
-        participants(profiles(display_name, avatar_url))
-        `,
-        )
-        .eq("invite_code", inviteCode)
-        .single(),
-    ({ participants, ...game }) => ({
-      ...game,
-      participants: participants.map(({ profiles }) => profiles),
-    }),
-  ),
-  createGame: supabaseQueryFn(
-    (
-      game: Compute<
-        PickRequired<TablesInsert<"games">, "creator"> & GameConfig
-      >,
-    ) => supabase.from("games").insert(game).select("invite_code, id").single(),
-  ),
-};
-
 export const gameApi = api
   .enhanceEndpoints({ addTagTypes: ["Game"] })
   .injectEndpoints({
-    endpoints: (build) => ({
+    endpoints: supaEnhance((build) => ({
       getGameByInviteCode: build.query({
-        queryFn: gameQueries.getGameByInviteCode,
+        query: (inviteCode: Game["invite_code"]) =>
+          supabase
+            .from("games")
+            .select(
+              `
+              *,
+              creator_profile:profiles(display_name, avatar_url),
+              participants(profiles(display_name, avatar_url))
+              `,
+            )
+            .eq("invite_code", inviteCode)
+            .single(),
+        transformResponse: ({ participants, ...game }) => ({
+          ...game,
+          participants: participants.map(({ profiles }) => profiles),
+        }),
         providesTags: (res, _err, inviteCode) => [
           { type: "Game", id: inviteCode },
           res ? { type: "Game" as const, id: res.id } : null,
         ],
       }),
       createGame: build.mutation({
-        queryFn: gameQueries.createGame,
+        query: (
+          game: Compute<
+            PickRequired<TablesInsert<"games">, "creator"> & GameConfig
+          >,
+        ) =>
+          supabase
+            .from("games")
+            .insert(game)
+            .select("invite_code, id")
+            .single(),
         invalidatesTags: (res) =>
           res
             ? [
@@ -58,7 +54,7 @@ export const gameApi = api
               ]
             : [],
       }),
-    }),
+    })),
   });
 
 export const { useGetGameByInviteCodeQuery, useCreateGameMutation } = gameApi;

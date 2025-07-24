@@ -1,6 +1,6 @@
 import { createEntityAdapter } from "@reduxjs/toolkit";
 import { supabase } from "@/supabase";
-import { api, supabaseQueryFn } from "@/supabase/api";
+import { api, supaEnhance } from "@/supabase/api";
 import type { Tables } from "@/supabase/types";
 import type { Round } from "../round/api";
 
@@ -21,23 +21,18 @@ export const {
   selectTotal: selectTotalSubmissions,
 } = submissionAdapter.getSelectors();
 
-export const submissionQueries = {
-  getSubmissions: supabaseQueryFn(
-    (roundId: Round["id"]) =>
-      supabase
-        .from("submissions")
-        .select("rows, created_at, user_id, author:profiles(display_name)")
-        .eq("round_id", roundId),
-    (submissions) => submissionAdapter.getInitialState(undefined, submissions),
-  ),
-};
-
 export const submissionApi = api
   .enhanceEndpoints({ addTagTypes: ["Round", "Submission"] })
   .injectEndpoints({
-    endpoints: (build) => ({
+    endpoints: supaEnhance((build) => ({
       getSubmissions: build.query({
-        queryFn: submissionQueries.getSubmissions,
+        query: (roundId: Round["id"]) =>
+          supabase
+            .from("submissions")
+            .select("rows, created_at, user_id, author:profiles(display_name)")
+            .eq("round_id", roundId),
+        transformResponse: (submissions) =>
+          submissionAdapter.getInitialState(undefined, submissions),
         providesTags: (res, _err, roundId) => [
           { type: "Round", id: roundId },
           ...(res
@@ -45,7 +40,7 @@ export const submissionApi = api
             : []),
         ],
       }),
-    }),
+    })),
   });
 
 export const { useGetSubmissionsQuery } = submissionApi;
