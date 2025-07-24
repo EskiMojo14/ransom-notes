@@ -49,6 +49,35 @@
   --teal-50-rgb: 224, 242, 241;
   --teal-50: rgb(var(--teal-50-rgb));
 
+  --orange-a700-rgb: 221, 44, 0;
+  --orange-a700: rgb(var(--orange-a700-rgb));
+  --orange-a400-rgb: 255, 60, 0;
+  --orange-a400: rgb(var(--orange-a400-rgb));
+  --orange-a200-rgb: 255, 110, 64;
+  --orange-a200: rgb(var(--orange-a200-rgb));
+  --orange-a100-rgb: 255, 158, 128;
+  --orange-a100: rgb(var(--orange-a100-rgb));
+  --orange-900-rgb: 191, 54, 12;
+  --orange-900: rgb(var(--orange-900-rgb));
+  --orange-800-rgb: 216, 67, 21;
+  --orange-800: rgb(var(--orange-800-rgb));
+  --orange-700-rgb: 230, 74, 25;
+  --orange-700: rgb(var(--orange-700-rgb));
+  --orange-600-rgb: 244, 81, 30;
+  --orange-600: rgb(var(--orange-600-rgb));
+  --orange-500-rgb: 255, 87, 34;
+  --orange-500: rgb(var(--orange-500-rgb));
+  --orange-400-rgb: 255, 112, 67;
+  --orange-400: rgb(var(--orange-400-rgb));
+  --orange-300-rgb: 255, 138, 101;
+  --orange-300: rgb(var(--orange-300-rgb));
+  --orange-200-rgb: 255, 171, 145;
+  --orange-200: rgb(var(--orange-200-rgb));
+  --orange-100-rgb: 255, 204, 188;
+  --orange-100: rgb(var(--orange-100-rgb));
+  --orange-50-rgb: 251, 233, 231;
+  --orange-50: rgb(var(--orange-50-rgb));
+
   --black: #000;
   --white: #fff;
 }

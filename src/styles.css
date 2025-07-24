@@ -6,6 +6,7 @@
 
 @import "@/components/button/index.css";
 @import "@/components/symbol/index.css";
+@import "@/components/textfield/index.css";
 
 body {
   font-family: var(--body-font);

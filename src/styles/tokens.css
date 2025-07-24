@@ -16,6 +16,18 @@
   --on-button: var(--black);
   --button-hover: var(--teal-500);
   --button-focus: var(--teal-a400);
+
+  --input: var(--paper-100);
+  --on-input: var(--black);
+  --input-disabled: var(--paper-200);
+  --on-input-disabled: var(--paper-800);
+  --input-icon: var(--paper-700);
+  --input-placeholder: var(--paper-700);
+  --input-description: var(--paper-700);
+  --input-border: var(--paper-200);
+  --input-focus: var(--teal-a700);
+  --input-error: var(--orange-a700);
+  --input-error-border: var(--orange-a700);
 }
 
 %dark {
@@ -36,6 +48,18 @@
   --on-button: var(--black);
   --button-hover: var(--teal-400);
   --button-focus: var(--teal-a200);
+
+  --input: var(--paper-800);
+  --on-input: var(--paper-50);
+  --input-disabled: var(--paper-700);
+  --on-input-disabled: var(--paper-200);
+  --input-icon: var(--paper-300);
+  --input-placeholder: var(--paper-300);
+  --input-description: var(--paper-300);
+  --input-border: var(--paper-700);
+  --input-focus: var(--teal-a400);
+  --input-error: var(--orange-a400);
+  --input-error-border: var(--orange-a400);
 }
 
 [data-theme="light"] {

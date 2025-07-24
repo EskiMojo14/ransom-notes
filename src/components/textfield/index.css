@@ -1,0 +1,67 @@
+.textfield {
+  display: flex;
+  flex-direction: column;
+  .textfield__label {
+    margin-bottom: 0.5em;
+  }
+  .textfield__input-container {
+    display: flex;
+    background-color: var(--input);
+    border: 2px solid var(--input-border);
+    border-radius: var(--shape-medium);
+    color: var(--on-input);
+    .textfield__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+      padding-right: 0;
+      color: var(--input-icon);
+      &:dir(rtl) {
+        padding-right: 0.5rem;
+        padding-left: 0;
+      }
+    }
+  }
+  .textfield__input {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: inherit;
+    padding: 0.5rem;
+    &.textfield__input--textarea {
+      resize: vertical;
+    }
+    &::placeholder {
+      color: var(--input-placeholder);
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  .textfield__description {
+    margin-top: 0.5em;
+    color: var(--input-description);
+  }
+  .textfield__error {
+    margin-top: 0.5em;
+    color: var(--input-error);
+  }
+  &:has([data-focused]) {
+    .textfield__input-container {
+      border-color: var(--input-focus);
+    }
+  }
+  &[data-disabled] {
+    .textfield__input-container {
+      background-color: var(--input-disabled);
+      color: var(--on-input-disabled);
+      border-color: var(--input-disabled);
+    }
+  }
+  &[data-invalid] {
+    .textfield__input-container {
+      border-color: var(--input-error-border);
+    }
+  }
+}
