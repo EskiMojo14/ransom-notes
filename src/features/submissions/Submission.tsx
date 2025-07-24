@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import styles from "./Submission.module.css";
 
 export interface SubmissionProps {
@@ -12,7 +13,7 @@ export function Submission({ rows }: SubmissionProps) {
         <div key={index} className={styles.row}>
           {row.split(" ").map((word, index) => (
             // eslint-disable-next-line @eslint-react/no-array-index-key
-            <span key={index} className={styles.word}>
+            <span key={index} className={clsx("body1", styles.word)}>
               {word}
             </span>
           ))}

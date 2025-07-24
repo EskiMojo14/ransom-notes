@@ -2,12 +2,13 @@
 @import "@/styles/palette.css";
 @import "@/styles/shape.css";
 @import "@/styles/tokens.css";
+@import "@/styles/typography.css";
 
 @import "@/components/button/index.css";
 @import "@/components/symbol/index.css";
 
 body {
-  font-family: "Special Elite", monospace;
+  font-family: var(--body-font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--page);

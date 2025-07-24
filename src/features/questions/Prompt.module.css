@@ -8,7 +8,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.5rem;
   position: relative;
   overflow: hidden;
   user-select: none;
@@ -30,4 +29,5 @@
   position: relative;
   z-index: 1;
   text-align: center;
+  margin: 0;
 }

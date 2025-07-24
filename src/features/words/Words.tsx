@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import { useGetWordPoolQuery } from "./api";
 import styles from "./Words.module.css";
 
@@ -11,7 +12,7 @@ export function Words({ gameId, userId }: WordsProps) {
   return (
     <div className={styles.wordCollection}>
       {words.map((word) => (
-        <span key={word} className={styles.word}>
+        <span key={word} className={clsx("body1", styles.word)}>
           {word}
         </span>
       ))}

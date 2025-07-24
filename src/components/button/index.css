@@ -1,4 +1,5 @@
-.button {
+button.button,
+a.button {
   appearance: none;
   background-color: var(--button);
   color: var(--on-button);
@@ -6,7 +7,6 @@
   border-radius: var(--shape-medium);
   padding: 0 1rem;
   height: 2.5rem;
-  font-size: 1rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;

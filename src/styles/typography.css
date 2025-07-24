@@ -1,0 +1,93 @@
+:root {
+  --heading-font: "Special Elite", serif;
+  --body-font: "Courier Prime", monospace;
+
+  --headline1-size: 103px;
+  --headline2-size: 64px;
+  --headline3-size: 51px;
+  --headline4-size: 36px;
+  --headline5-size: 26px;
+  --headline6-size: 21px;
+  --subtitle1-size: 17px;
+  --subtitle2-size: 15px;
+
+  --body1-size: 19px;
+  --body2-size: 17px;
+
+  --button-size: 17px;
+  --overline-size: 12px;
+  --caption-size: 14px;
+}
+
+.headline1,
+h1 {
+  font-family: var(--heading-font);
+  font-size: var(--headline1-size);
+}
+
+.headline2,
+h2 {
+  font-family: var(--heading-font);
+  font-size: var(--headline2-size);
+}
+
+.headline3,
+h3 {
+  font-family: var(--heading-font);
+  font-size: var(--headline3-size);
+}
+
+.headline4,
+h4 {
+  font-family: var(--heading-font);
+  font-size: var(--headline4-size);
+}
+
+.headline5,
+h5 {
+  font-family: var(--heading-font);
+  font-size: var(--headline5-size);
+}
+
+.headline6,
+h6 {
+  font-family: var(--heading-font);
+  font-size: var(--headline6-size);
+}
+
+.subtitle1 {
+  font-family: var(--heading-font);
+  font-size: var(--subtitle1-size);
+}
+
+.subtitle2 {
+  font-family: var(--heading-font);
+  font-size: var(--subtitle2-size);
+}
+
+.body1 {
+  font-family: var(--body-font);
+  font-size: var(--body1-size);
+}
+
+.body2 {
+  font-family: var(--body-font);
+  font-size: var(--body2-size);
+}
+
+.overline {
+  font-family: var(--body-font);
+  font-size: var(--overline-size);
+  text-transform: uppercase;
+}
+
+.button {
+  font-family: var(--body-font);
+  font-size: var(--button-size);
+  text-transform: uppercase;
+}
+
+.caption {
+  font-family: var(--body-font);
+  font-size: var(--caption-size);
+}
