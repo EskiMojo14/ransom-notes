@@ -6,7 +6,7 @@ import type {
   PostgrestSingleResponse,
 } from "@supabase/supabase-js";
 
-interface SerializedPostgrestError
+export interface SerializedPostgrestError
   extends SerializedError,
     Partial<Omit<PostgrestError, keyof SerializedError>> {
   status?: number;
@@ -34,23 +34,35 @@ interface QueryBuilder<Response>
   abortSignal?(signal: AbortSignal): this;
 }
 
+export interface QueryBuilderFn<TArg, TResponse, TRawResponse = TResponse> {
+  (
+    arg: TArg,
+    api: { signal: AbortSignal },
+  ): Promise<{ data: TResponse } | { error: SerializedPostgrestError }>;
+  buildQuery: (arg: TArg) => QueryBuilder<TRawResponse>;
+  transformResponse: (data: TRawResponse) => TResponse;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type MockFor<T extends QueryBuilderFn<any, any>> = T extends {
+  buildQuery: (arg: never) => QueryBuilder<infer TRawResponse>;
+}
+  ? TRawResponse
+  : never;
+
 export function supabaseQueryFn<TArg, TResponse>(
   buildQuery: (arg: TArg) => QueryBuilder<TResponse>,
-): (
-  arg: TArg,
-) => Promise<{ data: TResponse } | { error: SerializedPostgrestError }>;
+): QueryBuilderFn<TArg, TResponse>;
 export function supabaseQueryFn<TArg, TResponse, TTransformed = TResponse>(
   buildQuery: (arg: TArg) => QueryBuilder<TResponse>,
   transformResponse: (data: TResponse) => TTransformed,
-): (
-  arg: TArg,
-) => Promise<{ data: TTransformed } | { error: SerializedPostgrestError }>;
+): QueryBuilderFn<TArg, TTransformed, TResponse>;
 export function supabaseQueryFn<TArg, TResponse, TTransformed = TResponse>(
   buildQuery: (arg: TArg) => QueryBuilder<TResponse>,
   transformResponse: (data: TResponse) => TTransformed = (data) =>
     data as unknown as TTransformed,
-) {
-  return async function queryFn(
+): QueryBuilderFn<TArg, TTransformed, TResponse> {
+  async function queryFn(
     arg: TArg,
     { signal }: { signal: AbortSignal },
   ): Promise<{ data: TTransformed } | { error: SerializedPostgrestError }> {
@@ -62,7 +74,10 @@ export function supabaseQueryFn<TArg, TResponse, TTransformed = TResponse>(
     return error
       ? { error: serializePostgrestError(error, status, statusText) }
       : { data: transformResponse(data) };
-  };
+  }
+  queryFn.buildQuery = buildQuery;
+  queryFn.transformResponse = transformResponse;
+  return queryFn;
 }
 
 export const api = createApi({
