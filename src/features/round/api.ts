@@ -3,25 +3,19 @@ import { supabase } from "@/supabase";
 import { api, cloneBuilder, supaEnhance } from "@/supabase/api";
 import type { Game } from "../game/api";
 
-const getRounds = supabase.from("rounds").select(`
+const roundSelect = `
   question, 
   created_at, 
   id, 
   judge:profiles(display_name)
-`);
+` as const;
+
+const getRounds = supabase.from("rounds").select(roundSelect);
 export type Round = QueryData<typeof getRounds>[number];
 
 const getActiveRounds = supabase.from("games").select(`
-  active_round:rounds(
-    id, 
-    question, 
-    judge:profiles(display_name), 
-    created_at
-  )
+  active_round:rounds(${roundSelect})
 `);
-export type ActiveRound = QueryData<
-  typeof getActiveRounds
->[number]["active_round"];
 
 export const roundApi = api
   .enhanceEndpoints({ addTagTypes: ["Round", "Game"] })
