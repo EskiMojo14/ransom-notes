@@ -126,6 +126,12 @@ export default tseslint.config(
         },
       ],
       "react/prop-types": "off",
+      "react-hooks/exhaustive-deps": [
+        "warn",
+        {
+          additionalHooks: "(useRealtimeChannel)",
+        },
+      ],
       "@eslint-react/no-forward-ref": "error",
       "@eslint-react/prefer-read-only-props": "off",
       "@typescript-eslint/consistent-type-imports": [
