@@ -18,6 +18,7 @@
   --magnet-focus-selected-pressed: var(--teal-200);
   --on-magnet: var(--black);
   --magnet-disabled: var(--paper-100);
+  --magnet-disabled-selected: var(--paper-200);
 
   --whiteboard-rgb: var(--paper-900-rgb);
   --whiteboard: rgb(var(--whiteboard-rgb));

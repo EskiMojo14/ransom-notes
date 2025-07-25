@@ -5,17 +5,13 @@ import { useGetActiveRoundQuery, useGetWordPoolQuery } from "../round/api";
 import { selectAllIndexes, wordToggled } from "./slice";
 import styles from "./WordButton.module.css";
 
-export interface WordToggleButtonGroupProps {
+export interface WordPoolProps {
   gameId: number;
   roundId: number;
   userId: string;
 }
 
-export function WordToggleButtonGroup({
-  gameId,
-  roundId,
-  userId,
-}: WordToggleButtonGroupProps) {
+export function WordPool({ gameId, roundId, userId }: WordPoolProps) {
   const dispatch = useAppDispatch();
   const { words = [] } = useGetWordPoolQuery(
     { gameId, roundId, userId },
