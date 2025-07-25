@@ -1,23 +1,35 @@
-import type { QueryData } from "@supabase/supabase-js";
 import { supabase } from "@/supabase";
-import { api, cloneBuilder, supabaseQueryFn } from "@/supabase/api";
-import type { TablesInsert } from "@/supabase/types";
-import type { Compute, Override, PickRequired } from "@/utils/types";
+import { api, supabaseQueryFn } from "@/supabase/api";
+import type { Tables, TablesInsert } from "@/supabase/types";
+import type { Compute, PickRequired } from "@/utils/types";
 import type { GameConfig } from "./slice";
 
-const getGames = supabase.from("games").select(`
+const profileSelect = `
+  display_name, 
+  avatar_url
+` as const;
+type Profile = Pick<Tables<"profiles">, "display_name" | "avatar_url">;
+
+const gameSelect = `
   *,
-  creator_profile:profiles(display_name, avatar_url),
-  participants(profiles(display_name, avatar_url))
-`);
-type RawGame = QueryData<typeof getGames>[number];
-export type Game = Override<
-  Omit<RawGame, "creator_profile">,
-  {
-    creator: RawGame["creator_profile"];
-    participants: Array<RawGame["participants"][number]["profiles"]>;
-  }
->;
+  creator_profile:profiles(${profileSelect}),
+  participants(profiles(${profileSelect}))
+` as const;
+interface RawGame extends Tables<"games"> {
+  creator_profile: Profile;
+  participants: Array<{ profiles: Profile }>;
+}
+
+const transformGame = ({
+  creator_profile,
+  participants,
+  ...rawGame
+}: RawGame) => ({
+  ...rawGame,
+  creator: creator_profile,
+  participants: participants.map(({ profiles }) => profiles),
+});
+export type Game = ReturnType<typeof transformGame>;
 
 export const gameApi = api
   .enhanceEndpoints({ addTagTypes: ["Game"] })
@@ -26,12 +38,12 @@ export const gameApi = api
       getGameByInviteCode: build.query<Game, Game["invite_code"], RawGame>({
         queryFn: supabaseQueryFn({
           query: (inviteCode) =>
-            cloneBuilder(getGames).eq("invite_code", inviteCode).single(),
-          transformResponse: ({ participants, creator_profile, ...game }) => ({
-            ...game,
-            creator: creator_profile,
-            participants: participants.map(({ profiles }) => profiles),
-          }),
+            supabase
+              .from("games")
+              .select(gameSelect)
+              .eq("invite_code", inviteCode)
+              .single(),
+          transformResponse: transformGame,
         }),
         providesTags: (res, _err, inviteCode) => [
           { type: "Game", id: inviteCode },

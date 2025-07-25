@@ -1,7 +1,7 @@
-import type { QueryData } from "@supabase/supabase-js";
 import type { Game } from "@/features/game/api";
 import { supabase } from "@/supabase";
-import { api, cloneBuilder, supabaseQueryFn } from "@/supabase/api";
+import { api, supabaseQueryFn } from "@/supabase/api";
+import type { Tables } from "@/supabase/types";
 
 const roundSelect = `
   question, 
@@ -9,13 +9,10 @@ const roundSelect = `
   id, 
   judge:profiles(display_name)
 ` as const;
-
-const getRounds = supabase.from("rounds").select(roundSelect);
-export type Round = QueryData<typeof getRounds>[number];
-
-const getActiveRounds = supabase.from("games").select(`
-  active_round:rounds(${roundSelect})
-`);
+export interface Round
+  extends Pick<Tables<"rounds">, "question" | "created_at" | "id"> {
+  judge: Pick<Tables<"profiles">, "display_name"> | null;
+}
 
 export const roundApi = api
   .enhanceEndpoints({ addTagTypes: ["Round", "Game", "Word"] })
@@ -28,7 +25,15 @@ export const roundApi = api
       >({
         queryFn: supabaseQueryFn({
           query: (gameId) =>
-            cloneBuilder(getActiveRounds).eq("id", gameId).single(),
+            supabase
+              .from("games")
+              .select(
+                `
+                  active_round:rounds(${roundSelect})
+                `,
+              )
+              .eq("id", gameId)
+              .single(),
           transformResponse: ({ active_round }) => active_round,
         }),
         providesTags: (res, _err, gameId) => [
@@ -39,7 +44,7 @@ export const roundApi = api
 
       getGameRounds: build.query<Array<Round>, Game["id"], Array<Round>>({
         queryFn: supabaseQueryFn((gameId) =>
-          cloneBuilder(getRounds).eq("game_id", gameId),
+          supabase.from("rounds").select(roundSelect).eq("game_id", gameId),
         ),
         providesTags: (res, _err, gameId) => [
           { type: "Game", id: gameId },

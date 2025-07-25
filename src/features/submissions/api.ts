@@ -1,18 +1,21 @@
 import type { EntityState } from "@reduxjs/toolkit";
 import { createEntityAdapter } from "@reduxjs/toolkit";
-import type { QueryData } from "@supabase/supabase-js";
 import type { Round } from "@/features/round/api";
 import { supabase } from "@/supabase";
-import { api, cloneBuilder, supabaseQueryFn } from "@/supabase/api";
+import { api, supabaseQueryFn } from "@/supabase/api";
+import type { Tables } from "@/supabase/types";
 
-const getSubmissions = supabase.from("submissions").select(`
+const submissionSelect = `
   rows, 
   created_at, 
   user_id, 
   author:profiles(display_name)
-`);
+` as const;
 
-export type Submission = QueryData<typeof getSubmissions>[number];
+export interface Submission
+  extends Pick<Tables<"submissions">, "rows" | "created_at" | "user_id"> {
+  author: Pick<Tables<"profiles">, "display_name">;
+}
 
 const submissionAdapter = createEntityAdapter({
   selectId: (submission: Submission) => submission.user_id,
@@ -37,7 +40,10 @@ export const submissionApi = api
       >({
         queryFn: supabaseQueryFn({
           query: (roundId) =>
-            cloneBuilder(getSubmissions).eq("round_id", roundId),
+            supabase
+              .from("submissions")
+              .select(submissionSelect)
+              .eq("round_id", roundId),
           transformResponse: (submissions) =>
             submissionAdapter.getInitialState(undefined, submissions),
         }),

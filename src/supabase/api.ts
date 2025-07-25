@@ -6,11 +6,9 @@ import type {
   QueryReturnValue,
 } from "@reduxjs/toolkit/query";
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { PostgrestFilterBuilder } from "@supabase/postgrest-js";
 import type {
   PostgrestError,
   PostgrestSingleResponse,
-  QueryData,
 } from "@supabase/supabase-js";
 
 export interface SerializedPostgrestError
@@ -39,74 +37,55 @@ interface QueryBuilder<Response>
   abortSignal?(signal: AbortSignal): this;
 }
 
-export const supaBaseQuery: BaseQueryFn<
-  QueryBuilder<unknown>,
-  unknown,
-  SerializedPostgrestError,
-  SupabaseMeta
-> = async (query, { signal }) => {
-  if (query.abortSignal) query = query.abortSignal(signal);
-  const { data, error, status, statusText } = await query;
-  return error
-    ? { error: serializePostgrestError(error), meta: { status, statusText } }
-    : { data, meta: { status, statusText } };
-};
-type SupaBaseQuery = typeof supaBaseQuery;
-
-interface SupabaseQueryFnConfig<
-  Builder extends QueryBuilder<unknown>,
-  QueryArg,
-  Result = QueryData<Builder>,
-> {
-  query: (arg: QueryArg) => Builder;
-  transformResponse?: (data: QueryData<Builder>) => Result;
+interface SupabaseQueryFnConfig<RawResult, QueryArg, Result = RawResult> {
+  query: (arg: QueryArg) => QueryBuilder<RawResult>;
+  transformResponse?: (data: RawResult) => Result;
 }
 
-export const supabaseQueryFn =
-  <
-    Builder extends QueryBuilder<unknown>,
-    QueryArg,
-    Result = QueryData<Builder>,
-  >(
-    queryOrConfig:
-      | ((arg: QueryArg) => Builder)
-      | SupabaseQueryFnConfig<Builder, QueryArg, Result>,
-  ) =>
-  async (
-    arg: QueryArg,
-    api: BaseQueryApi,
-    _eO: {},
-    fetchWithBq: (
-      arg: Parameters<typeof supaBaseQuery>[0],
-    ) => ReturnType<typeof supaBaseQuery>,
-  ): Promise<
-    QueryReturnValue<Result, SerializedPostgrestError, SupabaseMeta>
-  > => {
+type SupabaseQueryFn<RawResult, QueryArg, Result = RawResult> = (
+  arg: QueryArg,
+  api: BaseQueryApi,
+) => Promise<QueryReturnValue<Result, SerializedPostgrestError, SupabaseMeta>>;
+
+export function supabaseQueryFn<Result, QueryArg>(
+  query: (arg: QueryArg) => QueryBuilder<Result>,
+): SupabaseQueryFn<Result, QueryArg>;
+export function supabaseQueryFn<RawResult, QueryArg, Result>(
+  config: SupabaseQueryFnConfig<RawResult, QueryArg, Result>,
+): SupabaseQueryFn<RawResult, QueryArg, Result>;
+export function supabaseQueryFn<RawResult, QueryArg, Result>(
+  queryOrConfig:
+    | ((arg: QueryArg) => QueryBuilder<RawResult>)
+    | SupabaseQueryFnConfig<RawResult, QueryArg, Result>,
+): SupabaseQueryFn<RawResult, QueryArg, Result> {
+  return async function queryFn(arg, api) {
     const {
       query,
-      transformResponse = (data) => data as Result,
-    }: SupabaseQueryFnConfig<Builder, QueryArg, Result> =
+      transformResponse = (data) => data as unknown as Result,
+    }: SupabaseQueryFnConfig<RawResult, QueryArg, Result> =
       typeof queryOrConfig === "function"
         ? { query: queryOrConfig }
         : queryOrConfig;
     let builder = query(arg);
     if (builder.abortSignal) builder = builder.abortSignal(api.signal);
-    const { data, error, meta } = await fetchWithBq(builder);
+    const { data, error, status, statusText } = await builder;
     return error
-      ? { error, meta }
-      : { data: transformResponse(data as QueryData<Builder>), meta };
+      ? { error: serializePostgrestError(error), meta: { status, statusText } }
+      : { data: transformResponse(data), meta: { status, statusText } };
   };
+}
+
+const fakeBaseQuery: BaseQueryFn<
+  void,
+  unknown,
+  SerializedPostgrestError
+> = () => {
+  throw new Error("This should never be called, use queryFn instead");
+};
 
 export const api = createApi({
   reducerPath: "supabase",
-  baseQuery: supaBaseQuery,
+  baseQuery: fakeBaseQuery,
   endpoints: () => ({}),
   tagTypes: ["User"],
 });
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-type AnyFilterBuilder = PostgrestFilterBuilder<any, any, any, any, any>;
-/* eslint-enable @typescript-eslint/no-explicit-any */
-
-export const cloneBuilder = <T extends AnyFilterBuilder>(builder: T) =>
-  new PostgrestFilterBuilder(builder as never) as T;
