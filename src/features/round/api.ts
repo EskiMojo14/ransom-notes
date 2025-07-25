@@ -55,7 +55,7 @@ export const roundApi = api
       getWordPool: build.query<
         Array<string>,
         { gameId: Game["id"]; roundId: Round["id"]; userId: string },
-        Array<string>
+        { words: Array<string> }
       >({
         queryFn: supabaseQueryFn({
           query: ({ gameId, userId }) =>

@@ -1,3 +1,4 @@
+import { randTextRange, randUserName } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
@@ -22,11 +23,14 @@ const meta = {
             typeof submissionApi.endpoints.getSubmissions.Types.RawResultType
           >([
             {
-              rows: ["I have elaborate booty chaos", "please not mad"],
+              rows: randTextRange({ min: 20, max: 25, length: 3 }).map(
+                (sentence) =>
+                  sentence.replace(/[^a-zA-Z\s]/g, "").toLowerCase(),
+              ),
               created_at: "2024-01-01T00:00:00Z",
               user_id: "1",
               author: {
-                display_name: "John Doe",
+                display_name: randUserName(),
               },
             },
           ]),

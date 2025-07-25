@@ -50,3 +50,10 @@
     }
   }
 }
+
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 50rem;
+}
