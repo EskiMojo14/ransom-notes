@@ -86,13 +86,14 @@ export const {
   selectors: { selectRows, selectCurrentRow },
 } = submissionSlice;
 
+export const selectJoinedRows = createSelector(
+  selectRows,
+  (wordPool: Array<string>) => wordPool,
+  (rows, wordPool) =>
+    rows.map((row) => row.map((wordIndex) => wordPool[wordIndex]).join(" ")),
+);
+
 export const selectAllIndexes = createSelector(
   selectRows,
   (rows) => new Set(rows.flat()),
-);
-
-export const selectWordIsSelected = createSelector(
-  selectAllIndexes,
-  (_: unknown, wordIndex: number) => wordIndex,
-  (indexes, wordIndex) => indexes.has(wordIndex),
 );
