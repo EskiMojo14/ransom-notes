@@ -5,48 +5,59 @@
   color: var(--on-magnet);
   cursor: pointer;
   padding: 0.5rem;
-  box-shadow: 0 0.25rem var(--black);
+  --shadow-size: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   transition:
     background-color 120ms,
-    box-shadow 120ms ease-in-out,
     translate 120ms ease-in-out;
+  position: relative;
+  translate: 0 calc(-1 * var(--shadow-size));
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    bottom: calc(-1 * var(--shadow-size));
+    height: var(--shadow-size);
+    background-color: var(--black);
+    transition:
+      height 120ms ease-in-out,
+      bottom 120ms ease-in-out;
+  }
   &:focus {
     outline: none;
   }
-  &[data-hovered] {
-    box-shadow: 0 0.5rem var(--black);
-    translate: 0 -0.25rem;
+  &[data-hovered],
+  &[data-focus-visible] {
+    --shadow-size: 0.5rem;
   }
   &[data-focus-visible] {
     background-color: var(--magnet-focus);
-    box-shadow: 0 0.5rem var(--black);
-    translate: 0 -0.25rem;
     &[data-pressed] {
       background-color: var(--magnet-focus-pressed);
     }
   }
+  &[data-pressed],
+  &[data-disabled],
+  &[data-selected] {
+    --shadow-size: 0;
+  }
   &[data-pressed] {
     background-color: var(--magnet-pressed);
-    box-shadow: 0 0 var(--black);
-    translate: 0 0.25rem;
   }
   &[data-disabled] {
-    box-shadow: 0 0 var(--black);
     background-color: var(--magnet-disabled);
     color: var(--on-paper);
     cursor: not-allowed;
-    translate: 0 0.25rem;
   }
   &[data-selected] {
     font-weight: 500;
     background-color: var(--magnet-selected);
     color: var(--on-paper);
-    box-shadow: 0 0 var(--black);
-    translate: 0 0.25rem;
     &[data-hovered] {
       background-color: var(--magnet-hover-selected);
     }
