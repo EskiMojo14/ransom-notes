@@ -12,7 +12,8 @@
   gap: 0.5rem;
   transition:
     background-color 120ms,
-    translate 120ms ease-in-out;
+    translate 120ms ease-in-out,
+    font-weight 120ms;
   position: relative;
   translate: 0 calc(-1 * var(--shadow-size));
   &::before {
@@ -50,7 +51,7 @@
     background-color: var(--magnet-pressed);
   }
   &[data-selected] {
-    font-weight: 500;
+    font-weight: 600;
     background-color: var(--magnet-selected);
     color: var(--on-paper);
     &[data-hovered] {

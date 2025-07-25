@@ -1,4 +1,8 @@
 :root {
+  --paper-1100-rgb: 58, 42, 30;
+  --paper-1100: rgb(var(--paper-1100-rgb));
+  --paper-1000-rgb: 73, 55, 40;
+  --paper-1000: rgb(var(--paper-1000-rgb));
   --paper-900-rgb: 86, 68, 49;
   --paper-900: rgb(var(--paper-900-rgb));
   --paper-800-rgb: 102, 82, 61;
