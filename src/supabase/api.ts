@@ -1,11 +1,9 @@
 import type { SerializedError } from "@reduxjs/toolkit";
 import { miniSerializeError } from "@reduxjs/toolkit";
 import type {
+  BaseQueryApi,
   BaseQueryFn,
-  EndpointBuilder,
-  EndpointDefinitions,
-  MutationDefinition,
-  QueryDefinition,
+  QueryReturnValue,
 } from "@reduxjs/toolkit/query";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { PostgrestFilterBuilder } from "@supabase/postgrest-js";
@@ -14,27 +12,24 @@ import type {
   PostgrestSingleResponse,
   QueryData,
 } from "@supabase/supabase-js";
-import type { Compute, PickRequired } from "@/utils/types";
 
 export interface SerializedPostgrestError
   extends SerializedError,
-    Partial<Omit<PostgrestError, keyof SerializedError>> {
+    Partial<Omit<PostgrestError, keyof SerializedError>> {}
+
+export interface SupabaseMeta {
   status?: number;
   statusText?: string;
 }
 
 const serializePostgrestError = (
   error: PostgrestError,
-  status: number,
-  statusText: string,
 ): SerializedPostgrestError => {
   return {
     ...miniSerializeError(error),
     code: error.code,
     details: error.details,
     hint: error.hint,
-    status,
-    statusText,
   };
 };
 
@@ -47,152 +42,60 @@ interface QueryBuilder<Response>
 export const supaBaseQuery: BaseQueryFn<
   QueryBuilder<unknown>,
   unknown,
-  SerializedPostgrestError
+  SerializedPostgrestError,
+  SupabaseMeta
 > = async (query, { signal }) => {
   if (query.abortSignal) query = query.abortSignal(signal);
   const { data, error, status, statusText } = await query;
   return error
-    ? { error: serializePostgrestError(error, status, statusText) }
-    : { data };
+    ? { error: serializePostgrestError(error), meta: { status, statusText } }
+    : { data, meta: { status, statusText } };
 };
 type SupaBaseQuery = typeof supaBaseQuery;
 
-type SupaQueryDefinition<
-  TagTypes extends string,
-  ReducerPath extends string,
-  QueryArg,
+interface SupabaseQueryFnConfig<
   Builder extends QueryBuilder<unknown>,
-  TransformedResultType = QueryData<Builder>,
-> = Compute<
-  Omit<
-    Extract<
-      QueryDefinition<
-        QueryArg,
-        SupaBaseQuery,
-        TagTypes,
-        TransformedResultType,
-        ReducerPath,
-        QueryData<Builder>
-      >,
-      { query: {} }
-    >,
-    "query" | "type"
-  > & {
-    query: (arg: QueryArg) => Builder;
-  }
->;
-
-type SupaMutationDefinition<
-  TagTypes extends string,
-  ReducerPath extends string,
   QueryArg,
-  Builder extends QueryBuilder<unknown>,
-  TransformedResultType = QueryData<Builder>,
-> = Compute<
-  Omit<
-    Extract<
-      MutationDefinition<
-        QueryArg,
-        SupaBaseQuery,
-        TagTypes,
-        TransformedResultType,
-        ReducerPath,
-        QueryData<Builder>
-      >,
-      { query: {} }
-    >,
-    "query" | "type"
-  > & {
-    query: (arg: QueryArg) => Builder;
-  }
->;
-
-interface SupaEndpointBuilder<
-  TagTypes extends string,
-  ReducerPath extends string,
+  Result = QueryData<Builder>,
 > {
-  query<Builder extends QueryBuilder<unknown>, QueryArg, TransformedResultType>(
-    definition: PickRequired<
-      SupaQueryDefinition<
-        TagTypes,
-        ReducerPath,
-        QueryArg,
-        Builder,
-        TransformedResultType
-      >,
-      "transformResponse"
-    >,
-  ): QueryDefinition<
-    QueryArg,
-    SupaBaseQuery,
-    TagTypes,
-    TransformedResultType,
-    ReducerPath,
-    QueryData<Builder>
-  >;
-  query<Builder extends QueryBuilder<unknown>, QueryArg>(
-    definition: Omit<
-      SupaQueryDefinition<TagTypes, ReducerPath, QueryArg, Builder>,
-      "transformResponse"
-    >,
-  ): QueryDefinition<
-    QueryArg,
-    SupaBaseQuery,
-    TagTypes,
-    QueryData<Builder>,
-    ReducerPath,
-    QueryData<Builder>
-  >;
-
-  mutation<
-    Builder extends QueryBuilder<unknown>,
-    QueryArg,
-    TransformedResultType,
-  >(
-    definition: PickRequired<
-      SupaMutationDefinition<
-        TagTypes,
-        ReducerPath,
-        QueryArg,
-        Builder,
-        TransformedResultType
-      >,
-      "transformResponse"
-    >,
-  ): MutationDefinition<
-    QueryArg,
-    SupaBaseQuery,
-    TagTypes,
-    TransformedResultType,
-    ReducerPath,
-    QueryData<Builder>
-  >;
-  mutation<Builder extends QueryBuilder<unknown>, QueryArg>(
-    definition: Omit<
-      SupaMutationDefinition<TagTypes, ReducerPath, QueryArg, Builder>,
-      "transformResponse"
-    >,
-  ): MutationDefinition<
-    QueryArg,
-    SupaBaseQuery,
-    TagTypes,
-    QueryData<Builder>,
-    ReducerPath,
-    QueryData<Builder>
-  >;
+  query: (arg: QueryArg) => Builder;
+  transformResponse?: (data: QueryData<Builder>) => Result;
 }
 
-export const supaEnhance = <
-  TagTypes extends string,
-  ReducerPath extends string,
-  Definitions extends EndpointDefinitions,
->(
-  buildCallback: (
-    build: SupaEndpointBuilder<TagTypes, ReducerPath>,
-  ) => Definitions,
-): ((
-  build: EndpointBuilder<SupaBaseQuery, TagTypes, ReducerPath>,
-) => Definitions) => buildCallback;
+export const supabaseQueryFn =
+  <
+    Builder extends QueryBuilder<unknown>,
+    QueryArg,
+    Result = QueryData<Builder>,
+  >(
+    queryOrConfig:
+      | ((arg: QueryArg) => Builder)
+      | SupabaseQueryFnConfig<Builder, QueryArg, Result>,
+  ) =>
+  async (
+    arg: QueryArg,
+    api: BaseQueryApi,
+    _eO: {},
+    fetchWithBq: (
+      arg: Parameters<typeof supaBaseQuery>[0],
+    ) => ReturnType<typeof supaBaseQuery>,
+  ): Promise<
+    QueryReturnValue<Result, SerializedPostgrestError, SupabaseMeta>
+  > => {
+    const {
+      query,
+      transformResponse = (data) => data as Result,
+    }: SupabaseQueryFnConfig<Builder, QueryArg, Result> =
+      typeof queryOrConfig === "function"
+        ? { query: queryOrConfig }
+        : queryOrConfig;
+    let builder = query(arg);
+    if (builder.abortSignal) builder = builder.abortSignal(api.signal);
+    const { data, error, meta } = await fetchWithBq(builder);
+    return error
+      ? { error, meta }
+      : { data: transformResponse(data as QueryData<Builder>), meta };
+  };
 
 export const api = createApi({
   reducerPath: "supabase",

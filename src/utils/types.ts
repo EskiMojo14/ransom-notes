@@ -26,3 +26,5 @@ export const hasMinLength = <T, MinLength extends number>(
   arr: Array<T>,
   minLength: MinLength,
 ): arr is TupleOfAtLeast<T, MinLength> => arr.length >= minLength;
+
+export type Override<T, U> = Compute<Omit<T, keyof U> & U>;
