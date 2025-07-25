@@ -23,22 +23,22 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default = {} satisfies Story;
 
-export const Disabled: Story = {
+export const Disabled = {
   args: {
     isDisabled: true,
   },
-};
+} satisfies Story;
 
-export const Invalid: Story = {
+export const Invalid = {
   args: {
     isInvalid: true,
   },
-};
+} satisfies Story;
 
-export const Multiline: Story = {
+export const Multiline = {
   args: {
     multiline: true,
   },
-};
+} satisfies Story;

@@ -24,34 +24,34 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default = {} satisfies Story;
 
-export const Disabled: Story = {
+export const Disabled = {
   args: {
     isDisabled: true,
   },
-};
+} satisfies Story;
 
-export const Text: Story = {
+export const Text = {
   args: {
     variant: "text",
   },
-};
+} satisfies Story;
 
-export const Outlined: Story = {
+export const Outlined = {
   args: {
     variant: "outlined",
   },
-};
+} satisfies Story;
 
-export const Filled: Story = {
+export const Filled = {
   args: {
     variant: "filled",
   },
-};
+} satisfies Story;
 
-export const Elevated: Story = {
+export const Elevated = {
   args: {
     variant: "elevated",
   },
-};
+} satisfies Story;

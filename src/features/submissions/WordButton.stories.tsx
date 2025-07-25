@@ -2,14 +2,12 @@ import { randParagraph, randSentence } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { delay, http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
-import type { Canvas } from "storybook/internal/csf";
-import type { UserEvent } from "storybook/internal/test";
 import { makeStore } from "@/store";
 import type { ReduxParameters } from "@/storybook/decorators";
 import { withRedux } from "@/storybook/decorators";
 import { tableUrl } from "@/supabase/mocks";
 import type { Enums } from "@/supabase/types";
-import { assert } from "@/utils";
+import { assert, specify } from "@/utils";
 import { roundApi } from "../round/api";
 import { WordPool } from "./WordButton";
 
@@ -58,53 +56,49 @@ type Story = StoryObj<typeof meta>;
 
 const numberUpTo = (max: number) => Math.ceil(Math.random() * max);
 
-async function selectRandomWords(
-  canvas: Canvas,
-  userEvent: ReturnType<UserEvent["userEvent"]["setup"]>,
-  count: number,
-) {
-  const buttons = await canvas.findAllByRole("button");
-  const clicked = new Set<number>();
-  while (clicked.size < count) {
-    const idx = numberUpTo(buttons.length - 1);
-    if (!clicked.has(idx)) {
-      clicked.add(idx);
-    }
-    const button = buttons[idx];
-    assert(button, "Button should exist");
-    await delay(500);
-    await userEvent.click(button);
-  }
-}
-
-export const Default: Story = {
+export const Default = {
   async play({ canvas, userEvent }) {
-    await selectRandomWords(canvas, userEvent, 5);
+    const buttons = await canvas.findAllByRole("button");
+
+    // click 3 random buttons
+    const clicked = new Set<number>();
+    while (clicked.size < 3) {
+      const idx = numberUpTo(buttons.length - 1);
+      if (!clicked.has(idx)) {
+        clicked.add(idx);
+      }
+      const button = buttons[idx];
+      assert(button, "Button should exist");
+      await delay(500);
+      await userEvent.click(button);
+    }
   },
-};
+} satisfies Story;
 
-const store = makeStore();
-function setRoundPhase(roundId: number, phase: Enums<"round_phase">) {
-  store.dispatch(
-    roundApi.util.updateQueryData("getActiveRound", roundId, (round) => {
-      assert(round, "Round should exist");
-      round.phase = phase;
-    }),
-  );
-}
+const setRoundPhase = (roundId: number, phase: Enums<"round_phase">) =>
+  roundApi.util.updateQueryData("getActiveRound", roundId, (round) => {
+    assert(round, "Round should exist");
+    round.phase = phase;
+  });
 
-export const Disabled: Story = {
+export const Disabled = {
   args: {
     gameId: 2,
   },
-  async play({ canvas, userEvent }) {
-    setRoundPhase(2, "submission");
-    await selectRandomWords(canvas, userEvent, 3);
+  async play({ context, parameters }) {
+    specify<ReduxParameters>(parameters);
+    const { store } = parameters.redux ?? {};
+    assert(store, "Store should exist");
+
+    store.dispatch(setRoundPhase(2, "submission"));
+
+    await Default.play(context);
+
     await delay(500);
-    setRoundPhase(2, "voting");
+    store.dispatch(setRoundPhase(2, "voting"));
   },
   parameters: {
-    redux: { store },
+    redux: { store: makeStore() },
     msw: {
       handlers: {
         activeRound: http.get(tableUrl("games"), () =>
@@ -123,4 +117,4 @@ export const Disabled: Story = {
       },
     },
   } satisfies MswParameters & ReduxParameters,
-};
+} satisfies Story;

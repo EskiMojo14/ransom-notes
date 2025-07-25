@@ -73,6 +73,7 @@ export default tseslint.config(
     },
     rules: hooksPlugin.configs.recommended.rules,
   },
+  storybook.configs["flat/recommended"],
   {
     rules: {
       "@typescript-eslint/array-type": ["error", { default: "generic" }],
@@ -138,6 +139,8 @@ export default tseslint.config(
         "error",
         { fixStyle: "separate-type-imports" },
       ],
+      // doesn't work properly
+      "storybook/context-in-play-function": "off",
     },
   },
   {
@@ -148,5 +151,4 @@ export default tseslint.config(
       "vitest/valid-title": ["error", { allowArguments: true }],
     },
   },
-  storybook.configs["flat/recommended"],
 );

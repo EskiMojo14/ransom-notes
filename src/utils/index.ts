@@ -48,3 +48,7 @@ export function assert(
 ): asserts condition {
   if (!condition) throw new Error(message);
 }
+
+export function specify<T>(value: T): asserts value is T {
+  // no-op
+}
