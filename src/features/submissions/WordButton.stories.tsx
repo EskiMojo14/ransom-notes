@@ -1,9 +1,9 @@
-import { randParagraph } from "@ngneat/falso";
+import { randParagraph, randSentence } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
-import { env } from "@/env";
 import { withRedux } from "@/storybook/decorators";
+import { tableUrl } from "@/supabase/mocks";
 import type { roundApi } from "../round/api";
 import { WordToggleButtonGroup } from "./WordButton";
 
@@ -17,8 +17,8 @@ const meta = {
   },
   parameters: {
     msw: {
-      handlers: [
-        http.get(env.VITE_SUPABASE_URL + "/rest/v1/word_pools", () =>
+      handlers: {
+        wordPool: http.get(tableUrl("word_pools"), () =>
           HttpResponse.json<
             typeof roundApi.endpoints.getWordPool.Types.RawResultType
           >({
@@ -28,13 +28,51 @@ const meta = {
               .split(" "),
           }),
         ),
-      ],
+        activeRound: http.get(tableUrl("games"), () =>
+          HttpResponse.json<
+            typeof roundApi.endpoints.getActiveRound.Types.RawResultType
+          >({
+            active_round: {
+              id: 1,
+              question: randSentence().replace(".", "?"),
+              judge: null,
+              created_at: "2024-01-01T00:00:00Z",
+              phase: "submission",
+            },
+          }),
+        ),
+      },
     },
   } satisfies MswParameters,
-  decorators: [withRedux()],
+  decorators: [withRedux],
 } satisfies Meta<typeof WordToggleButtonGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const Disabled: Story = {
+  args: {
+    gameId: 2,
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        activeRound: http.get(tableUrl("games"), () =>
+          HttpResponse.json<
+            typeof roundApi.endpoints.getActiveRound.Types.RawResultType
+          >({
+            active_round: {
+              id: 1,
+              question: randSentence().replace(".", "?"),
+              judge: null,
+              created_at: "2024-01-01T00:00:00Z",
+              phase: "voting",
+            },
+          }),
+        ),
+      },
+    },
+  } satisfies MswParameters,
+};

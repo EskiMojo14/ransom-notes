@@ -1,27 +1,9 @@
 import { clsx } from "clsx";
 import { ToggleButton, ToggleButtonGroup } from "react-aria-components";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { useGetWordPoolQuery } from "../round/api";
+import { useGetActiveRoundQuery, useGetWordPoolQuery } from "../round/api";
 import { selectAllIndexes, wordToggled } from "./slice";
 import styles from "./WordButton.module.css";
-
-export interface WordButtonProps {
-  wordIndex: number;
-  word: string;
-}
-
-export function WordToggleButton({ wordIndex, word }: WordButtonProps) {
-  const dispatch = useAppDispatch();
-  return (
-    <ToggleButton
-      key={wordIndex}
-      className={clsx(styles.wordButton, "body1")}
-      onChange={() => dispatch(wordToggled(wordIndex))}
-    >
-      {word}
-    </ToggleButton>
-  );
-}
 
 export interface WordToggleButtonGroupProps {
   gameId: number;
@@ -29,9 +11,20 @@ export interface WordToggleButtonGroupProps {
   userId: string;
 }
 
-export function WordToggleButtonGroup(props: WordToggleButtonGroupProps) {
-  const { words = [] } = useGetWordPoolQuery(props, {
-    selectFromResult: ({ data }) => ({ words: data }),
+export function WordToggleButtonGroup({
+  gameId,
+  roundId,
+  userId,
+}: WordToggleButtonGroupProps) {
+  const dispatch = useAppDispatch();
+  const { words = [] } = useGetWordPoolQuery(
+    { gameId, roundId, userId },
+    {
+      selectFromResult: ({ data }) => ({ words: data }),
+    },
+  );
+  const { phase } = useGetActiveRoundQuery(gameId, {
+    selectFromResult: ({ data }) => ({ phase: data?.phase }),
   });
   const selectedKeys = useAppSelector(selectAllIndexes);
   return (
@@ -39,14 +32,19 @@ export function WordToggleButtonGroup(props: WordToggleButtonGroupProps) {
       className={styles.group}
       selectionMode="multiple"
       selectedKeys={selectedKeys}
+      isDisabled={phase !== "submission"}
     >
       {words.map((word, index) => (
-        <WordToggleButton
+        <ToggleButton
+          // necessary - words may appear twice
           // eslint-disable-next-line @eslint-react/no-array-index-key
           key={`${word}-${index}`}
-          wordIndex={index}
-          word={word}
-        />
+          className={clsx(styles.wordButton, "body1")}
+          onChange={() => dispatch(wordToggled(index))}
+          isDisabled={phase !== "submission"}
+        >
+          {word}
+        </ToggleButton>
       ))}
     </ToggleButtonGroup>
   );

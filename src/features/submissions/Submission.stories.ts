@@ -2,8 +2,8 @@ import { randTextRange, randUserName } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
-import { env } from "@/env";
 import { withRedux } from "@/storybook/decorators";
+import { tableUrl } from "@/supabase/mocks";
 import type { submissionApi } from "./api";
 import { Submission } from "./Submission";
 
@@ -18,7 +18,7 @@ const meta = {
   parameters: {
     msw: {
       handlers: [
-        http.get(env.VITE_SUPABASE_URL + "/rest/v1/submissions", () =>
+        http.get(tableUrl("submissions"), () =>
           HttpResponse.json<
             typeof submissionApi.endpoints.getSubmissions.Types.RawResultType
           >([
@@ -38,7 +38,7 @@ const meta = {
       ],
     },
   } satisfies MswParameters,
-  decorators: [withRedux()],
+  decorators: [withRedux],
 } satisfies Meta<typeof Submission>;
 
 export default meta;

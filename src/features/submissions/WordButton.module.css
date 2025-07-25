@@ -34,7 +34,15 @@
     box-shadow: 0 0 var(--black);
     translate: 0 0.25rem;
   }
+  &[data-disabled] {
+    box-shadow: 0 0 var(--black);
+    background-color: var(--magnet-disabled);
+    color: var(--on-paper);
+    cursor: not-allowed;
+    translate: 0 0.25rem;
+  }
   &[data-selected] {
+    font-weight: 500;
     background-color: var(--magnet-selected);
     color: var(--on-paper);
     box-shadow: 0 0 var(--black);
@@ -46,7 +54,10 @@
       background-color: var(--magnet-focus-selected);
     }
     &[data-pressed] {
-      background-color: var(--magnet-pressed);
+      background-color: var(--magnet-pressed-selected);
+      &[data-focus-visible] {
+        background-color: var(--magnet-focus-selected-pressed);
+      }
     }
   }
 }

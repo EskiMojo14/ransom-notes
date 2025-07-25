@@ -9,12 +9,15 @@
 
   --magnet: var(--white);
   --magnet-focus: var(--teal-50);
-  --magnet-pressed: var(--paper-300);
+  --magnet-pressed: var(--paper-100);
   --magnet-focus-pressed: var(--teal-100);
   --magnet-selected: var(--paper-100);
   --magnet-hover-selected: var(--paper-200);
   --magnet-focus-selected: var(--teal-100);
+  --magnet-pressed-selected: var(--paper-300);
+  --magnet-focus-selected-pressed: var(--teal-200);
   --on-magnet: var(--black);
+  --magnet-disabled: var(--paper-100);
 
   --whiteboard-rgb: var(--paper-900-rgb);
   --whiteboard: rgb(var(--whiteboard-rgb));
@@ -61,9 +64,10 @@
   --magnet-focus: var(--teal-700);
   --magnet-pressed: var(--paper-900);
   --magnet-focus-pressed: var(--teal-800);
-  --magnet-selected: var(--paper-700);
-  --magnet-hover-selected: var(--paper-800);
+  --magnet-selected: var(--paper-800);
+  --magnet-hover-selected: var(--paper-900);
   --magnet-focus-selected: var(--teal-800);
+  --magnet-disabled: var(--paper-700);
 
   --whiteboard-rgb: var(--paper-900-rgb);
   --whiteboard: rgb(var(--whiteboard-rgb));

@@ -7,10 +7,11 @@ const roundSelect = `
   question, 
   created_at, 
   id, 
+  phase,
   judge:profiles(display_name)
 ` as const;
 export interface Round
-  extends Pick<Tables<"rounds">, "question" | "created_at" | "id"> {
+  extends Pick<Tables<"rounds">, "question" | "created_at" | "id" | "phase"> {
   judge: Pick<Tables<"profiles">, "display_name"> | null;
 }
 

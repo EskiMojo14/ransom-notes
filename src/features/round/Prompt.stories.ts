@@ -2,8 +2,8 @@ import { randSentence } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
-import { env } from "@/env";
 import { withRedux } from "@/storybook/decorators";
+import { tableUrl } from "@/supabase/mocks";
 import type { roundApi } from "./api";
 import { Prompt } from "./Prompt";
 
@@ -13,11 +13,11 @@ const meta = {
   args: {
     gameId: 1,
   },
-  decorators: [withRedux()],
+  decorators: [withRedux],
   parameters: {
     msw: {
       handlers: [
-        http.get(env.VITE_SUPABASE_URL + "/rest/v1/games", () => {
+        http.get(tableUrl("games"), () => {
           return HttpResponse.json<
             typeof roundApi.endpoints.getActiveRound.Types.RawResultType
           >({
@@ -26,6 +26,7 @@ const meta = {
               question: randSentence().replace(".", "?"),
               judge: null,
               created_at: "2024-01-01T00:00:00Z",
+              phase: "submission",
             },
           });
         }),

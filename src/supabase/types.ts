@@ -180,6 +180,7 @@ export type Database = {
           game_id: number;
           id: number;
           judge: string | null;
+          phase: Database["public"]["Enums"]["round_phase"];
           question: string;
         };
         Insert: {
@@ -187,6 +188,7 @@ export type Database = {
           game_id: number;
           id?: number;
           judge?: string | null;
+          phase?: Database["public"]["Enums"]["round_phase"];
           question: string;
         };
         Update: {
@@ -194,6 +196,7 @@ export type Database = {
           game_id?: number;
           id?: number;
           judge?: string | null;
+          phase?: Database["public"]["Enums"]["round_phase"];
           question?: string;
         };
         Relationships: [
@@ -362,6 +365,7 @@ export type Database = {
     };
     Enums: {
       game_state: "open" | "running" | "finished";
+      round_phase: "submission" | "voting" | "finished";
       voting_mode: "judge" | "jury";
     };
     CompositeTypes: {
@@ -497,6 +501,7 @@ export const Constants = {
   public: {
     Enums: {
       game_state: ["open", "running", "finished"],
+      round_phase: ["submission", "voting", "finished"],
       voting_mode: ["judge", "jury"],
     },
   },
