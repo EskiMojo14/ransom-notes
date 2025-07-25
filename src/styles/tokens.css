@@ -14,8 +14,16 @@
 
   --button: var(--teal-400);
   --on-button: var(--black);
-  --button-hover: var(--teal-500);
-  --button-focus: var(--teal-a400);
+  --button-hover-rgb: var(--teal-500-rgb);
+  --button-hover: rgb(var(--button-hover-rgb));
+  --button-focus-rgb: var(--teal-a400-rgb);
+  --button-focus: rgb(var(--button-focus-rgb));
+  --button-pressed-rgb: var(--teal-600-rgb);
+  --button-pressed: rgb(var(--button-pressed-rgb));
+  --button-focus-pressed-rgb: var(--teal-a700-rgb);
+  --button-focus-pressed: rgb(var(--button-focus-pressed-rgb));
+  --button-shadow: var(--teal-700);
+  --button-focus-shadow: var(--teal-a700);
 
   --input: var(--paper-100);
   --on-input: var(--black);
@@ -46,8 +54,16 @@
 
   --button: var(--teal-300);
   --on-button: var(--black);
-  --button-hover: var(--teal-400);
-  --button-focus: var(--teal-a200);
+  --button-hover-rgb: var(--teal-400-rgb);
+  --button-hover: rgb(var(--button-hover-rgb));
+  --button-focus-rgb: var(--teal-a200-rgb);
+  --button-focus: rgb(var(--button-focus-rgb));
+  --button-pressed-rgb: var(--teal-500-rgb);
+  --button-pressed: rgb(var(--button-pressed-rgb));
+  --button-focus-pressed-rgb: var(--teal-a400-rgb);
+  --button-focus-pressed: rgb(var(--button-focus-pressed-rgb));
+  --button-shadow: var(--teal-600);
+  --button-focus-shadow: var(--teal-a400);
 
   --input: var(--paper-800);
   --on-input: var(--paper-50);

@@ -4,3 +4,7 @@
   --shape-large: 1rem;
   --shape-pill: 9999px;
 }
+
+* {
+  corner-shape: bevel;
+}

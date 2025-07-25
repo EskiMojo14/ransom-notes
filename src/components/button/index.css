@@ -1,8 +1,7 @@
 button.button,
 a.button {
   appearance: none;
-  background-color: var(--button);
-  color: var(--on-button);
+
   border: none;
   border-radius: var(--shape-medium);
   padding: 0 1rem;
@@ -15,27 +14,101 @@ a.button {
   text-decoration: none;
   transition:
     background-color 120ms,
-    box-shadow 120ms;
-  box-shadow: 0 0.25rem var(--black);
-  &[data-hovered] {
-    background-color: var(--button-hover);
-    box-shadow: 0 0.5rem var(--black);
-  }
-  &[data-focus-visible] {
-    background-color: var(--button-focus);
-    box-shadow: 0 0.5rem var(--black);
-  }
+    box-shadow 120ms ease-in-out,
+    translate 120ms ease-in-out,
+    border 120ms ease-in-out;
   &:focus {
     outline: none;
   }
-  &[data-pressed] {
-    background-color: var(--button-hover);
-    box-shadow: 0 0.125rem var(--black);
-  }
   &[data-disabled] {
-    box-shadow: 0 0 var(--black);
+    box-shadow: 0 0 var(--button-shadow);
     background-color: var(--paper);
     color: var(--on-paper);
     cursor: not-allowed;
+  }
+  &.button--text,
+  &.button--outlined {
+    background-color: transparent;
+    color: var(--button);
+    &[data-hovered] {
+      color: var(--button-hover);
+      background-color: rgba(var(--button-hover-rgb), 0.1);
+    }
+    &[data-focus-visible] {
+      color: var(--button-focus);
+      background-color: rgba(var(--button-focus-rgb), 0.1);
+      &[data-pressed] {
+        background-color: rgba(var(--button-focus-pressed-rgb), 0.2);
+      }
+    }
+    &[data-pressed] {
+      background-color: rgba(var(--button-pressed-rgb), 0.2);
+    }
+  }
+  &.button--outlined {
+    border: 2px solid var(--button);
+    box-shadow: none;
+    &[data-hovered] {
+      border-color: var(--button-hover);
+      border-width: 4px;
+    }
+    &[data-focus-visible] {
+      border-color: var(--button-focus);
+      border-width: 4px;
+    }
+  }
+
+  &.button--filled,
+  &.button--elevated {
+    background-color: var(--button);
+    color: var(--on-button);
+    &[data-hovered] {
+      background-color: var(--button-hover);
+    }
+    &[data-focus-visible] {
+      background-color: var(--button-focus);
+      &[data-pressed] {
+        background-color: var(--button-focus-pressed);
+      }
+    }
+    &[data-pressed] {
+      background-color: var(--button-pressed);
+    }
+  }
+  &.button--elevated {
+    box-shadow: 0 0.25rem var(--button-shadow);
+    &[data-hovered] {
+      box-shadow: 0 0.5rem var(--button-shadow);
+      translate: 0 -0.25rem;
+    }
+    &[data-focus-visible] {
+      box-shadow: 0 0.5rem var(--button-focus-shadow);
+      translate: 0 -0.25rem;
+      &[data-pressed] {
+        box-shadow: 0 0 var(--button-focus-shadow);
+      }
+    }
+    &[data-pressed] {
+      box-shadow: 0 0 var(--button-shadow);
+      translate: 0 0.25rem;
+    }
+  }
+
+  &[data-disabled] {
+    box-shadow: 0 0 var(--button-shadow);
+    background-color: var(--paper);
+    color: var(--on-paper);
+    cursor: not-allowed;
+  }
+
+  .button__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: -0.5rem;
+    &:dir(rtl) {
+      margin-left: 0;
+      margin-right: -0.5rem;
+    }
   }
 }

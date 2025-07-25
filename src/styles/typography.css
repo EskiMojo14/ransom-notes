@@ -1,6 +1,6 @@
 :root {
   --heading-font: "Special Elite", serif;
-  --body-font: "Courier Prime", monospace;
+  --body-font: "Roboto Mono", monospace;
 
   --headline1-size: 103px;
   --headline2-size: 64px;
@@ -11,12 +11,12 @@
   --subtitle1-size: 17px;
   --subtitle2-size: 15px;
 
-  --body1-size: 19px;
-  --body2-size: 17px;
+  --body1-size: 16px;
+  --body2-size: 14px;
 
-  --button-size: 17px;
-  --overline-size: 12px;
-  --caption-size: 14px;
+  --button-size: 14px;
+  --overline-size: 10px;
+  --caption-size: 12px;
 }
 
 .headline1,
@@ -84,7 +84,6 @@ h6 {
 .button {
   font-family: var(--body-font);
   font-size: var(--button-size);
-  text-transform: uppercase;
 }
 
 .caption {
