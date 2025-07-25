@@ -4,10 +4,10 @@ import { delay, http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
 import { makeStore } from "@/store";
 import type { ReduxParameters } from "@/storybook/decorators";
-import { withRedux } from "@/storybook/decorators";
+import { getStore, withRedux } from "@/storybook/decorators";
 import { tableUrl } from "@/supabase/mocks";
 import type { Enums } from "@/supabase/types";
-import { assert, specify } from "@/utils";
+import { assert } from "@/utils";
 import { roundApi } from "../round/api";
 import { WordPool } from "./WordButton";
 
@@ -63,12 +63,15 @@ export const Default = {
     await step("Click 3 random buttons", async () => {
       const clicked = new Set<number>();
       while (clicked.size < 3) {
-        const idx = numberUpTo(buttons.length - 1);
-        if (!clicked.has(idx)) {
-          clicked.add(idx);
+        let idx = numberUpTo(buttons.length - 1);
+        while (clicked.has(idx)) {
+          idx = numberUpTo(buttons.length - 1);
         }
+        clicked.add(idx);
+
         const button = buttons[idx];
         assert(button, "Button should exist");
+
         await delay(500);
         await userEvent.click(button);
       }
@@ -87,9 +90,7 @@ export const Disabled = {
     gameId: 2,
   },
   async play({ context, parameters, step }) {
-    specify<ReduxParameters>(parameters);
-    const { store } = parameters.redux ?? {};
-    assert(store, "Store should exist");
+    const store = getStore(parameters);
 
     store.dispatch(setRoundPhase(2, "submission"));
 

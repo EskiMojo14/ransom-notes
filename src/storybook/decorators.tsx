@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { SessionProvider } from "@/features/auth/session";
 import type { AppStore, PreloadedState } from "@/store";
 import { makeStore } from "@/store";
-import { specify } from "@/utils";
+import { assert, specify } from "@/utils";
 
 export const withRedux: Decorator = (Story, { parameters }) => {
   specify<ReduxParameters>(parameters);
@@ -22,6 +22,12 @@ export interface ReduxParameters extends Parameters {
     preloadedState?: PreloadedState;
     store?: AppStore;
   };
+}
+
+export function getStore(parameters: ReduxParameters): AppStore {
+  const { store } = parameters.redux ?? {};
+  assert(store, "Store should exist, have you added the withRedux decorator?");
+  return store;
 }
 
 export const withSession: Decorator = (Story) => (
