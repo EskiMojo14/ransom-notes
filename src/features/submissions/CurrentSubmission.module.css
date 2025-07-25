@@ -66,17 +66,6 @@
   }
 }
 
-.addRow {
-  background-color: var(--input);
-  border: 2px dashed var(--input-border);
-  border-radius: var(--shape-medium);
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
 .clearSubmission {
   margin-left: auto;
   &:dir(rtl) {

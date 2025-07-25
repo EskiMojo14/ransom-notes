@@ -76,10 +76,9 @@ export function CurrentSubmission(props: CurrentSubmissionProps) {
       ))}
 
       <Button
-        className={clsx("body1", styles.addRow)}
         onPress={() => dispatch(rowAdded())}
         icon={<Symbol>add</Symbol>}
-        variant="outlined"
+        variant="filled"
       >
         Add row
       </Button>
