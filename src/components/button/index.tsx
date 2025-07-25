@@ -8,6 +8,7 @@ const cls = bemHelper("button");
 interface ButtonProps extends AriaButtonProps {
   icon?: ReactNode;
   variant?: "elevated" | "filled" | "outlined" | "text";
+  color?: "primary" | "error";
   iconOnly?: boolean;
 }
 
@@ -16,6 +17,7 @@ export function Button({
   icon,
   children,
   variant = "text",
+  color = "primary",
   iconOnly = false,
   ...props
 }: ButtonProps & RefAttributes<HTMLButtonElement>) {
@@ -26,6 +28,7 @@ export function Button({
         cls({
           modifiers: {
             [variant]: true,
+            [color]: true,
             icon: iconOnly,
           },
         }),

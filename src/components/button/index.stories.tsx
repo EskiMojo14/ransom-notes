@@ -55,3 +55,10 @@ export const Elevated = {
     variant: "elevated",
   },
 } satisfies Story;
+
+export const IconOnly = {
+  args: {
+    iconOnly: true,
+    children: undefined,
+  },
+} satisfies Story;

@@ -70,6 +70,7 @@ export function CurrentSubmission(props: CurrentSubmissionProps) {
             variant="outlined"
             iconOnly
             icon={<Symbol>remove</Symbol>}
+            color="error"
           />
         </div>
       ))}

@@ -25,18 +25,31 @@
   --whiteboard-border: var(--black);
   --on-whiteboard: var(--white);
 
-  --button: var(--teal-400);
+  --button-primary: var(--teal-400);
   --on-button: var(--black);
-  --button-hover-rgb: var(--teal-500-rgb);
-  --button-hover: rgb(var(--button-hover-rgb));
-  --button-focus-rgb: var(--teal-a400-rgb);
-  --button-focus: rgb(var(--button-focus-rgb));
-  --button-pressed-rgb: var(--teal-600-rgb);
-  --button-pressed: rgb(var(--button-pressed-rgb));
-  --button-focus-pressed-rgb: var(--teal-a700-rgb);
-  --button-focus-pressed: rgb(var(--button-focus-pressed-rgb));
-  --button-shadow: var(--teal-700);
-  --button-focus-shadow: var(--teal-a700);
+  --button-primary-hover-rgb: var(--teal-500-rgb);
+  --button-primary-hover: rgb(var(--button-primary-hover-rgb));
+  --button-primary-focus-rgb: var(--teal-a400-rgb);
+  --button-primary-focus: rgb(var(--button-primary-focus-rgb));
+  --button-primary-pressed-rgb: var(--teal-600-rgb);
+  --button-primary-pressed: rgb(var(--button-primary-pressed-rgb));
+  --button-primary-focus-pressed-rgb: var(--teal-a700-rgb);
+  --button-primary-focus-pressed: rgb(var(--button-primary-focus-pressed-rgb));
+  --button-primary-shadow: var(--teal-700);
+  --button-primary-focus-shadow: var(--teal-a700);
+
+  --button-error: var(--orange-400);
+  --on-button-error: var(--black);
+  --button-error-hover-rgb: var(--orange-500-rgb);
+  --button-error-hover: rgb(var(--button-error-hover-rgb));
+  --button-error-focus-rgb: var(--orange-a400-rgb);
+  --button-error-focus: rgb(var(--button-error-focus-rgb));
+  --button-error-pressed-rgb: var(--orange-600-rgb);
+  --button-error-pressed: rgb(var(--button-error-pressed-rgb));
+  --button-error-focus-pressed-rgb: var(--orange-a700-rgb);
+  --button-error-focus-pressed: rgb(var(--button-error-focus-pressed-rgb));
+  --button-error-shadow: var(--orange-700);
+  --button-error-focus-shadow: var(--orange-a700);
 
   --input: var(--paper-100);
   --on-input: var(--black);
@@ -78,18 +91,31 @@
   --whiteboard-border: var(--black);
   --on-whiteboard: var(--white);
 
-  --button: var(--teal-300);
-  --on-button: var(--black);
-  --button-hover-rgb: var(--teal-400-rgb);
-  --button-hover: rgb(var(--button-hover-rgb));
-  --button-focus-rgb: var(--teal-a200-rgb);
-  --button-focus: rgb(var(--button-focus-rgb));
-  --button-pressed-rgb: var(--teal-500-rgb);
-  --button-pressed: rgb(var(--button-pressed-rgb));
-  --button-focus-pressed-rgb: var(--teal-a400-rgb);
-  --button-focus-pressed: rgb(var(--button-focus-pressed-rgb));
-  --button-shadow: var(--teal-600);
-  --button-focus-shadow: var(--teal-a400);
+  --button-primary: var(--teal-300);
+  --on-button-primary: var(--black);
+  --button-primary-hover-rgb: var(--teal-400-rgb);
+  --button-primary-hover: rgb(var(--button-primary-hover-rgb));
+  --button-primary-focus-rgb: var(--teal-a200-rgb);
+  --button-primary-focus: rgb(var(--button-primary-focus-rgb));
+  --button-primary-pressed-rgb: var(--teal-500-rgb);
+  --button-primary-pressed: rgb(var(--button-primary-pressed-rgb));
+  --button-primary-focus-pressed-rgb: var(--teal-a400-rgb);
+  --button-primary-focus-pressed: rgb(var(--button-primary-focus-pressed-rgb));
+  --button-primary-shadow: var(--teal-600);
+  --button-primary-focus-shadow: var(--teal-a400);
+
+  --button-error: var(--orange-300);
+  --on-button-error: var(--black);
+  --button-error-hover-rgb: var(--orange-400-rgb);
+  --button-error-hover: rgb(var(--button-error-hover-rgb));
+  --button-error-focus-rgb: var(--orange-a200-rgb);
+  --button-error-focus: rgb(var(--button-error-focus-rgb));
+  --button-error-pressed-rgb: var(--orange-500-rgb);
+  --button-error-pressed: rgb(var(--button-error-pressed-rgb));
+  --button-error-focus-pressed-rgb: var(--orange-a400-rgb);
+  --button-error-focus-pressed: rgb(var(--button-error-focus-pressed-rgb));
+  --button-error-shadow: var(--orange-600);
+  --button-error-focus-shadow: var(--orange-a400);
 
   --input: var(--paper-800);
   --on-input: var(--paper-50);

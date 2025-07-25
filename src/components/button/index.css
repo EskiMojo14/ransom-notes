@@ -1,7 +1,6 @@
 button.button,
 a.button {
   appearance: none;
-
   border: none;
   border-radius: var(--shape-medium);
   padding: 0 1rem;
@@ -19,6 +18,26 @@ a.button {
     border 120ms ease-in-out;
   &:focus {
     outline: none;
+  }
+  &.button--primary {
+    --button: var(--button-primary);
+    --on-button: var(--on-button-primary);
+    --button-hover: var(--button-primary-hover);
+    --button-focus: var(--button-primary-focus);
+    --button-pressed: var(--button-primary-pressed);
+    --button-focus-pressed: var(--button-primary-focus-pressed);
+    --button-shadow: var(--button-primary-shadow);
+    --button-focus-shadow: var(--button-primary-focus-shadow);
+  }
+  &.button--error {
+    --button: var(--button-error);
+    --on-button: var(--on-button-error);
+    --button-hover: var(--button-error-hover);
+    --button-focus: var(--button-error-focus);
+    --button-pressed: var(--button-error-pressed);
+    --button-focus-pressed: var(--button-error-focus-pressed);
+    --button-shadow: var(--button-error-shadow);
+    --button-focus-shadow: var(--button-error-focus-shadow);
   }
   &[data-disabled] {
     box-shadow: 0 0 var(--button-shadow);
@@ -113,11 +132,11 @@ a.button {
   }
   &.button--icon {
     padding: 0;
-    height: 2rem;
-    width: 2rem;
+    height: 3rem;
+    width: 3rem;
     @supports (corner-shape: bevel) {
-      height: 2.5rem;
-      width: 2.5rem;
+      height: 3.5rem;
+      width: 3.5rem;
     }
     border-radius: var(--shape-pill);
     .button__icon {
