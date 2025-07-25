@@ -2,21 +2,21 @@
   --heading-font: "Special Elite", serif;
   --body-font: "Roboto Mono", monospace;
 
-  --headline1-size: 103px;
-  --headline2-size: 64px;
-  --headline3-size: 51px;
-  --headline4-size: 36px;
-  --headline5-size: 26px;
-  --headline6-size: 21px;
-  --subtitle1-size: 17px;
-  --subtitle2-size: 15px;
+  --headline1-size: 6.4375rem;
+  --headline2-size: 4rem;
+  --headline3-size: 3.1875rem;
+  --headline4-size: 2.25rem;
+  --headline5-size: 1.625rem;
+  --headline6-size: 1.3125rem;
+  --subtitle1-size: 1.0625rem;
+  --subtitle2-size: 0.9375rem;
 
-  --body1-size: 16px;
-  --body2-size: 14px;
+  --body1-size: 1rem;
+  --body2-size: 0.875rem;
 
-  --button-size: 14px;
-  --overline-size: 10px;
-  --caption-size: 12px;
+  --button-size: 0.875rem;
+  --overline-size: 0.625rem;
+  --caption-size: 0.75rem;
 }
 
 .headline1,
