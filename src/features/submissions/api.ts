@@ -33,7 +33,7 @@ export const submissionApi = api
       getSubmissions: build.query<
         EntityState<Submission, Submission["user_id"]>,
         Round["id"],
-        Submission
+        Array<Submission>
       >({
         queryFn: supabaseQueryFn({
           query: (roundId) =>
