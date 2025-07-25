@@ -1,9 +1,11 @@
 import { clsx } from "clsx";
-import { Button, Checkbox } from "react-aria-components";
+import { Button as AriaButton, Checkbox } from "react-aria-components";
+import { Button } from "@/components/button";
 import { Symbol } from "@/components/symbol";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useGetWordPoolQuery } from "../round/api";
 import {
+  clearSubmission,
   rowAdded,
   rowRemoved,
   rowSelected,
@@ -28,6 +30,14 @@ export function CurrentSubmission(props: CurrentSubmissionProps) {
   const currentRow = useAppSelector(selectCurrentRow);
   return (
     <div className={styles.submission}>
+      <Button
+        className={clsx("body1", styles.clearSubmission)}
+        onPress={() => dispatch(clearSubmission())}
+        icon={<Symbol>clear</Symbol>}
+        variant="outlined"
+      >
+        Clear
+      </Button>
       {rows.map((row, rowIndex) => (
         // eslint-disable-next-line @eslint-react/no-array-index-key
         <div key={rowIndex} className={styles.row}>
@@ -42,7 +52,7 @@ export function CurrentSubmission(props: CurrentSubmissionProps) {
           </Checkbox>
           <div className={styles.words}>
             {row.map((wordIndex) => (
-              <Button
+              <AriaButton
                 key={wordIndex}
                 className={clsx("body1", styles.word)}
                 onPress={() =>
@@ -50,25 +60,27 @@ export function CurrentSubmission(props: CurrentSubmissionProps) {
                 }
               >
                 {words[wordIndex]}
-              </Button>
+              </AriaButton>
             ))}
           </div>
           <Button
             className={clsx("body1", styles.removeRow)}
             onPress={() => dispatch(rowRemoved(rowIndex))}
             aria-label="Remove row"
-          >
-            <Symbol>remove</Symbol>
-          </Button>
+            variant="outlined"
+            iconOnly
+            icon={<Symbol>remove</Symbol>}
+          />
         </div>
       ))}
 
       <Button
         className={clsx("body1", styles.addRow)}
         onPress={() => dispatch(rowAdded())}
-        aria-label="Add row"
+        icon={<Symbol>add</Symbol>}
+        variant="outlined"
       >
-        <Symbol>add</Symbol>
+        Add row
       </Button>
     </div>
   );

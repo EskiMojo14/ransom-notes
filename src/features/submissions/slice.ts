@@ -67,6 +67,7 @@ export const submissionSlice = createSlice({
       state.rows.splice(payload, 1);
       state.currentRow = Math.min(state.currentRow, state.rows.length - 1);
     }),
+    clearSubmission: create.reducer(() => initialState),
   }),
   extraReducers(builder) {
     // our indexes will be out of date, clear submission
@@ -82,7 +83,14 @@ export const submissionSlice = createSlice({
 });
 
 export const {
-  actions: { wordToggled, wordDeselected, rowSelected, rowAdded, rowRemoved },
+  actions: {
+    wordToggled,
+    wordDeselected,
+    rowSelected,
+    rowAdded,
+    rowRemoved,
+    clearSubmission,
+  },
   selectors: { selectRows, selectCurrentRow },
 } = submissionSlice;
 

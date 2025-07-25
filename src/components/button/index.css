@@ -111,4 +111,17 @@ a.button {
       margin-right: -0.5rem;
     }
   }
+  &.button--icon {
+    padding: 0;
+    height: 2rem;
+    width: 2rem;
+    @supports (corner-shape: bevel) {
+      height: 2.5rem;
+      width: 2.5rem;
+    }
+    border-radius: var(--shape-pill);
+    .button__icon {
+      margin: 0;
+    }
+  }
 }

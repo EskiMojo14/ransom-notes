@@ -6,7 +6,7 @@ import { randIndexes, randQuestion, randWordPool } from "@/storybook/mocks";
 import { tableUrl } from "@/supabase/mocks";
 import type { roundApi } from "../round/api";
 import { CurrentSubmission } from "./CurrentSubmission";
-import { rowSelected, wordToggled } from "./slice";
+import { clearSubmission, rowSelected, wordToggled } from "./slice";
 
 const wordPool = randWordPool();
 const idxs = Array.from(randIndexes(wordPool.length, 9));
@@ -27,6 +27,8 @@ const meta = {
   },
   async play({ parameters }) {
     const store = getStore(parameters);
+
+    store.dispatch(clearSubmission());
 
     // make sure the word pool is loaded
     await delay();

@@ -8,19 +8,29 @@ const cls = bemHelper("button");
 interface ButtonProps extends AriaButtonProps {
   icon?: ReactNode;
   variant?: "elevated" | "filled" | "outlined" | "text";
+  iconOnly?: boolean;
 }
 
 export function Button({
   className,
   icon,
   children,
-  variant = "elevated",
+  variant = "text",
+  iconOnly = false,
   ...props
 }: ButtonProps & RefAttributes<HTMLButtonElement>) {
   return (
     <AriaButton
       {...props}
-      className={composeClasses(cls({ modifier: variant }), className)}
+      className={composeClasses(
+        cls({
+          modifiers: {
+            [variant]: true,
+            icon: iconOnly,
+          },
+        }),
+        className,
+      )}
     >
       {renderChildren(children, (children) => (
         <>
