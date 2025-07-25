@@ -57,21 +57,22 @@ type Story = StoryObj<typeof meta>;
 const numberUpTo = (max: number) => Math.ceil(Math.random() * max);
 
 export const Default = {
-  async play({ canvas, userEvent }) {
+  async play({ canvas, userEvent, step }) {
     const buttons = await canvas.findAllByRole("button");
 
-    // click 3 random buttons
-    const clicked = new Set<number>();
-    while (clicked.size < 3) {
-      const idx = numberUpTo(buttons.length - 1);
-      if (!clicked.has(idx)) {
-        clicked.add(idx);
+    await step("Click 3 random buttons", async () => {
+      const clicked = new Set<number>();
+      while (clicked.size < 3) {
+        const idx = numberUpTo(buttons.length - 1);
+        if (!clicked.has(idx)) {
+          clicked.add(idx);
+        }
+        const button = buttons[idx];
+        assert(button, "Button should exist");
+        await delay(500);
+        await userEvent.click(button);
       }
-      const button = buttons[idx];
-      assert(button, "Button should exist");
-      await delay(500);
-      await userEvent.click(button);
-    }
+    });
   },
 } satisfies Story;
 
@@ -85,7 +86,7 @@ export const Disabled = {
   args: {
     gameId: 2,
   },
-  async play({ context, parameters }) {
+  async play({ context, parameters, step }) {
     specify<ReduxParameters>(parameters);
     const { store } = parameters.redux ?? {};
     assert(store, "Store should exist");
@@ -95,7 +96,9 @@ export const Disabled = {
     await Default.play(context);
 
     await delay(500);
-    store.dispatch(setRoundPhase(2, "voting"));
+    await step("End submission phase", () => {
+      store.dispatch(setRoundPhase(2, "voting"));
+    });
   },
   parameters: {
     redux: { store: makeStore() },
