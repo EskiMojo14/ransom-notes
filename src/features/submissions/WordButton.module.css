@@ -1,0 +1,52 @@
+.wordButton {
+  appearance: none;
+  border: none;
+  background-color: var(--magnet);
+  color: var(--on-magnet);
+  cursor: pointer;
+  padding: 0.5rem;
+  box-shadow: 0 0.25rem var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition:
+    background-color 120ms,
+    box-shadow 120ms ease-in-out,
+    translate 120ms ease-in-out;
+  &:focus {
+    outline: none;
+  }
+  &[data-hovered] {
+    box-shadow: 0 0.5rem var(--black);
+    translate: 0 -0.25rem;
+  }
+  &[data-focus-visible] {
+    background-color: var(--magnet-focus);
+    box-shadow: 0 0.5rem var(--black);
+    translate: 0 -0.25rem;
+    &[data-pressed] {
+      background-color: var(--magnet-focus-pressed);
+    }
+  }
+  &[data-pressed] {
+    background-color: var(--magnet-pressed);
+    box-shadow: 0 0 var(--black);
+    translate: 0 0.25rem;
+  }
+  &[data-selected] {
+    background-color: var(--magnet-selected);
+    color: var(--on-paper);
+    box-shadow: 0 0 var(--black);
+    translate: 0 0.25rem;
+    &[data-hovered] {
+      background-color: var(--magnet-hover-selected);
+    }
+    &[data-focus-visible] {
+      background-color: var(--magnet-focus-selected);
+    }
+    &[data-pressed] {
+      background-color: var(--magnet-pressed);
+    }
+  }
+}

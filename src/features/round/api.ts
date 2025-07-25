@@ -18,7 +18,7 @@ const getActiveRounds = supabase.from("games").select(`
 `);
 
 export const roundApi = api
-  .enhanceEndpoints({ addTagTypes: ["Round", "Game"] })
+  .enhanceEndpoints({ addTagTypes: ["Round", "Game", "Word"] })
   .injectEndpoints({
     endpoints: supaEnhance((build) => ({
       getActiveRound: build.query({
@@ -30,6 +30,7 @@ export const roundApi = api
           res ? { type: "Round" as const, id: res.id } : null,
         ],
       }),
+
       getGameRounds: build.query({
         query: (gameId: Game["id"]) =>
           cloneBuilder(getRounds).eq("game_id", gameId),
@@ -38,7 +39,33 @@ export const roundApi = api
           ...(res ? res.map(({ id }) => ({ type: "Round" as const, id })) : []),
         ],
       }),
+
+      getWordPool: build.query({
+        query: ({
+          gameId,
+          userId,
+        }: {
+          gameId: Game["id"];
+          roundId: Round["id"];
+          userId: string;
+        }) =>
+          supabase
+            .from("word_pools")
+            .select("words")
+            .eq("game_id", gameId)
+            .eq("user_id", userId)
+            .single(),
+        transformResponse: (wordPool) => wordPool.words,
+        providesTags: (_res, _err, { roundId, userId }) => [
+          { type: "Word", id: roundId },
+          { type: "Word", id: userId },
+        ],
+      }),
     })),
   });
 
-export const { useGetActiveRoundQuery, useGetGameRoundsQuery } = roundApi;
+export const {
+  useGetActiveRoundQuery,
+  useGetGameRoundsQuery,
+  useGetWordPoolQuery,
+} = roundApi;

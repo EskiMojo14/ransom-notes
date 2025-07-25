@@ -41,3 +41,10 @@ export const promiseOwnProperties = <T extends Record<string, unknown>>(
   obj: T,
 ): Promise<{ [K in keyof T]: Awaited<T[K]> }> =>
   promiseFromEntries(Object.entries(obj)) as never;
+
+export function assert(
+  condition: unknown,
+  message?: string,
+): asserts condition {
+  if (!condition) throw new Error(message);
+}
