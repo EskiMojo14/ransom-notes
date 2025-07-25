@@ -1,8 +1,8 @@
-import { randSentence } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
 import { withRedux } from "@/storybook/decorators";
+import { randQuestion } from "@/storybook/mocks";
 import { tableUrl } from "@/supabase/mocks";
 import type { roundApi } from "./api";
 import { Prompt } from "./Prompt";
@@ -23,7 +23,7 @@ const meta = {
           >({
             active_round: {
               id: 1,
-              question: randSentence().replace(".", "?"),
+              question: randQuestion(),
               judge: null,
               created_at: "2024-01-01T00:00:00Z",
               phase: "submission",

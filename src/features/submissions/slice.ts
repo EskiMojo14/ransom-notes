@@ -82,7 +82,7 @@ export const submissionSlice = createSlice({
 });
 
 export const {
-  actions: { wordToggled, rowSelected, rowAdded, rowRemoved },
+  actions: { wordToggled, wordDeselected, rowSelected, rowAdded, rowRemoved },
   selectors: { selectRows, selectCurrentRow },
 } = submissionSlice;
 

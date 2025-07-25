@@ -1,10 +1,8 @@
-import { randParagraph, randSentence } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { delay, http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
-import { makeStore } from "@/store";
-import type { ReduxParameters } from "@/storybook/decorators";
 import { getStore, withRedux } from "@/storybook/decorators";
+import { randIndexes, randQuestion, randWordPool } from "@/storybook/mocks";
 import { tableUrl } from "@/supabase/mocks";
 import type { Enums } from "@/supabase/types";
 import { assert } from "@/utils";
@@ -26,10 +24,7 @@ const meta = {
           HttpResponse.json<
             typeof roundApi.endpoints.getWordPool.Types.RawResultType
           >({
-            words: randParagraph()
-              .replace(/[^a-zA-Z\s]/g, "")
-              .toLowerCase()
-              .split(" "),
+            words: randWordPool(),
           }),
         ),
         activeRound: http.get(tableUrl("games"), () =>
@@ -38,7 +33,7 @@ const meta = {
           >({
             active_round: {
               id: 1,
-              question: randSentence().replace(".", "?"),
+              question: randQuestion(),
               judge: null,
               created_at: "2024-01-01T00:00:00Z",
               phase: "submission",
@@ -54,21 +49,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const numberUpTo = (max: number) => Math.ceil(Math.random() * max);
-
 export const Default = {
   async play({ canvas, userEvent, step }) {
     const buttons = await canvas.findAllByRole("button");
 
     await step("Click 3 random buttons", async () => {
-      const clicked = new Set<number>();
-      while (clicked.size < 3) {
-        let idx = numberUpTo(buttons.length - 1);
-        while (clicked.has(idx)) {
-          idx = numberUpTo(buttons.length - 1);
-        }
-        clicked.add(idx);
-
+      for (const idx of randIndexes(buttons.length, 3)) {
         const button = buttons[idx];
         assert(button, "Button should exist");
 
@@ -102,7 +88,6 @@ export const Disabled = {
     });
   },
   parameters: {
-    redux: { store: makeStore() },
     msw: {
       handlers: {
         activeRound: http.get(tableUrl("games"), () =>
@@ -111,7 +96,7 @@ export const Disabled = {
           >({
             active_round: {
               id: 1,
-              question: randSentence().replace(".", "?"),
+              question: randQuestion(),
               judge: null,
               created_at: "2024-01-01T00:00:00Z",
               phase: "submission",
@@ -120,5 +105,5 @@ export const Disabled = {
         ),
       },
     },
-  } satisfies MswParameters & ReduxParameters,
+  } satisfies MswParameters,
 } satisfies Story;
