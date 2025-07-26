@@ -2,11 +2,11 @@ import { clsx } from "clsx";
 import { useRef } from "react";
 import {
   Button as AriaButton,
-  Radio,
   RadioGroup,
   Toolbar,
 } from "react-aria-components";
 import { Button } from "@/components/button";
+import { Radio } from "@/components/radio";
 import { Symbol } from "@/components/symbol";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useGetWordPoolQuery } from "../round/api";
@@ -67,11 +67,7 @@ export function CurrentSubmission(props: CurrentSubmissionProps) {
                   radioRefs.current[rowIndex] = ref;
                 },
               }}
-            >
-              {({ isSelected }) => (
-                <input type="radio" checked={isSelected} readOnly />
-              )}
-            </Radio>
+            />
             <Toolbar className={styles.words}>
               {row.map((wordIndex) => (
                 <AriaButton
