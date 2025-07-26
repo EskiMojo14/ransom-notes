@@ -7,7 +7,7 @@
   min-width: 20rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   position: relative;
   overflow: hidden;
   user-select: none;
@@ -28,6 +28,12 @@
   opacity: 0.5;
 }
 
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .row {
   display: flex;
   align-items: center;
@@ -35,27 +41,18 @@
   gap: 0.5rem;
   border-radius: 0.5rem;
   padding: 0.5rem;
-  background-color: var(--input);
-  border: 2px solid var(--input-border);
+  border: 2px dashed var(--input-border);
+
+  --magnet-hover: var(--magnet-error-hover);
+  --magnet-focus: var(--magnet-error-focus);
+  --magnet-pressed: var(--magnet-error-pressed);
+  --magnet-focus-pressed: var(--magnet-error-focus-pressed);
 }
 
 .words {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-}
-
-.word {
-  appearance: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--magnet);
-  color: var(--on-magnet);
-  padding: 0.5rem;
-  user-select: none;
-  box-shadow: 0 0.25rem var(--black);
 }
 
 .removeRow {

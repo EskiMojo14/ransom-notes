@@ -1,5 +1,11 @@
 import { clsx } from "clsx";
-import { Button as AriaButton, Checkbox, Toolbar } from "react-aria-components";
+import { useRef } from "react";
+import {
+  Button as AriaButton,
+  Radio,
+  RadioGroup,
+  Toolbar,
+} from "react-aria-components";
 import { Button } from "@/components/button";
 import { Symbol } from "@/components/symbol";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
@@ -14,6 +20,7 @@ import {
   wordDeselected,
 } from "./slice";
 import styles from "./CurrentSubmission.module.css";
+import poolStyles from "./WordPool.module.css";
 
 export interface CurrentSubmissionProps {
   gameId: number;
@@ -28,46 +35,66 @@ export function CurrentSubmission(props: CurrentSubmissionProps) {
   });
   const rows = useAppSelector(selectRows);
   const currentRow = useAppSelector(selectCurrentRow);
+  const radioRefs = useRef<Array<HTMLInputElement | null>>([]);
   return (
     <div className={styles.submission}>
-      {rows.map((row, rowIndex) => (
-        // eslint-disable-next-line @eslint-react/no-array-index-key
-        <div key={rowIndex} className={styles.row}>
-          <Checkbox
-            name="row"
-            isSelected={rowIndex === currentRow}
-            onChange={() => dispatch(rowSelected(rowIndex))}
+      <RadioGroup
+        name="row"
+        value={currentRow.toString()}
+        onChange={(value) => dispatch(rowSelected(parseInt(value)))}
+        className={styles.rows}
+      >
+        {rows.map((row, rowIndex) => (
+          <div
+            // eslint-disable-next-line @eslint-react/no-array-index-key
+            key={rowIndex}
+            className={styles.row}
+            onClick={() => {
+              radioRefs.current[rowIndex]?.click();
+            }}
           >
-            {({ isSelected }) => (
-              <input type="radio" checked={isSelected} readOnly />
-            )}
-          </Checkbox>
-          <div className={styles.words}>
-            {row.map((wordIndex) => (
-              <AriaButton
-                key={wordIndex}
-                className={clsx("body1", styles.word)}
-                onPress={() =>
-                  dispatch(wordDeselected({ rowIndex, wordIndex }))
-                }
-              >
-                {words[wordIndex]}
-              </AriaButton>
-            ))}
+            <Radio
+              value={rowIndex.toString()}
+              aria-label={`Select row ${rowIndex}`}
+              inputRef={{
+                get current() {
+                  return radioRefs.current[rowIndex] ?? null;
+                },
+                set current(ref) {
+                  radioRefs.current[rowIndex] = ref;
+                },
+              }}
+            >
+              {({ isSelected }) => (
+                <input type="radio" checked={isSelected} readOnly />
+              )}
+            </Radio>
+            <Toolbar className={styles.words}>
+              {row.map((wordIndex) => (
+                <AriaButton
+                  key={wordIndex}
+                  className={clsx("body1", poolStyles.wordButton)}
+                  onPress={() =>
+                    dispatch(wordDeselected({ rowIndex, wordIndex }))
+                  }
+                >
+                  {words[wordIndex]}
+                </AriaButton>
+              ))}
+            </Toolbar>
+            <Button
+              className={clsx("body1", styles.removeRow)}
+              onPress={() => dispatch(rowRemoved(rowIndex))}
+              variant="outlined"
+              iconOnly
+              icon={<Symbol>variable_remove</Symbol>}
+              color="error"
+            >
+              Remove row
+            </Button>
           </div>
-          <Button
-            className={clsx("body1", styles.removeRow)}
-            onPress={() => dispatch(rowRemoved(rowIndex))}
-            variant="outlined"
-            iconOnly
-            icon={<Symbol>remove</Symbol>}
-            color="error"
-          >
-            Remove row
-          </Button>
-        </div>
-      ))}
-
+        ))}
+      </RadioGroup>
       <Toolbar className={styles.toolbar}>
         <Button
           className={styles.clearSubmission}
@@ -80,7 +107,7 @@ export function CurrentSubmission(props: CurrentSubmissionProps) {
         </Button>
         <Button
           onPress={() => dispatch(rowAdded())}
-          icon={<Symbol>add</Symbol>}
+          icon={<Symbol>variable_add</Symbol>}
           variant="filled"
         >
           Add row

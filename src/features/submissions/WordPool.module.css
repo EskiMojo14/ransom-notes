@@ -36,6 +36,9 @@
   &[data-focus-visible] {
     --shadow-size: 0.5rem;
   }
+  &[data-hovered] {
+    background-color: var(--magnet-hover);
+  }
   &[data-focus-visible] {
     background-color: var(--magnet-focus);
     &[data-pressed] {

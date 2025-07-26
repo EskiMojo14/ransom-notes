@@ -9,6 +9,7 @@
 
   --magnet: var(--white);
   --on-magnet: var(--black);
+  --magnet-hover: var(--white);
   --magnet-focus: var(--teal-50);
   --magnet-pressed: var(--paper-100);
   --magnet-focus-pressed: var(--teal-100);
@@ -19,6 +20,11 @@
   --magnet-focus-selected-pressed: var(--teal-200);
   --magnet-disabled: var(--paper-100);
   --magnet-disabled-selected: var(--paper-200);
+
+  --magnet-error-hover: var(--red-100);
+  --magnet-error-focus: var(--red-a100);
+  --magnet-error-pressed: var(--red-200);
+  --magnet-error-focus-pressed: var(--red-a200);
 
   --whiteboard-rgb: var(--paper-900-rgb);
   --whiteboard: rgb(var(--whiteboard-rgb));
@@ -90,6 +96,7 @@
 
   --magnet: var(--paper-600);
   --on-magnet: var(--white);
+  --magnet-hover: var(--paper-600);
   --magnet-focus: var(--teal-700);
   --magnet-pressed: var(--paper-700);
   --magnet-focus-pressed: var(--teal-800);
@@ -100,6 +107,11 @@
   --magnet-focus-selected-pressed: var(--teal-900);
   --magnet-disabled: var(--paper-800);
   --magnet-disabled-selected: var(--paper-1000);
+
+  --magnet-error-hover: var(--red-800);
+  --magnet-error-focus: var(--red-a700);
+  --magnet-error-pressed: var(--red-700);
+  --magnet-error-focus-pressed: var(--red-a400);
 
   --whiteboard-rgb: var(--paper-900-rgb);
   --whiteboard: rgb(var(--whiteboard-rgb));
