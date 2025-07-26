@@ -7,7 +7,7 @@ import { tableUrl } from "@/supabase/mocks";
 import type { Enums } from "@/supabase/types";
 import { assert } from "@/utils";
 import { roundApi } from "../round/api";
-import { WordPool } from "./WordButton";
+import { WordPool } from "./WordPool";
 
 const meta = {
   component: WordPool,
