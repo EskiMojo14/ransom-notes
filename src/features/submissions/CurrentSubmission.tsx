@@ -48,7 +48,10 @@ export function CurrentSubmission(props: CurrentSubmissionProps) {
           <div
             // eslint-disable-next-line @eslint-react/no-array-index-key
             key={rowIndex}
-            className={styles.row}
+            className={clsx(
+              styles.row,
+              currentRow === rowIndex && styles.currentRow,
+            )}
             onClick={() => {
               radioRefs.current[rowIndex]?.click();
             }}

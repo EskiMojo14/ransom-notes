@@ -39,14 +39,23 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem;
-  border-radius: 0.5rem;
+  border-radius: var(--shape-medium);
   padding: 0.5rem;
   border: 2px dashed var(--input-border);
+  transition:
+    border-color 120ms ease-in-out,
+    border-radius 120ms ease-in-out;
 
   --magnet-hover: var(--magnet-error-hover);
   --magnet-focus: var(--magnet-error-focus);
   --magnet-pressed: var(--magnet-error-pressed);
   --magnet-focus-pressed: var(--magnet-error-focus-pressed);
+
+  &.currentRow {
+    border-color: var(--input-focus);
+    border-style: solid;
+    border-radius: var(--shape-large);
+  }
 }
 
 .words {
