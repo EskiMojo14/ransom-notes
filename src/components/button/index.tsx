@@ -8,7 +8,7 @@ const cls = bemHelper("button");
 interface ButtonProps extends AriaButtonProps {
   icon?: ReactNode;
   variant?: "elevated" | "filled" | "outlined" | "text";
-  color?: "primary" | "error";
+  color?: "primary" | "secondary" | "error";
   iconOnly?: boolean;
 }
 
@@ -38,7 +38,7 @@ export function Button({
       {renderChildren(children, (children) => (
         <>
           {!!icon && <span className={cls("icon")}>{icon}</span>}
-          {children}
+          {iconOnly ? <span className="sr-only">{children}</span> : children}
         </>
       ))}
     </AriaButton>

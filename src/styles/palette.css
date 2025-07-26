@@ -82,6 +82,35 @@
   --orange-50-rgb: 251, 233, 231;
   --orange-50: rgb(var(--orange-50-rgb));
 
+  --red-a700-rgb: 213, 0, 0;
+  --red-a700: rgb(var(--red-a700-rgb));
+  --red-a400-rgb: 255, 23, 68;
+  --red-a400: rgb(var(--red-a400-rgb));
+  --red-a200-rgb: 255, 82, 82;
+  --red-a200: rgb(var(--red-a200-rgb));
+  --red-a100-rgb: 255, 138, 128;
+  --red-a100: rgb(var(--red-a100-rgb));
+  --red-900-rgb: 183, 28, 28;
+  --red-900: rgb(var(--red-900-rgb));
+  --red-800-rgb: 199, 41, 41;
+  --red-800: rgb(var(--red-800-rgb));
+  --red-700-rgb: 211, 47, 47;
+  --red-700: rgb(var(--red-700-rgb));
+  --red-600-rgb: 229, 57, 53;
+  --red-600: rgb(var(--red-600-rgb));
+  --red-500-rgb: 244, 67, 54;
+  --red-500: rgb(var(--red-500-rgb));
+  --red-400-rgb: 239, 83, 80;
+  --red-400: rgb(var(--red-400-rgb));
+  --red-300-rgb: 229, 115, 115;
+  --red-300: rgb(var(--red-300-rgb));
+  --red-200-rgb: 239, 154, 154;
+  --red-200: rgb(var(--red-200-rgb));
+  --red-100-rgb: 255, 205, 210;
+  --red-100: rgb(var(--red-100-rgb));
+  --red-50-rgb: 255, 235, 238;
+  --red-50: rgb(var(--red-50-rgb));
+
   --black: #000;
   --white: #fff;
 }

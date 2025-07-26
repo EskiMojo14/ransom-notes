@@ -12,11 +12,17 @@ const meta = {
     onPress: fn(),
     isDisabled: false,
     variant: "elevated",
+    color: "primary",
+    iconOnly: false,
   },
   argTypes: {
     variant: {
       control: "select",
       options: ["elevated", "filled", "outlined", "text"],
+    },
+    color: {
+      control: "select",
+      options: ["primary", "secondary", "error"],
     },
   },
 } satisfies Meta<typeof Button>;
@@ -59,6 +65,5 @@ export const Elevated = {
 export const IconOnly = {
   args: {
     iconOnly: true,
-    children: undefined,
   },
 } satisfies Story;

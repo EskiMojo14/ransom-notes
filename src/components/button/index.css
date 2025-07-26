@@ -15,26 +15,49 @@ a.button {
     background-color 120ms,
     box-shadow 120ms ease-in-out,
     translate 120ms ease-in-out,
-    border 120ms ease-in-out;
+    border 120ms ease-in-out,
+    margin 120ms ease-in-out;
   &:focus {
     outline: none;
   }
   &.button--primary {
     --button: var(--button-primary);
     --on-button: var(--on-button-primary);
+    --button-hover-rgb: var(--button-primary-hover-rgb);
     --button-hover: var(--button-primary-hover);
+    --button-focus-rgb: var(--button-primary-focus-rgb);
     --button-focus: var(--button-primary-focus);
+    --button-pressed-rgb: var(--button-primary-pressed-rgb);
     --button-pressed: var(--button-primary-pressed);
+    --button-focus-pressed-rgb: var(--button-primary-focus-pressed-rgb);
     --button-focus-pressed: var(--button-primary-focus-pressed);
     --button-shadow: var(--button-primary-shadow);
     --button-focus-shadow: var(--button-primary-focus-shadow);
   }
+  &.button--secondary {
+    --button: var(--button-secondary);
+    --on-button: var(--on-button-secondary);
+    --button-hover-rgb: var(--button-secondary-hover-rgb);
+    --button-hover: var(--button-secondary-hover);
+    --button-focus-rgb: var(--button-secondary-focus-rgb);
+    --button-focus: var(--button-secondary-focus);
+    --button-pressed-rgb: var(--button-secondary-pressed-rgb);
+    --button-pressed: var(--button-secondary-pressed);
+    --button-focus-pressed-rgb: var(--button-secondary-focus-pressed-rgb);
+    --button-focus-pressed: var(--button-secondary-focus-pressed);
+    --button-shadow: var(--button-secondary-shadow);
+    --button-focus-shadow: var(--button-secondary-focus-shadow);
+  }
   &.button--error {
     --button: var(--button-error);
     --on-button: var(--on-button-error);
+    --button-hover-rgb: var(--button-error-hover-rgb);
     --button-hover: var(--button-error-hover);
+    --button-focus-rgb: var(--button-error-focus-rgb);
     --button-focus: var(--button-error-focus);
+    --button-pressed-rgb: var(--button-error-pressed-rgb);
     --button-pressed: var(--button-error-pressed);
+    --button-focus-pressed-rgb: var(--button-error-focus-pressed-rgb);
     --button-focus-pressed: var(--button-error-focus-pressed);
     --button-shadow: var(--button-error-shadow);
     --button-focus-shadow: var(--button-error-focus-shadow);
@@ -67,13 +90,15 @@ a.button {
   &.button--outlined {
     border: 2px solid var(--button);
     box-shadow: none;
+    &[data-hovered],
+    &[data-focus-visible] {
+      border-width: 4px;
+    }
     &[data-hovered] {
       border-color: var(--button-hover);
-      border-width: 4px;
     }
     &[data-focus-visible] {
       border-color: var(--button-focus);
-      border-width: 4px;
     }
   }
 
@@ -132,13 +157,13 @@ a.button {
   }
   &.button--icon {
     padding: 0;
-    height: 3rem;
-    width: 3rem;
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
     @supports (corner-shape: bevel) {
       height: 3.5rem;
       width: 3.5rem;
     }
-    border-radius: var(--shape-pill);
     .button__icon {
       margin: 0;
     }

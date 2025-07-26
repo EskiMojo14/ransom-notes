@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { Button as AriaButton, Checkbox } from "react-aria-components";
+import { Button as AriaButton, Checkbox, Toolbar } from "react-aria-components";
 import { Button } from "@/components/button";
 import { Symbol } from "@/components/symbol";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
@@ -30,14 +30,6 @@ export function CurrentSubmission(props: CurrentSubmissionProps) {
   const currentRow = useAppSelector(selectCurrentRow);
   return (
     <div className={styles.submission}>
-      <Button
-        className={clsx("body1", styles.clearSubmission)}
-        onPress={() => dispatch(clearSubmission())}
-        icon={<Symbol>clear</Symbol>}
-        variant="outlined"
-      >
-        Clear
-      </Button>
       {rows.map((row, rowIndex) => (
         // eslint-disable-next-line @eslint-react/no-array-index-key
         <div key={rowIndex} className={styles.row}>
@@ -66,22 +58,34 @@ export function CurrentSubmission(props: CurrentSubmissionProps) {
           <Button
             className={clsx("body1", styles.removeRow)}
             onPress={() => dispatch(rowRemoved(rowIndex))}
-            aria-label="Remove row"
             variant="outlined"
             iconOnly
             icon={<Symbol>remove</Symbol>}
             color="error"
-          />
+          >
+            Remove row
+          </Button>
         </div>
       ))}
 
-      <Button
-        onPress={() => dispatch(rowAdded())}
-        icon={<Symbol>add</Symbol>}
-        variant="filled"
-      >
-        Add row
-      </Button>
+      <Toolbar className={styles.toolbar}>
+        <Button
+          className={styles.clearSubmission}
+          onPress={() => dispatch(clearSubmission())}
+          icon={<Symbol>clear</Symbol>}
+          variant="outlined"
+          color="error"
+        >
+          Clear
+        </Button>
+        <Button
+          onPress={() => dispatch(rowAdded())}
+          icon={<Symbol>add</Symbol>}
+          variant="filled"
+        >
+          Add row
+        </Button>
+      </Toolbar>
     </div>
   );
 }

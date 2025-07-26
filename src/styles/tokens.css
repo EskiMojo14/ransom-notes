@@ -26,7 +26,7 @@
   --on-whiteboard: var(--white);
 
   --button-primary: var(--teal-400);
-  --on-button: var(--black);
+  --on-button-primary: var(--black);
   --button-primary-hover-rgb: var(--teal-500-rgb);
   --button-primary-hover: rgb(var(--button-primary-hover-rgb));
   --button-primary-focus-rgb: var(--teal-a400-rgb);
@@ -38,18 +38,33 @@
   --button-primary-shadow: var(--teal-700);
   --button-primary-focus-shadow: var(--teal-a700);
 
-  --button-error: var(--orange-400);
+  --button-secondary: var(--orange-200);
+  --on-button-secondary: var(--black);
+  --button-secondary-hover-rgb: var(--orange-300-rgb);
+  --button-secondary-hover: rgb(var(--button-secondary-hover-rgb));
+  --button-secondary-focus-rgb: var(--orange-a100-rgb);
+  --button-secondary-focus: rgb(var(--button-secondary-focus-rgb));
+  --button-secondary-pressed-rgb: var(--orange-400-rgb);
+  --button-secondary-pressed: rgb(var(--button-secondary-pressed-rgb));
+  --button-secondary-focus-pressed-rgb: var(--orange-a200-rgb);
+  --button-secondary-focus-pressed: rgb(
+    var(--button-secondary-focus-pressed-rgb)
+  );
+  --button-secondary-shadow: var(--orange-500);
+  --button-secondary-focus-shadow: var(--orange-a200);
+
+  --button-error: var(--red-400);
   --on-button-error: var(--black);
-  --button-error-hover-rgb: var(--orange-500-rgb);
+  --button-error-hover-rgb: var(--red-500-rgb);
   --button-error-hover: rgb(var(--button-error-hover-rgb));
-  --button-error-focus-rgb: var(--orange-a400-rgb);
+  --button-error-focus-rgb: var(--red-a400-rgb);
   --button-error-focus: rgb(var(--button-error-focus-rgb));
-  --button-error-pressed-rgb: var(--orange-600-rgb);
+  --button-error-pressed-rgb: var(--red-600-rgb);
   --button-error-pressed: rgb(var(--button-error-pressed-rgb));
-  --button-error-focus-pressed-rgb: var(--orange-a700-rgb);
+  --button-error-focus-pressed-rgb: var(--red-a700-rgb);
   --button-error-focus-pressed: rgb(var(--button-error-focus-pressed-rgb));
-  --button-error-shadow: var(--orange-700);
-  --button-error-focus-shadow: var(--orange-a700);
+  --button-error-shadow: var(--red-700);
+  --button-error-focus-shadow: var(--red-a700);
 
   --input: var(--paper-100);
   --on-input: var(--black);
@@ -60,8 +75,8 @@
   --input-description: var(--paper-700);
   --input-border: var(--paper-200);
   --input-focus: var(--teal-a700);
-  --input-error: var(--orange-a700);
-  --input-error-border: var(--orange-a700);
+  --input-error: var(--red-a700);
+  --input-error-border: var(--red-a700);
 }
 
 %dark {
@@ -104,18 +119,33 @@
   --button-primary-shadow: var(--teal-600);
   --button-primary-focus-shadow: var(--teal-a400);
 
-  --button-error: var(--orange-300);
+  --button-secondary: var(--orange-200);
+  --on-button-secondary: var(--black);
+  --button-secondary-hover-rgb: var(--orange-300-rgb);
+  --button-secondary-hover: rgb(var(--button-secondary-hover-rgb));
+  --button-secondary-focus-rgb: var(--orange-a100-rgb);
+  --button-secondary-focus: rgb(var(--button-secondary-focus-rgb));
+  --button-secondary-pressed-rgb: var(--orange-400-rgb);
+  --button-secondary-pressed: rgb(var(--button-secondary-pressed-rgb));
+  --button-secondary-focus-pressed-rgb: var(--orange-a200-rgb);
+  --button-secondary-focus-pressed: rgb(
+    var(--button-secondary-focus-pressed-rgb)
+  );
+  --button-secondary-shadow: var(--orange-500);
+  --button-secondary-focus-shadow: var(--orange-a200);
+
+  --button-error: var(--red-300);
   --on-button-error: var(--black);
-  --button-error-hover-rgb: var(--orange-400-rgb);
+  --button-error-hover-rgb: var(--red-400-rgb);
   --button-error-hover: rgb(var(--button-error-hover-rgb));
-  --button-error-focus-rgb: var(--orange-a200-rgb);
+  --button-error-focus-rgb: var(--red-a200-rgb);
   --button-error-focus: rgb(var(--button-error-focus-rgb));
-  --button-error-pressed-rgb: var(--orange-500-rgb);
+  --button-error-pressed-rgb: var(--red-500-rgb);
   --button-error-pressed: rgb(var(--button-error-pressed-rgb));
-  --button-error-focus-pressed-rgb: var(--orange-a400-rgb);
+  --button-error-focus-pressed-rgb: var(--red-a400-rgb);
   --button-error-focus-pressed: rgb(var(--button-error-focus-pressed-rgb));
-  --button-error-shadow: var(--orange-600);
-  --button-error-focus-shadow: var(--orange-a400);
+  --button-error-shadow: var(--red-600);
+  --button-error-focus-shadow: var(--red-a400);
 
   --input: var(--paper-800);
   --on-input: var(--paper-50);
@@ -126,8 +156,8 @@
   --input-description: var(--paper-300);
   --input-border: var(--paper-700);
   --input-focus: var(--teal-a400);
-  --input-error: var(--orange-a400);
-  --input-error-border: var(--orange-a400);
+  --input-error: var(--red-a400);
+  --input-error-border: var(--red-a400);
 }
 
 [data-theme="light"] {
