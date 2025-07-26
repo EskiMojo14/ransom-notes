@@ -25,9 +25,13 @@ export function WordPool({ gameId, roundId, userId }: WordPoolProps) {
   const selectedKeys = useAppSelector(selectAllIndexes);
   return (
     <ToggleButtonGroup
-      className={styles.group}
+      className={styles.pool}
       selectionMode="multiple"
       selectedKeys={selectedKeys}
+      onSelectionChange={(newKeys) => {
+        const diff = newKeys.symmetricDifference(selectedKeys);
+        diff.forEach((key) => dispatch(wordToggled(Number(key))));
+      }}
       isDisabled={phase !== "submission"}
     >
       {words.map((word, index) => (
@@ -35,8 +39,8 @@ export function WordPool({ gameId, roundId, userId }: WordPoolProps) {
           // necessary - words may appear twice
           // eslint-disable-next-line @eslint-react/no-array-index-key
           key={`${word}-${index}`}
+          id={index}
           className={clsx(styles.wordButton, "body1")}
-          onChange={() => dispatch(wordToggled(index))}
           isDisabled={phase !== "submission"}
         >
           {word}

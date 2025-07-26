@@ -27,13 +27,23 @@ declare module "@tanstack/react-router" {
   }
 }
 
-// Render the app
-const rootElement = document.getElementById("app");
-if (rootElement && !rootElement.innerHTML) {
-  const root = createRoot(rootElement);
-  root.render(
-    <StrictMode>
-      <RouterProvider router={router} />
-    </StrictMode>,
-  );
+async function enableMocking() {
+  if (!import.meta.env.DEV) return;
+  const { worker } = await import("./mocks/browser");
+  return worker.start();
 }
+
+enableMocking()
+  .then(() => {
+    // Render the app
+    const rootElement = document.getElementById("app");
+    if (rootElement && !rootElement.innerHTML) {
+      const root = createRoot(rootElement);
+      root.render(
+        <StrictMode>
+          <RouterProvider router={router} />
+        </StrictMode>,
+      );
+    }
+  })
+  .catch(console.error);
