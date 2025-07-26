@@ -23,6 +23,7 @@
     "clsx": "^2.1.1",
     "lodash": "^4.17.21",
     "normalize.css": "^8.0.1",
+    "rad-event-listeners": "^1.0.1",
     "react": "^19.1.0",
     "react-aria-components": "^1.11.0",
     "react-bem-helper": "^1.4.1",

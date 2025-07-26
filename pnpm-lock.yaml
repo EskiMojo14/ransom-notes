@@ -35,6 +35,9 @@ importers:
       normalize.css:
         specifier: ^8.0.1
         version: 8.0.1
+      rad-event-listeners:
+        specifier: ^1.0.1
+        version: 1.0.1
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -159,9 +162,6 @@ importers:
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.0.15)(jiti@2.4.2)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.0.15)(typescript@5.8.3))(tsx@4.20.3)
-      web-vitals:
-        specifier: ^4.2.4
-        version: 4.2.4
 
 packages:
 
@@ -3216,6 +3216,9 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
+  rad-event-listeners@1.0.1:
+    resolution: {integrity: sha512-6qDGvwDHLCfBgtgexiUqpry9tz24na2RCHuoFBgDyRNw6E7tALbmUsR40mACoW8eiafS7avNWWAcrnneEQx2zw==}
+
   react-aria-components@1.11.0:
     resolution: {integrity: sha512-+NxjfCiswbssoCNPJ1H5NEPnM2G7whM5bZSjkSUPXS3ZbbqQ1KSmSWHT34V4mrU+kpFfEZeZ/6E6GBYfugndig==}
     peerDependencies:
@@ -3821,9 +3824,6 @@ packages:
   w3c-xmlserializer@5.0.0:
     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
     engines: {node: '>=18'}
-
-  web-vitals@4.2.4:
-    resolution: {integrity: sha512-r4DIlprAGwJ7YM11VZp4R884m0Vmgr6EAKe3P+kO0PPj3Unqyvv59rczf6UiGcb9Z8QxZVcqKNwv/g0WNdWwsw==}
 
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
@@ -7761,6 +7761,8 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
+  rad-event-listeners@1.0.1: {}
+
   react-aria-components@1.11.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       '@internationalized/date': 3.8.2
@@ -8551,8 +8553,6 @@ snapshots:
   w3c-xmlserializer@5.0.0:
     dependencies:
       xml-name-validator: 5.0.0
-
-  web-vitals@4.2.4: {}
 
   webidl-conversions@3.0.1: {}
 

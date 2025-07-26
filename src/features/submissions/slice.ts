@@ -53,6 +53,13 @@ export const submissionSlice = createSlice({
       assert(state.rows[action.payload], "Row should exist");
       state.currentRow = action.payload;
     }),
+    nextRow: create.reducer((state) => {
+      state.currentRow = (state.currentRow + 1) % state.rows.length;
+    }),
+    prevRow: create.reducer((state) => {
+      state.currentRow =
+        (state.currentRow - 1 + state.rows.length) % state.rows.length;
+    }),
     rowAdded: create.reducer((state) => {
       state.rows.push([]);
       state.currentRow = state.rows.length - 1;
@@ -87,6 +94,8 @@ export const {
     wordToggled,
     wordDeselected,
     rowSelected,
+    nextRow,
+    prevRow,
     rowAdded,
     rowRemoved,
     clearSubmission,

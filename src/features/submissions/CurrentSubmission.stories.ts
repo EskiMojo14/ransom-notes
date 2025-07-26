@@ -7,7 +7,7 @@ import { randIndexes, randQuestion, randWordPool } from "@/storybook/mocks";
 import { tableUrl } from "@/supabase/mocks";
 import type { roundApi } from "../round/api";
 import { CurrentSubmission } from "./CurrentSubmission";
-import { clearSubmission, rowSelected, wordToggled } from "./slice";
+import { clearSubmission, wordToggled } from "./slice";
 
 const wordPool = randWordPool();
 const idxs = Array.from(randIndexes(wordPool.length, 9));
@@ -26,19 +26,19 @@ const meta = {
     roundId: 1,
     userId: "1",
   },
-  async play({ parameters }) {
+  async play({ parameters, userEvent }) {
     const store = getStore(parameters);
 
     store.dispatch(clearSubmission());
 
     // make sure the word pool is loaded
     await delay();
-    for (const [rowIndex, row] of rows.entries()) {
-      store.dispatch(rowSelected(rowIndex));
+    for (const row of rows) {
       for (const wordIndex of row) {
         await delay(150);
         store.dispatch(wordToggled(wordIndex));
       }
+      await userEvent.keyboard("{ArrowDown}");
     }
   },
   parameters: {

@@ -1,5 +1,6 @@
 import { clsx } from "clsx";
-import { useRef } from "react";
+import { radEventListeners } from "rad-event-listeners";
+import { useEffect, useRef } from "react";
 import {
   Button as AriaButton,
   RadioGroup,
@@ -12,6 +13,8 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useGetWordPoolQuery } from "../round/api";
 import {
   clearSubmission,
+  nextRow,
+  prevRow,
   rowAdded,
   rowRemoved,
   rowSelected,
@@ -28,6 +31,8 @@ export interface CurrentSubmissionProps {
   userId: string;
 }
 
+const digitRegex = /\d/;
+
 export function CurrentSubmission(props: CurrentSubmissionProps) {
   const dispatch = useAppDispatch();
   const { words = [] } = useGetWordPoolQuery(props, {
@@ -36,6 +41,21 @@ export function CurrentSubmission(props: CurrentSubmissionProps) {
   const rows = useAppSelector(selectRows);
   const currentRow = useAppSelector(selectCurrentRow);
   const radioRefs = useRef<Array<HTMLInputElement | null>>([]);
+  useEffect(
+    () =>
+      radEventListeners(document, {
+        keydown({ key }) {
+          if (key === "ArrowUp") {
+            dispatch(prevRow());
+          } else if (key === "ArrowDown") {
+            dispatch(nextRow());
+          } else if (digitRegex.test(key)) {
+            dispatch(rowSelected(parseInt(key) - 1));
+          }
+        },
+      }),
+    [dispatch],
+  );
   return (
     <div className={styles.submission}>
       <RadioGroup
