@@ -1,3 +1,4 @@
+import { randRecentDate, randUserName } from "@ngneat/falso";
 import { createFileRoute } from "@tanstack/react-router";
 import { http, HttpResponse } from "msw";
 import { gameApi, useGetGameByInviteCodeQuery } from "@/features/game/api";
@@ -5,6 +6,7 @@ import type { roundApi } from "@/features/round/api";
 import { CurrentSubmission } from "@/features/submissions/CurrentSubmission";
 import { WordPool } from "@/features/submissions/WordPool";
 import { worker } from "@/mocks/browser";
+import { randQuestion, randWordPool } from "@/storybook/mocks";
 import { tableUrl } from "@/supabase/mocks";
 
 worker.use(
@@ -21,9 +23,9 @@ worker.use(
       >({
         active_round: {
           id: 1,
-          question: "What color is the sky?",
+          question: randQuestion(),
           judge: null,
-          created_at: "2024-01-01T00:00:00Z",
+          created_at: randRecentDate().toISOString(),
           phase: "submission",
         },
       });
@@ -37,12 +39,12 @@ worker.use(
       first_to: 10,
       max_submission_length: 100,
       pool_size: 7,
-      state: "open",
+      state: "running",
       voting_mode: "judge",
-      created_at: "2024-01-01T00:00:00Z",
+      created_at: randRecentDate().toISOString(),
       active_round: 1,
       creator_profile: {
-        display_name: "John Doe",
+        display_name: randUserName(),
         avatar_url: null,
       },
       participants: [],
@@ -52,7 +54,7 @@ worker.use(
     HttpResponse.json<
       typeof roundApi.endpoints.getWordPool.Types.RawResultType
     >({
-      words: ["red", "orange", "yellow", "green", "blue", "indigo", "violet"],
+      words: randWordPool(),
     }),
   ),
 );
