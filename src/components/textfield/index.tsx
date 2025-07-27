@@ -13,6 +13,7 @@ import {
   Input,
   TextArea,
 } from "react-aria-components";
+import { safeAssign } from "@/utils";
 import { bemHelper, composeClasses } from "@/utils/rac";
 
 interface TextFieldProps extends AriaTextFieldProps {
@@ -31,14 +32,20 @@ function useTextareaResize() {
   function onChange() {
     const input = ref.current;
     if (!input) return;
-    const prevAlignment = input.style.alignSelf;
-    const prevOverflow = input.style.overflow;
-    input.style.alignSelf = "start";
-    input.style.overflow = "hidden";
-    input.style.height = "auto";
+    const { alignSelf: prevAlignment, overflow: prevOverflow } = input.style;
+
+    safeAssign(input.style, {
+      alignSelf: "start",
+      overflow: "hidden",
+      height: "auto",
+    });
+
     input.style.height = `${input.scrollHeight + (input.offsetHeight - input.clientHeight)}px`;
-    input.style.alignSelf = prevAlignment;
-    input.style.overflow = prevOverflow;
+
+    safeAssign(input.style, {
+      alignSelf: prevAlignment,
+      overflow: prevOverflow,
+    });
   }
   return { ref, onChange };
 }

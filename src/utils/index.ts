@@ -52,3 +52,6 @@ export function assert(
 export function specify<T>(value: T): asserts value is T {
   // no-op
 }
+
+export const safeAssign: <T>(target: T, ...sources: Array<Partial<T>>) => T =
+  Object.assign;
