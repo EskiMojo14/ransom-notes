@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@react-aria/utils':
+        specifier: ^3.30.0
+        version: 3.30.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@reduxjs/toolkit':
         specifier: https://pkg.csb.dev/reduxjs/redux-toolkit/commit/89bb7334/@reduxjs/toolkit/_pkg.tgz
         version: https://pkg.csb.dev/reduxjs/redux-toolkit/commit/89bb7334/@reduxjs/toolkit/_pkg.tgz(react-redux@9.2.0(@types/react@19.1.8)(react@19.1.0)(redux@5.0.1))(react@19.1.0)

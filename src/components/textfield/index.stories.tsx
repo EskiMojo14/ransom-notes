@@ -15,7 +15,7 @@ const meta = {
     isDisabled: false,
     isInvalid: false,
     multiline: false,
-    value: "FOO",
+    defaultValue: "FOO",
     icon: <Symbol>password_2</Symbol>,
   },
 } satisfies Meta<typeof TextField>;

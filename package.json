@@ -14,6 +14,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@react-aria/utils": "^3.30.0",
     "@reduxjs/toolkit": "https://pkg.csb.dev/reduxjs/redux-toolkit/commit/89bb7334/@reduxjs/toolkit/_pkg.tgz",
     "@supabase/postgrest-js": "1.19.4",
     "@supabase/supabase-js": "^2.52.1",

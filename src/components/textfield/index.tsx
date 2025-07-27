@@ -1,4 +1,6 @@
-import type { ReactNode } from "react";
+import { mergeRefs } from "@react-aria/utils";
+import type { ReactNode, RefAttributes } from "react";
+import { useRef } from "react";
 import type {
   TextFieldProps as AriaTextFieldProps,
   ValidationResult,
@@ -24,6 +26,23 @@ interface TextFieldProps extends AriaTextFieldProps {
 
 const cls = bemHelper("textfield");
 
+function useTextareaResize() {
+  const ref = useRef<HTMLTextAreaElement>(null);
+  function onChange() {
+    const input = ref.current;
+    if (!input) return;
+    const prevAlignment = input.style.alignSelf;
+    const prevOverflow = input.style.overflow;
+    input.style.alignSelf = "start";
+    input.style.overflow = "hidden";
+    input.style.height = "auto";
+    input.style.height = `${input.scrollHeight + (input.offsetHeight - input.clientHeight)}px`;
+    input.style.alignSelf = prevAlignment;
+    input.style.overflow = prevOverflow;
+  }
+  return { ref, onChange };
+}
+
 export function TextField({
   label,
   description,
@@ -31,8 +50,10 @@ export function TextField({
   errorMessage,
   className,
   multiline,
+  ref,
   ...props
-}: TextFieldProps) {
+}: TextFieldProps & RefAttributes<HTMLInputElement & HTMLTextAreaElement>) {
+  const { ref: innerRef, onChange } = useTextareaResize();
   return (
     <AriaTextField
       {...props}
@@ -59,6 +80,8 @@ export function TextField({
               extra: "body1",
             })}
             placeholder={placeholder}
+            ref={mergeRefs(ref, innerRef)}
+            onChange={onChange}
           />
         ) : (
           <Input
@@ -68,6 +91,7 @@ export function TextField({
               extra: "body1",
             })}
             placeholder={placeholder}
+            ref={ref}
           />
         )}
       </label>

@@ -30,7 +30,8 @@
     color: inherit;
     padding: 0.5rem;
     &.textfield__input--textarea {
-      resize: vertical;
+      resize: none;
+      min-height: 4rem;
     }
     &::placeholder {
       color: var(--input-placeholder);
