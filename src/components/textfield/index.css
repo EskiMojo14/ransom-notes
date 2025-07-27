@@ -65,4 +65,9 @@
       border-color: var(--input-error-border);
     }
   }
+  &.textfield--multiline {
+    .textfield__input-container {
+      align-items: flex-start;
+    }
+  }
 }
