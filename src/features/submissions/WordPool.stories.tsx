@@ -8,6 +8,7 @@ import { tableUrl } from "@/supabase/mocks";
 import type { Enums } from "@/supabase/types";
 import { assert } from "@/utils";
 import { roundApi } from "../round/api";
+import { clearSubmission } from "./slice";
 import { WordPool } from "./WordPool";
 
 const meta = {
@@ -51,7 +52,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default = {
-  async play({ canvas, userEvent, step }) {
+  async play({ canvas, userEvent, step, parameters }) {
+    const store = getStore(parameters);
+
+    store.dispatch(clearSubmission());
+
     const buttons = await canvas.findAllByRole("button");
 
     await step("Click 3 random buttons", async () => {
