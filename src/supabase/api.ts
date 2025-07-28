@@ -13,7 +13,8 @@ import type {
 
 export interface SerializedPostgrestError
   extends SerializedError,
-    Partial<Omit<PostgrestError, keyof SerializedError>> {}
+    Partial<Omit<PostgrestError, keyof SerializedError>>,
+    SupabaseMeta {}
 
 export interface SupabaseMeta {
   status?: number;
@@ -22,12 +23,14 @@ export interface SupabaseMeta {
 
 const serializePostgrestError = (
   error: PostgrestError,
+  meta: SupabaseMeta,
 ): SerializedPostgrestError => {
   return {
     ...miniSerializeError(error),
     code: error.code,
     details: error.details,
     hint: error.hint,
+    ...meta,
   };
 };
 
@@ -69,9 +72,10 @@ export function supabaseQueryFn<RawResult, QueryArg, Result>(
     let builder = query(arg);
     if (builder.abortSignal) builder = builder.abortSignal(api.signal);
     const { data, error, status, statusText } = await builder;
+    const meta: SupabaseMeta = { status, statusText };
     return error
-      ? { error: serializePostgrestError(error), meta: { status, statusText } }
-      : { data: transformResponse(data), meta: { status, statusText } };
+      ? { error: serializePostgrestError(error, meta), meta }
+      : { data: transformResponse(data), meta };
   };
 }
 

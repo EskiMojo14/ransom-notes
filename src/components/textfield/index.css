@@ -10,6 +10,7 @@
     border: 2px solid var(--input-border);
     border-radius: var(--shape-medium);
     color: var(--on-input);
+    min-height: 2.5rem;
     .textfield__icon {
       display: flex;
       align-items: center;

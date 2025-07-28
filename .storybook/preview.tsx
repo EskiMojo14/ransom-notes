@@ -13,7 +13,7 @@ initialize({
         request.url.startsWith("https://fonts.googleapis.com")
       )
     ) {
-      print.error();
+      print.warning();
     }
   },
 });

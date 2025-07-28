@@ -69,14 +69,16 @@ export function TextField({
         className,
       )}
     >
-      <Label
-        className={cls({
-          element: "label",
-          extra: "body1",
-        })}
-      >
-        {label}
-      </Label>
+      {label && (
+        <Label
+          className={cls({
+            element: "label",
+            extra: "body1",
+          })}
+        >
+          {label}
+        </Label>
+      )}
       <label className={cls("input-container")}>
         {!!props.icon && <div className={cls("icon")}>{props.icon}</div>}
         {multiline ? (

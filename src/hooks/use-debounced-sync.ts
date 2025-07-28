@@ -1,6 +1,7 @@
 import { debounce } from "lodash";
 import type { SetStateAction } from "react";
 import { useMemo } from "react";
+import { useDevDebugValue } from "./use-dev-debug-value";
 import { useUpdatedState } from "./use-updated-state";
 
 const isSetter = <T>(value: SetStateAction<T>): value is (prev: T) => T =>
@@ -20,5 +21,6 @@ export function useDebouncedSync<T>(
       return newValue;
     });
   }
+  useDevDebugValue(state);
   return [state, setDebounced, setImmediately] as const;
 }

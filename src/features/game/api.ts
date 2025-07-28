@@ -12,8 +12,8 @@ type Profile = Pick<Tables<"profiles">, "display_name" | "avatar_url">;
 
 const gameSelect = `
   *,
-  creator_profile:profiles(${profileSelect}),
-  participants(profiles(${profileSelect}))
+  creator_profile:profiles!games_creator_fkey1(${profileSelect}),
+  participants:profiles!participants(${profileSelect})
 ` as const;
 interface RawGame extends Tables<"games"> {
   creator_profile: Profile;
@@ -73,4 +73,8 @@ export const gameApi = api
     }),
   });
 
-export const { useGetGameByInviteCodeQuery, useCreateGameMutation } = gameApi;
+export const {
+  useGetGameByInviteCodeQuery,
+  useLazyGetGameByInviteCodeQuery,
+  useCreateGameMutation,
+} = gameApi;

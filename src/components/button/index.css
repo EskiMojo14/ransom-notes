@@ -11,6 +11,7 @@ a.button {
   justify-content: center;
   gap: 0.5rem;
   text-decoration: none;
+  translate: 0 -0.25rem;
   transition:
     background-color 120ms,
     box-shadow 120ms ease-in-out,
@@ -123,23 +124,24 @@ a.button {
     box-shadow: 0 0.25rem var(--button-shadow);
     &[data-hovered] {
       box-shadow: 0 0.5rem var(--button-shadow);
-      translate: 0 -0.25rem;
+      translate: 0 -0.5rem;
     }
     &[data-focus-visible] {
       box-shadow: 0 0.5rem var(--button-focus-shadow);
-      translate: 0 -0.25rem;
+      translate: 0 -0.5rem;
       &[data-pressed] {
         box-shadow: 0 0 var(--button-focus-shadow);
       }
     }
     &[data-pressed] {
       box-shadow: 0 0 var(--button-shadow);
-      translate: 0 0.25rem;
+      translate: 0 0;
     }
   }
 
   &[data-disabled] {
     box-shadow: 0 0 var(--button-shadow);
+    translate: 0 0;
     background-color: var(--paper);
     color: var(--on-paper);
     cursor: not-allowed;
