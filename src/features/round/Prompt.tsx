@@ -6,12 +6,12 @@ export interface PromptProps {
 }
 
 export function Prompt({ gameId }: PromptProps) {
-  const { question } = useGetActiveRoundQuery(gameId, {
-    selectFromResult: ({ data }) => ({ question: data?.question }),
+  const { prompt } = useGetActiveRoundQuery(gameId, {
+    selectFromResult: ({ data }) => ({ prompt: data?.prompt }),
   });
   return (
     <div className={styles.prompt}>
-      <h5 className={styles.text}>{question}</h5>
+      <h5 className={styles.text}>{prompt}</h5>
     </div>
   );
 }

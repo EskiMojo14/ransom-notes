@@ -73,7 +73,7 @@ export type Database = {
         Row: {
           active_round: number | null;
           created_at: string;
-          creator: string;
+          creator_id: string;
           first_to: number;
           id: number;
           invite_code: string;
@@ -85,7 +85,7 @@ export type Database = {
         Insert: {
           active_round?: number | null;
           created_at?: string;
-          creator: string;
+          creator_id: string;
           first_to?: number;
           id?: number;
           invite_code: string;
@@ -97,7 +97,7 @@ export type Database = {
         Update: {
           active_round?: number | null;
           created_at?: string;
-          creator?: string;
+          creator_id?: string;
           first_to?: number;
           id?: number;
           invite_code?: string;
@@ -115,8 +115,8 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "games_creator_fkey1";
-            columns: ["creator"];
+            foreignKeyName: "games_creator_id_fkey1";
+            columns: ["creator_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["id"];
@@ -174,30 +174,48 @@ export type Database = {
         };
         Relationships: [];
       };
+      prompts: {
+        Row: {
+          family_friendly: boolean;
+          id: number;
+          prompt: string;
+        };
+        Insert: {
+          family_friendly?: boolean;
+          id?: number;
+          prompt: string;
+        };
+        Update: {
+          family_friendly?: boolean;
+          id?: number;
+          prompt?: string;
+        };
+        Relationships: [];
+      };
       rounds: {
         Row: {
           created_at: string;
           game_id: number;
           id: number;
-          judge: string | null;
+          judge_id: string | null;
           phase: Database["public"]["Enums"]["round_phase"];
-          question: string;
+          prompt_id: number;
         };
         Insert: {
           created_at?: string;
           game_id: number;
           id?: number;
-          judge?: string | null;
+          judge_id?: string | null;
           phase?: Database["public"]["Enums"]["round_phase"];
-          question: string;
+          prompt_id: number;
         };
         Update: {
           created_at?: string;
           game_id?: number;
           id?: number;
-          judge?: string | null;
+          judge_id?: string | null;
           phase?: Database["public"]["Enums"]["round_phase"];
-          question?: string;
+          prompt_id?: number;
         };
         Relationships: [
           {
@@ -208,10 +226,17 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "rounds_judge_fkey1";
-            columns: ["judge"];
+            foreignKeyName: "rounds_judge_id_fkey1";
+            columns: ["judge_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "rounds_prompt_id_fkey";
+            columns: ["prompt_id"];
+            isOneToOne: false;
+            referencedRelation: "prompts";
             referencedColumns: ["id"];
           },
         ];

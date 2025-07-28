@@ -57,7 +57,7 @@ const meta = {
           >({
             active_round: {
               id: 1,
-              question: randQuestion(),
+              prompt: { prompt: randQuestion() },
               judge: null,
               created_at: randRecentDate().toISOString(),
               phase: "submission",

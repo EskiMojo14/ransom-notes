@@ -49,7 +49,7 @@ export function assert(
   if (!condition) throw new Error(message);
 }
 
-export function specify<T>(value: T): asserts value is T {
+export function specify<T>(_value: T): asserts _value is T {
   // no-op
 }
 

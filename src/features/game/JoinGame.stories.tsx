@@ -16,7 +16,11 @@ const mockGame = (
   invite_code:
     new URL(request.url).searchParams.get("invite_code")?.replace("eq.", "") ??
     "",
-  creator: "1",
+  creator_id: "1",
+  creator: {
+    display_name: randUserName(),
+    avatar_url: null,
+  },
   first_to: 10,
   max_submission_length: 100,
   pool_size: 7,
@@ -24,10 +28,6 @@ const mockGame = (
   voting_mode: "judge",
   created_at: randRecentDate().toISOString(),
   active_round: 1,
-  creator_profile: {
-    display_name: randUserName(),
-    avatar_url: null,
-  },
   participants: [],
 });
 

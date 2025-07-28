@@ -2,7 +2,6 @@ import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
 import type { Tables, TablesInsert } from "@/supabase/types";
 import type { Compute, PickRequired } from "@/utils/types";
-import type { GameConfig } from "./slice";
 
 const profileSelect = `
   display_name, 
@@ -12,21 +11,16 @@ type Profile = Pick<Tables<"profiles">, "display_name" | "avatar_url">;
 
 const gameSelect = `
   *,
-  creator_profile:profiles!games_creator_fkey1(${profileSelect}),
+  creator:profiles!games_creator_fkey1(${profileSelect}),
   participants:profiles!participants(${profileSelect})
 ` as const;
 interface RawGame extends Tables<"games"> {
-  creator_profile: Profile;
+  creator: Profile;
   participants: Array<{ profiles: Profile }>;
 }
 
-const transformGame = ({
-  creator_profile,
-  participants,
-  ...rawGame
-}: RawGame) => ({
+const transformGame = ({ participants, ...rawGame }: RawGame) => ({
   ...rawGame,
-  creator: creator_profile,
   participants: participants.map(({ profiles }) => profiles),
 });
 export type Game = ReturnType<typeof transformGame>;
@@ -52,7 +46,7 @@ export const gameApi = api
       }),
       createGame: build.mutation<
         Pick<Game, "invite_code" | "id">,
-        Compute<PickRequired<TablesInsert<"games">, "creator"> & GameConfig>,
+        Compute<PickRequired<TablesInsert<"games">, "creator_id">>,
         Pick<Game, "invite_code" | "id">
       >({
         queryFn: supabaseQueryFn((game) =>

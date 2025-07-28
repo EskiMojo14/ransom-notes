@@ -4,16 +4,22 @@ import { api, supabaseQueryFn } from "@/supabase/api";
 import type { Tables } from "@/supabase/types";
 
 const roundSelect = `
-  question, 
+  prompt:prompts(prompt), 
   created_at, 
   id, 
   phase,
   judge:profiles(display_name)
 ` as const;
-export interface Round
-  extends Pick<Tables<"rounds">, "question" | "created_at" | "id" | "phase"> {
+interface RawRound
+  extends Pick<Tables<"rounds">, "created_at" | "id" | "phase"> {
   judge: Pick<Tables<"profiles">, "display_name"> | null;
+  prompt: { prompt: string };
 }
+const transformRound = ({ prompt: { prompt }, ...round }: RawRound) => ({
+  ...round,
+  prompt,
+});
+export type Round = ReturnType<typeof transformRound>;
 
 export const roundApi = api
   .enhanceEndpoints({ addTagTypes: ["Round", "Game", "Word"] })
@@ -22,7 +28,7 @@ export const roundApi = api
       getActiveRound: build.query<
         Round | null,
         Game["id"],
-        { active_round: Round }
+        { active_round: RawRound }
       >({
         queryFn: supabaseQueryFn({
           query: (gameId) =>
@@ -35,7 +41,8 @@ export const roundApi = api
               )
               .eq("id", gameId)
               .single(),
-          transformResponse: ({ active_round }) => active_round,
+          transformResponse: ({ active_round }) =>
+            active_round && transformRound(active_round),
         }),
         providesTags: (res, _err, gameId) => [
           { type: "Game", id: gameId },
@@ -43,10 +50,12 @@ export const roundApi = api
         ],
       }),
 
-      getGameRounds: build.query<Array<Round>, Game["id"], Array<Round>>({
-        queryFn: supabaseQueryFn((gameId) =>
-          supabase.from("rounds").select(roundSelect).eq("game_id", gameId),
-        ),
+      getGameRounds: build.query<Array<Round>, Game["id"], Array<RawRound>>({
+        queryFn: supabaseQueryFn({
+          query: (gameId) =>
+            supabase.from("rounds").select(roundSelect).eq("game_id", gameId),
+          transformResponse: (rounds) => rounds.map(transformRound),
+        }),
         providesTags: (res, _err, gameId) => [
           { type: "Game", id: gameId },
           ...(res ? res.map(({ id }) => ({ type: "Round" as const, id })) : []),

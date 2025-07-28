@@ -34,7 +34,7 @@ const meta = {
           >({
             active_round: {
               id: 1,
-              question: randQuestion(),
+              prompt: { prompt: randQuestion() },
               judge: null,
               created_at: randRecentDate().toISOString(),
               phase: "submission",
@@ -97,7 +97,7 @@ export const Disabled = {
           >({
             active_round: {
               id: 1,
-              question: randQuestion(),
+              prompt: { prompt: randQuestion() },
               judge: null,
               created_at: randRecentDate().toISOString(),
               phase: "submission",

@@ -23,7 +23,7 @@ worker.use(
       >({
         active_round: {
           id: 1,
-          question: randQuestion(),
+          prompt: { prompt: randQuestion() },
           judge: null,
           created_at: randRecentDate().toISOString(),
           phase: "submission",
@@ -35,7 +35,11 @@ worker.use(
     >({
       id: 1,
       invite_code: "1234",
-      creator: "1",
+      creator_id: "1",
+      creator: {
+        display_name: randUserName(),
+        avatar_url: null,
+      },
       first_to: 10,
       max_submission_length: 100,
       pool_size: 7,
@@ -43,10 +47,6 @@ worker.use(
       voting_mode: "judge",
       created_at: randRecentDate().toISOString(),
       active_round: 1,
-      creator_profile: {
-        display_name: randUserName(),
-        avatar_url: null,
-      },
       participants: [],
     });
   }),
