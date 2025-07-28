@@ -1,14 +1,9 @@
 import type { ThunkAction, UnknownAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
-import { gameSlice } from "./features/game/slice";
 import { submissionSlice } from "./features/submissions/slice";
 import { api as supabaseApi } from "./supabase/api";
 
-export const rootReducer = combineSlices(
-  gameSlice,
-  supabaseApi,
-  submissionSlice,
-);
+export const rootReducer = combineSlices(supabaseApi, submissionSlice);
 
 export type RootState = ReturnType<typeof rootReducer>;
 export type PreloadedState = Parameters<typeof rootReducer>[0];
