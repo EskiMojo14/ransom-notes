@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GameInviteCodeRouteImport } from './routes/game/$inviteCode'
 import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,36 +37,47 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/game/$inviteCode': typeof GameInviteCodeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/game/$inviteCode': typeof GameInviteCodeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/game/$inviteCode': typeof GameInviteCodeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/callback' | '/game/$inviteCode'
+  fullPaths: '/' | '/login' | '/auth/callback' | '/game/$inviteCode'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/callback' | '/game/$inviteCode'
-  id: '__root__' | '/' | '/auth/callback' | '/game/$inviteCode'
+  to: '/' | '/login' | '/auth/callback' | '/game/$inviteCode'
+  id: '__root__' | '/' | '/login' | '/auth/callback' | '/game/$inviteCode'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   GameInviteCodeRoute: typeof GameInviteCodeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   GameInviteCodeRoute: GameInviteCodeRoute,
 }

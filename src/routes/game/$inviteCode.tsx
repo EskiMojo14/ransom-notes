@@ -1,6 +1,8 @@
 import { randRecentDate, randUserName } from "@ngneat/falso";
 import { createFileRoute } from "@tanstack/react-router";
 import { http, HttpResponse } from "msw";
+import { env } from "@/env";
+import { ensureAuthenticated } from "@/features/auth/user";
 import { gameApi, useGetGameByInviteCodeQuery } from "@/features/game/api";
 import type { roundApi } from "@/features/round/api";
 import { CurrentSubmission } from "@/features/submissions/CurrentSubmission";
@@ -60,6 +62,9 @@ worker.use(
 );
 
 export const Route = createFileRoute("/game/$inviteCode")({
+  async beforeLoad() {
+    if (!env.VITE_USE_MOCKS) await ensureAuthenticated();
+  },
   async loader({ params: { inviteCode }, context: { store } }) {
     const game = await store
       .dispatch(gameApi.endpoints.getGameByInviteCode.initiate(inviteCode))

@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { GithubSignin } from "@/features/auth/GithubSignin";
+import { env } from "@/env";
+import { ensureAuthenticated } from "@/features/auth/user";
 
 export const Route = createFileRoute("/")({
+  async beforeLoad() {
+    if (!env.VITE_USE_MOCKS) await ensureAuthenticated();
+  },
   component: App,
 });
 
 function App() {
-  return (
-    <>
-      <GithubSignin />
-    </>
-  );
+  return null;
 }

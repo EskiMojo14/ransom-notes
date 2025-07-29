@@ -1,6 +1,7 @@
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { env } from "./env";
 import { routeTree } from "./routeTree.gen";
 import { store } from "./store";
 
@@ -28,7 +29,7 @@ declare module "@tanstack/react-router" {
 }
 
 async function enableMocking() {
-  if (!import.meta.env.DEV) return;
+  if (!env.VITE_USE_MOCKS) return;
   const { worker } = await import("./mocks/browser");
   return worker.start();
 }
