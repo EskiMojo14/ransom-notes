@@ -5,6 +5,7 @@ import { env } from "@/env";
 import { ensureAuthenticated } from "@/features/auth/user";
 import { gameApi, useGetGameByInviteCodeQuery } from "@/features/game/api";
 import type { roundApi } from "@/features/round/api";
+import { Prompt } from "@/features/round/Prompt";
 import { CurrentSubmission } from "@/features/submissions/CurrentSubmission";
 import { WordPool } from "@/features/submissions/WordPool";
 import { worker } from "@/mocks/browser";
@@ -42,9 +43,7 @@ worker.use(
         display_name: randUserName(),
         avatar_url: null,
       },
-      first_to: 10,
-      max_submission_length: 100,
-      pool_size: 7,
+      first_to: 5,
       state: "running",
       voting_mode: "judge",
       created_at: randRecentDate().toISOString(),
@@ -84,6 +83,7 @@ function RouteComponent() {
   if (!game) return null;
   return (
     <>
+      <Prompt gameId={game.id} />
       <CurrentSubmission gameId={game.id} roundId={roundId} userId={userId} />
       <WordPool gameId={game.id} roundId={roundId} userId={userId} />
     </>

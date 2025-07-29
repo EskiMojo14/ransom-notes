@@ -6,14 +6,13 @@ import { api, supabaseQueryFn } from "@/supabase/api";
 import type { Tables } from "@/supabase/types";
 
 const submissionSelect = `
-  rows, 
-  created_at, 
+  rows,
   user_id, 
   author:profiles(display_name)
 ` as const;
 
 export interface Submission
-  extends Pick<Tables<"submissions">, "rows" | "created_at" | "user_id"> {
+  extends Pick<Tables<"submissions">, "rows" | "user_id"> {
   author: Pick<Tables<"profiles">, "display_name">;
 }
 

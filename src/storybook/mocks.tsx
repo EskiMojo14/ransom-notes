@@ -1,4 +1,4 @@
-import { random, shuffle } from "es-toolkit";
+import { randomInt, shuffle } from "es-toolkit";
 
 const questions = [
   "You hand a note to the cashier telling them you're robbing the place, and it says:",
@@ -10,7 +10,7 @@ const questions = [
 
 export const randQuestion = () =>
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  questions[random(questions.length)]!;
+  questions[randomInt(questions.length)]!;
 
 const words = [
   "cadaver",
@@ -94,17 +94,17 @@ export const randWordPool = () => shuffle(words);
 
 export const randSubmission = () =>
   Array.from({ length: 3 }, () => {
-    const start = random(words.length - 5);
-    const end = random(start + 3, start + 5);
+    const start = randomInt(words.length - 5);
+    const end = randomInt(start + 3, start + 5);
     return words.slice(start, end).join(" ");
   });
 
 export const randIndexes = (length: number, count: number) => {
   const picked = new Set<number>();
   while (picked.size < count) {
-    let idx = random(length);
+    let idx = randomInt(length);
     while (picked.has(idx)) {
-      idx = random(length);
+      idx = randomInt(length);
     }
     picked.add(idx);
   }
