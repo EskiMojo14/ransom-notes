@@ -61,7 +61,7 @@ export function CreateGame() {
           <Symbol>ballot</Symbol>
           <TwoLineRadioLabel
             label="Jury"
-            description="Winner is decided by the most votes (judge becomes tiebreaker)"
+            description="Winner is decided by the most votes"
           />
         </Radio>
       </RadioGroup>
