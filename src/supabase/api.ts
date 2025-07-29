@@ -5,7 +5,7 @@ import type {
   BaseQueryFn,
   QueryReturnValue,
 } from "@reduxjs/toolkit/query";
-import { createApi } from "@reduxjs/toolkit/query/react";
+import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import type {
   PostgrestError,
   PostgrestSingleResponse,
@@ -103,19 +103,17 @@ export function supabaseQueryFn<RawResult, QueryArg, Result>(
   };
 }
 
-const fakeBaseQuery: BaseQueryFn<
+const supaFakeBaseQuery: BaseQueryFn<
   void,
   unknown,
   SerializedPostgrestError,
   SupabaseExtraOptions,
   SupabaseMeta
-> = () => {
-  throw new Error("This should never be called, use queryFn instead");
-};
+> = fakeBaseQuery();
 
 export const api = createApi({
   reducerPath: "supabase",
-  baseQuery: fakeBaseQuery,
+  baseQuery: supaFakeBaseQuery,
   endpoints: () => ({}),
   tagTypes: ["User"],
 });
