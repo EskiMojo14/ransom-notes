@@ -47,10 +47,10 @@ export function Button({
           <>
             {composeRenderProps(
               icon,
-              (icon, { defaultChildren }) =>
+              (icon, { defaultChildren, isPending }) =>
                 !!icon && (
                   <span className={cls("icon")}>
-                    {replaceIconWhenPending && renderProps.isPending
+                    {replaceIconWhenPending && isPending
                       ? defaultChildren
                       : icon}
                   </span>
