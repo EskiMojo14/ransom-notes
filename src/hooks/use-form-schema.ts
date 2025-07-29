@@ -11,8 +11,10 @@ export function useFormSchema<T extends v.GenericSchema>(
 ) {
   const [formErrors, setFormErrors] = useState<ValidationErrors>();
   function handleSubmit(
-    onSuccess: (output: v.InferOutput<T>) => void,
-    onError?: (issues: [v.InferIssue<T>, ...Array<v.InferIssue<T>>]) => void,
+    onSuccess: (output: v.InferOutput<T>) => void | Promise<void>,
+    onError?: (
+      issues: [v.InferIssue<T>, ...Array<v.InferIssue<T>>],
+    ) => void | Promise<void>,
   ) {
     return function onSubmit(event: FormEvent<HTMLFormElement>) {
       event.preventDefault();
@@ -21,11 +23,11 @@ export function useFormSchema<T extends v.GenericSchema>(
       const parseRes = v.safeParse(schema, decoded);
       if (!parseRes.success) {
         setFormErrors(v.flatten(parseRes.issues).nested as ValidationErrors);
-        onError?.(parseRes.issues);
+        void onError?.(parseRes.issues);
         return;
       }
       setFormErrors(undefined);
-      onSuccess(parseRes.output);
+      void onSuccess(parseRes.output);
     };
   }
   return { handleSubmit, formErrors };

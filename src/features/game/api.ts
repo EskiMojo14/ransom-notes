@@ -66,6 +66,7 @@ export const gameApi = api
                 { type: "Game", id: res.invite_code },
               ]
             : [],
+        extraOptions: { minimumPendingTime: true },
       }),
     }),
   });

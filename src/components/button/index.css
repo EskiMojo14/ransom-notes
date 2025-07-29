@@ -18,6 +18,7 @@ a.button {
     translate 120ms ease-in-out,
     border 120ms ease-in-out,
     margin 120ms ease-in-out;
+  --mdc-theme-primary: currentColor;
   &:focus {
     outline: none;
   }

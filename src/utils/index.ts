@@ -70,3 +70,6 @@ export const unsafeEntries: <T extends object>(
 ) => Array<{ [K in keyof T]: [K, T[K]] }[keyof T]> = Object.entries;
 export const unsafeKeys: <T extends object>(obj: T) => Array<keyof T> =
   Object.keys;
+
+export const wait = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));

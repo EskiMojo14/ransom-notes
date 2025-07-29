@@ -5,9 +5,10 @@ import { Radio, RadioGroup, TwoLineRadioLabel } from "@/components/radio";
 import { Symbol } from "@/components/symbol";
 import { InlineTextField } from "@/components/textfield";
 import { useFormSchema } from "@/hooks/use-form-schema";
-import { Constants, type Enums, type TablesInsert } from "@/supabase/types";
+import type { Enums, TablesInsert } from "@/supabase/types";
+import { Constants } from "@/supabase/types";
 import { unsafeEntries } from "@/utils";
-import { makeInviteCode } from "./api";
+import { makeInviteCode, useCreateGameMutation } from "./api";
 import styles from "./CreateGame.module.css";
 
 type GameInput = TablesInsert<"games">;
@@ -24,7 +25,7 @@ const radioOptions: Record<
   judge: {
     icon: "gavel",
     label: "Judge",
-    description: "Set order for judges",
+    description: "Fixed order for judges",
   },
   jury: {
     icon: "ballot",
@@ -47,16 +48,20 @@ export function CreateGame() {
   const { formErrors, handleSubmit } = useFormSchema(formSchema, {
     numbers: ["first_to"],
   });
+  const [createGame, { isLoading }] = useCreateGameMutation({
+    selectFromResult: ({ isLoading }) => ({ isLoading }),
+  });
   return (
     <Form
       className={styles.form}
       validationErrors={formErrors}
-      onSubmit={handleSubmit((values) => {
-        console.log({
+      onSubmit={handleSubmit(async (values) => {
+        const data = await createGame({
           ...values,
           creator_id: "1",
           invite_code: makeInviteCode(),
-        } satisfies GameInput);
+        }).unwrap();
+        console.log(data);
       }, console.error)}
     >
       <InlineTextField
@@ -83,8 +88,10 @@ export function CreateGame() {
         type="submit"
         icon={<Symbol>door_open</Symbol>}
         variant="elevated"
+        isPending={isLoading}
+        isDisabled={isLoading}
       >
-        Create game
+        {({ isPending }) => (isPending ? "Creating game" : "Create game")}
       </Button>
     </Form>
   );

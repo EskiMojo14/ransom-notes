@@ -10,6 +10,7 @@ import type {
   PostgrestError,
   PostgrestSingleResponse,
 } from "@supabase/supabase-js";
+import { wait } from "@/utils";
 
 export interface SerializedPostgrestError
   extends SerializedError,
@@ -20,6 +21,16 @@ export interface SupabaseMeta {
   status?: number;
   statusText?: string;
 }
+
+export interface SupabaseExtraOptions {
+  /**
+   * Pend for at least this many milliseconds before returning, to avoid loading indicators from flashing on the screen.
+   * If set to `true`, uses a default value of 1000ms.
+   */
+  minimumPendingTime?: number | true;
+}
+
+const minPendingTime = 1000;
 
 const serializePostgrestError = (
   error: PostgrestError,
@@ -48,6 +59,7 @@ interface SupabaseQueryFnConfig<RawResult, QueryArg, Result = RawResult> {
 type SupabaseQueryFn<RawResult, QueryArg, Result = RawResult> = (
   arg: QueryArg,
   api: BaseQueryApi,
+  extraOptions: SupabaseExtraOptions,
 ) => Promise<QueryReturnValue<Result, SerializedPostgrestError, SupabaseMeta>>;
 
 export function supabaseQueryFn<Result, QueryArg>(
@@ -61,7 +73,7 @@ export function supabaseQueryFn<RawResult, QueryArg, Result>(
     | ((arg: QueryArg) => QueryBuilder<RawResult>)
     | SupabaseQueryFnConfig<RawResult, QueryArg, Result>,
 ): SupabaseQueryFn<RawResult, QueryArg, Result> {
-  return async function queryFn(arg, api) {
+  return async function queryFn(arg, { signal }, extraOptions) {
     const {
       query,
       transformResponse = (data) => data as unknown as Result,
@@ -70,8 +82,17 @@ export function supabaseQueryFn<RawResult, QueryArg, Result>(
         ? { query: queryOrConfig }
         : queryOrConfig;
     let builder = query(arg);
-    if (builder.abortSignal) builder = builder.abortSignal(api.signal);
-    const { data, error, status, statusText } = await builder;
+    if (builder.abortSignal) builder = builder.abortSignal(signal);
+    const [{ data, error, status, statusText }] = await Promise.all([
+      builder,
+      extraOptions.minimumPendingTime
+        ? wait(
+            extraOptions.minimumPendingTime === true
+              ? minPendingTime
+              : extraOptions.minimumPendingTime,
+          )
+        : undefined,
+    ]);
     const meta: SupabaseMeta = { status, statusText };
     return error
       ? { error: serializePostgrestError(error, meta), meta }
@@ -82,7 +103,9 @@ export function supabaseQueryFn<RawResult, QueryArg, Result>(
 const fakeBaseQuery: BaseQueryFn<
   void,
   unknown,
-  SerializedPostgrestError
+  SerializedPostgrestError,
+  SupabaseExtraOptions,
+  SupabaseMeta
 > = () => {
   throw new Error("This should never be called, use queryFn instead");
 };

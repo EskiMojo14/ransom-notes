@@ -14,6 +14,7 @@ const meta = {
     variant: "elevated",
     color: "primary",
     iconOnly: false,
+    isPending: false,
   },
   argTypes: {
     variant: {

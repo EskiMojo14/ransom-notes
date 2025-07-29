@@ -1,5 +1,6 @@
 import { clsx } from "clsx";
 import type { ComponentPropsWithRef } from "react";
+import { bemHelper } from "@/utils/rac";
 
 export interface SymbolProps extends ComponentPropsWithRef<"span"> {
   fill?: boolean;
@@ -15,6 +16,8 @@ export interface SymbolProps extends ComponentPropsWithRef<"span"> {
   flipRtl?: boolean;
 }
 
+const cls = bemHelper("symbol");
+
 export function Symbol({
   fill,
   weight,
@@ -29,8 +32,12 @@ export function Symbol({
     <span
       aria-hidden="true"
       {...props}
-      className={clsx("symbol material-symbols-outlined", className)}
-      data-flip-rtl={flipRtl}
+      className={cls({
+        modifiers: {
+          "flip-rtl": flipRtl,
+        },
+        extra: clsx("material-symbols-outlined", className),
+      })}
       style={{
         "--icon-size": size,
         "--icon-weight": weight,

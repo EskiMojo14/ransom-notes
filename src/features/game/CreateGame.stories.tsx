@@ -1,9 +1,26 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { http, HttpResponse } from "msw";
+import type { MswParameters } from "msw-storybook-addon";
+import { withRedux } from "@/storybook/decorators";
+import { tableUrl } from "@/supabase/mocks";
+import type { gameApi } from "./api";
 import { CreateGame } from "./CreateGame";
 
 const meta = {
   component: CreateGame,
   title: "Features/Game/CreateGame",
+  decorators: [withRedux],
+  parameters: {
+    msw: {
+      handlers: [
+        http.post(tableUrl("games"), () =>
+          HttpResponse.json<
+            typeof gameApi.endpoints.createGame.Types.RawResultType
+          >({ invite_code: "1234", id: 1 }),
+        ),
+      ],
+    },
+  } satisfies MswParameters,
 } satisfies Meta<typeof CreateGame>;
 
 export default meta;

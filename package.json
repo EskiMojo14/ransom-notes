@@ -17,6 +17,7 @@
   "dependencies": {
     "@react-aria/utils": "^3.30.0",
     "@reduxjs/toolkit": "https://pkg.csb.dev/reduxjs/redux-toolkit/commit/89bb7334/@reduxjs/toolkit/_pkg.tgz",
+    "@rmwc/circular-progress": "^14.3.5",
     "@supabase/postgrest-js": "1.19.4",
     "@supabase/supabase-js": "^2.52.1",
     "@tanstack/react-router": "^1.128.6",

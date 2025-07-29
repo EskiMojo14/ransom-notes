@@ -1,4 +1,6 @@
-import type { ReactNode, RefAttributes } from "react";
+import { CircularProgress } from "@rmwc/circular-progress";
+import "@rmwc/circular-progress/styles";
+import type { RefAttributes } from "react";
 import type { ButtonProps as AriaButtonProps } from "react-aria-components";
 import {
   Button as AriaButton,
@@ -9,10 +11,11 @@ import { bemHelper, composeClasses } from "@/utils/rac";
 const cls = bemHelper("button");
 
 interface ButtonProps extends AriaButtonProps {
-  icon?: ReactNode;
+  icon?: AriaButtonProps["children"];
   variant?: "elevated" | "filled" | "outlined" | "text";
   color?: "primary" | "secondary" | "error";
   iconOnly?: boolean;
+  replaceIconWhenPending?: boolean;
 }
 
 export function Button({
@@ -22,6 +25,7 @@ export function Button({
   variant = "text",
   color = "primary",
   iconOnly = false,
+  replaceIconWhenPending = true,
   ...props
 }: ButtonProps & RefAttributes<HTMLButtonElement>) {
   return (
@@ -38,12 +42,30 @@ export function Button({
         className,
       )}
     >
-      {composeRenderProps(children, (children) => (
-        <>
-          {!!icon && <span className={cls("icon")}>{icon}</span>}
-          {iconOnly ? <span className="sr-only">{children}</span> : children}
-        </>
-      ))}
+      {composeRenderProps(children, (children, renderProps) => {
+        return (
+          <>
+            {composeRenderProps(
+              icon,
+              (icon, { defaultChildren }) =>
+                !!icon && (
+                  <span className={cls("icon")}>
+                    {replaceIconWhenPending && renderProps.isPending
+                      ? defaultChildren
+                      : icon}
+                  </span>
+                ),
+            )({
+              ...renderProps,
+              defaultChildren: replaceIconWhenPending ? (
+                // @ts-expect-error RMWC types are wrong
+                <CircularProgress />
+              ) : undefined,
+            })}
+            {iconOnly ? <span className="sr-only">{children}</span> : children}
+          </>
+        );
+      })}
     </AriaButton>
   );
 }

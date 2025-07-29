@@ -7,7 +7,7 @@
     "opsz" clamp(20, var(--icon-optical-size, var(--icon-size, 24)), 48);
   transition: font-variation-settings 120ms;
   &:dir(rtl) {
-    &[data-flip-rtl="true"] {
+    &.symbol--flip-rtl {
       transform: scaleX(-1);
     }
   }
