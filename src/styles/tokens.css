@@ -185,7 +185,7 @@
   --input-placeholder: var(--paper-300);
   --input-label-rgb: var(--paper-100-rgb);
   --input-description-rgb: var(--paper-100-rgb);
-  --input-border: var(--paper-700);
+  --input-border: var(--paper-900);
   --input-focus: var(--teal-a400);
   --input-error: var(--red-a400);
   --input-error-border: var(--red-a400);

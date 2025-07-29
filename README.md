@@ -49,3 +49,4 @@ The game ends when one player earns the required amount of points to win, by def
 
 - Custom word/prompt packs
 - Shrinking word pools (no replenishing after use)
+- Text chat
