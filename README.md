@@ -15,11 +15,11 @@ First, a user must create a game, choosing a few game rules during setup.
 
 #### Voting mode
 
-<!--TODO: is the judge random, or do we stick to an order? -->
-
-In **judge** mode, each round will have a judge. The judge does not submit an answer for the round, instead picking a winner out of the answers submitted by other players.
+In **judge** mode, an order of judges is set at the start of the game. Each round, the next judge in the order is selected. The judge does not submit an answer for the round, instead picking a winner out of the answers submitted by other players.
 
 In **jury** mode, all players submit an answer, then vote for their favourite. In the case of a tie, a point is awarded to each player involved in the tie.
+
+In **executioner** mode, a judge is picked at random for each round. The judge does not submit an answer for the round, instead picking a winner out of the answers submitted by other players.
 
 ### Invitation
 

@@ -64,3 +64,9 @@ export const string = {
     return value.toLowerCase() as Lowercase<T>;
   },
 };
+
+export const unsafeEntries: <T extends object>(
+  obj: T,
+) => Array<{ [K in keyof T]: [K, T[K]] }[keyof T]> = Object.entries;
+export const unsafeKeys: <T extends object>(obj: T) => Array<keyof T> =
+  Object.keys;

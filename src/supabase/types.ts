@@ -332,7 +332,7 @@ export type Database = {
     Enums: {
       game_state: "open" | "running" | "finished";
       round_phase: "submission" | "voting" | "finished";
-      voting_mode: "judge" | "jury";
+      voting_mode: "judge" | "jury" | "executioner";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -468,7 +468,7 @@ export const Constants = {
     Enums: {
       game_state: ["open", "running", "finished"],
       round_phase: ["submission", "voting", "finished"],
-      voting_mode: ["judge", "jury"],
+      voting_mode: ["judge", "jury", "executioner"],
     },
   },
 } as const;
