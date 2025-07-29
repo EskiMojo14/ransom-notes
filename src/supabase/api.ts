@@ -68,7 +68,7 @@ interface SupabaseQueryFnConfig<RawResult, QueryArg, Result = RawResult> {
 type SupabaseQueryFn<RawResult, QueryArg, Result = RawResult> = (
   arg: QueryArg,
   api: BaseQueryApi,
-  extraOptions: SupabaseExtraOptions,
+  extraOptions: SupabaseExtraOptions | undefined,
 ) => Promise<QueryReturnValue<Result, SerializedPostgrestError, SupabaseMeta>>;
 
 export function supabaseQueryFn<Result, QueryArg>(
@@ -82,7 +82,7 @@ export function supabaseQueryFn<RawResult, QueryArg, Result>(
     | ((arg: QueryArg) => QueryBuilder<RawResult>)
     | SupabaseQueryFnConfig<RawResult, QueryArg, Result>,
 ): SupabaseQueryFn<RawResult, QueryArg, Result> {
-  return async function queryFn(arg, { signal }, extraOptions) {
+  return async function queryFn(arg, { signal }, extraOptions = {}) {
     const {
       query,
       transformResponse = (data) => data as unknown as Result,
