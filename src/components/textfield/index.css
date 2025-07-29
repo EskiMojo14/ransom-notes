@@ -88,5 +88,9 @@
         margin: 0;
       }
     }
+    .textfield__inline-input-container {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
