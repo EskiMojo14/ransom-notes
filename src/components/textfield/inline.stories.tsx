@@ -5,7 +5,7 @@ import { InlineTextField } from ".";
 
 const meta = {
   component: InlineTextField,
-  title: "Components/InlineTextField",
+  title: "Components/TextField/Inline",
   args: {
     label: "Invite code",
     description: "Code to access game",
