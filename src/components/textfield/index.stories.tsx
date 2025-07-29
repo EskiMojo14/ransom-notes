@@ -42,3 +42,9 @@ export const Multiline = {
     multiline: true,
   },
 } satisfies Story;
+
+export const Number = {
+  args: {
+    type: "number",
+  },
+} satisfies Story;

@@ -73,7 +73,7 @@ export function TextField({
         <Label
           className={cls({
             element: "label",
-            extra: "body1",
+            extra: "subtitle1",
           })}
         >
           {label}

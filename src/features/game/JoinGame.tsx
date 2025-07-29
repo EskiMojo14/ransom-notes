@@ -43,11 +43,9 @@ export function JoinGame({
   const errorMessage = getErrorMessage(state, status);
   return (
     <div className={styles.container}>
-      <p>Find game</p>
       <div className={styles.form}>
         <TextField
-          aria-label="Invite code"
-          description="Code to access game"
+          label="Invite code"
           placeholder="Enter code"
           value={inviteCode}
           onChange={setInviteCode}

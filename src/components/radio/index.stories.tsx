@@ -1,24 +1,37 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { RadioGroup } from "react-aria-components";
 import { fn } from "storybook/test";
-import { Radio } from ".";
+import { Radio, RadioGroup, TwoLineRadioLabel } from ".";
 
 const meta = {
-  component: Radio,
+  component: RadioGroup,
   render: (args) => (
-    <RadioGroup defaultValue="option1">
-      <Radio {...args}>Option 1</Radio>
-      <Radio value="option2">Option 2</Radio>
-      <Radio value="option3">Option 3</Radio>
+    <RadioGroup {...args}>
+      <Radio value="judge">
+        <TwoLineRadioLabel
+          label="Judge"
+          description="Winner is decided by a single player"
+        />
+      </Radio>
+      <Radio value="jury">
+        <TwoLineRadioLabel
+          label="Jury"
+          description="Winner is decided by the most votes (judge becomes tiebreaker)"
+        />
+      </Radio>
     </RadioGroup>
   ),
-  title: "Components/Radio",
+  title: "Components/RadioGroup",
   args: {
-    value: "option1",
-    onPress: fn(),
+    defaultValue: "judge",
+    name: "voting_mode",
+    onChange: fn(),
     isDisabled: false,
+    isInvalid: false,
+    label: "Voting mode",
+    description: "How players vote",
+    errorMessage: "Please select a voting mode",
   },
-} satisfies Meta<typeof Radio>;
+} satisfies Meta<typeof RadioGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -28,5 +41,11 @@ export const Default = {} satisfies Story;
 export const Disabled = {
   args: {
     isDisabled: true,
+  },
+} satisfies Story;
+
+export const Invalid = {
+  args: {
+    isInvalid: true,
   },
 } satisfies Story;

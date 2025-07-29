@@ -1,7 +1,10 @@
+import { customAlphabet } from "nanoid";
 import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
 import type { Tables, TablesInsert } from "@/supabase/types";
 import type { Compute, PickRequired } from "@/utils/types";
+
+export const makeInviteCode = customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5);
 
 const profileSelect = `
   display_name, 

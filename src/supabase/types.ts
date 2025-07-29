@@ -77,8 +77,6 @@ export type Database = {
           first_to: number;
           id: number;
           invite_code: string;
-          max_submission_length: number;
-          pool_size: number;
           state: Database["public"]["Enums"]["game_state"];
           voting_mode: Database["public"]["Enums"]["voting_mode"];
         };
@@ -89,8 +87,6 @@ export type Database = {
           first_to?: number;
           id?: number;
           invite_code: string;
-          max_submission_length?: number;
-          pool_size?: number;
           state?: Database["public"]["Enums"]["game_state"];
           voting_mode?: Database["public"]["Enums"]["voting_mode"];
         };
@@ -101,8 +97,6 @@ export type Database = {
           first_to?: number;
           id?: number;
           invite_code?: string;
-          max_submission_length?: number;
-          pool_size?: number;
           state?: Database["public"]["Enums"]["game_state"];
           voting_mode?: Database["public"]["Enums"]["voting_mode"];
         };
@@ -243,19 +237,16 @@ export type Database = {
       };
       submissions: {
         Row: {
-          created_at: string;
           round_id: number;
           rows: string[];
           user_id: string;
         };
         Insert: {
-          created_at?: string;
           round_id: number;
           rows: string[];
           user_id: string;
         };
         Update: {
-          created_at?: string;
           round_id?: number;
           rows?: string[];
           user_id?: string;
@@ -315,19 +306,16 @@ export type Database = {
       votes: {
         Row: {
           author_id: string;
-          created_at: string;
           round_id: number;
           user_id: string;
         };
         Insert: {
           author_id: string;
-          created_at?: string;
           round_id: number;
           user_id: string;
         };
         Update: {
           author_id?: string;
-          created_at?: string;
           round_id?: number;
           user_id?: string;
         };
@@ -380,6 +368,24 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      words: {
+        Row: {
+          family_friendly: boolean;
+          id: number;
+          word: string;
+        };
+        Insert: {
+          family_friendly: boolean;
+          id?: number;
+          word: string;
+        };
+        Update: {
+          family_friendly?: boolean;
+          id?: number;
+          word?: string;
+        };
+        Relationships: [];
       };
     };
     Views: {

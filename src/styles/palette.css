@@ -111,6 +111,8 @@
   --red-50-rgb: 255, 235, 238;
   --red-50: rgb(var(--red-50-rgb));
 
-  --black: #000;
-  --white: #fff;
+  --black-rgb: 0, 0, 0;
+  --black: rgb(var(--black-rgb));
+  --white-rgb: 255, 255, 255;
+  --white: rgb(var(--white-rgb));
 }

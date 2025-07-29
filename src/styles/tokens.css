@@ -1,11 +1,16 @@
 %light {
   color-scheme: light;
 
+  --emphasis-high: 0.87;
+  --emphasis-medium: 0.6;
+  --emphasis-disabled: 0.38;
+
   --page: var(--paper-50);
 
   --paper-rgb: var(--paper-100-rgb);
   --paper: rgb(var(--paper-rgb));
-  --on-paper: var(--black);
+  --on-paper-rgb: var(--paper-1100-rgb);
+  --on-paper: rgb(var(--on-paper-rgb));
 
   --magnet: var(--white);
   --on-magnet: var(--black);
@@ -78,7 +83,8 @@
   --on-input-disabled: var(--paper-800);
   --input-icon: var(--paper-700);
   --input-placeholder: var(--paper-700);
-  --input-description: var(--paper-700);
+  --input-label-rgb: var(--paper-900-rgb);
+  --input-description-rgb: var(--paper-900-rgb);
   --input-border: var(--paper-200);
   --input-focus: var(--teal-a700);
   --input-error: var(--red-a700);
@@ -87,16 +93,24 @@
   --radio-border: var(--paper-300);
   --radio-selected: var(--orange-300);
   --radio-disabled: var(--paper-300);
+  --radio-description-rgb: var(--paper-900-rgb);
+  --radio-label-rgb: var(--paper-900-rgb);
+  --radio-error: var(--red-a700);
 }
 
 %dark {
   color-scheme: dark;
 
+  --emphasis-high: 0.87;
+  --emphasis-medium: 0.6;
+  --emphasis-low: 0.38;
+
   --page: var(--paper-1100);
 
   --paper-rgb: var(--paper-800-rgb);
   --paper: rgb(var(--paper-rgb));
-  --on-paper: var(--paper-50);
+  --on-paper-rgb: var(--paper-50-rgb);
+  --on-paper: rgb(var(--on-paper-rgb));
 
   --magnet: var(--paper-600);
   --on-magnet: var(--white);
@@ -169,7 +183,8 @@
   --on-input-disabled: var(--paper-200);
   --input-icon: var(--paper-300);
   --input-placeholder: var(--paper-300);
-  --input-description: var(--paper-300);
+  --input-label-rgb: var(--paper-100-rgb);
+  --input-description-rgb: var(--paper-100-rgb);
   --input-border: var(--paper-700);
   --input-focus: var(--teal-a400);
   --input-error: var(--red-a400);
@@ -178,6 +193,9 @@
   --radio-border: var(--paper-300);
   --radio-selected: var(--orange-300);
   --radio-disabled: var(--paper-700);
+  --radio-description-rgb: var(--paper-100-rgb);
+  --radio-label-rgb: var(--paper-100-rgb);
+  --radio-error: var(--red-a400);
 }
 
 [data-theme="light"] {

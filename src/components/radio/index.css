@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  color: rgba(var(--radio-label-rgb), var(--emphasis-high));
   .radio__icon {
     height: 1.5rem;
     width: 1.5rem;
@@ -39,5 +40,29 @@
         background-color: var(--radio-disabled);
       }
     }
+  }
+}
+
+.radio__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  .radio__group-label {
+    color: rgba(var(--radio-label-rgb), var(--emphasis-high));
+  }
+  .radio__group-description {
+    color: rgba(var(--radio-description-rgb), var(--emphasis-medium));
+  }
+  .radio__group-error {
+    color: var(--radio-error);
+  }
+}
+
+.radio__two-line-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  .radio__two-line-label-description {
+    color: rgba(var(--radio-description-rgb), var(--emphasis-medium));
   }
 }

@@ -32,9 +32,15 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      decode-formdata:
+        specifier: ^0.9.0
+        version: 0.9.0
       es-toolkit:
         specifier: ^1.39.8
         version: 1.39.8
+      nanoid:
+        specifier: ^5.1.5
+        version: 5.1.5
       normalize.css:
         specifier: ^8.0.1
         version: 8.0.1
@@ -72,6 +78,9 @@ importers:
       '@ngneat/falso':
         specifier: ^8.0.2
         version: 8.0.2
+      '@react-types/shared':
+        specifier: ^3.31.0
+        version: 3.31.0(react@19.1.0)
       '@storybook/react-vite':
         specifier: ^9.0.17
         version: 9.0.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(rollup@4.45.1)(storybook@9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2))(typescript@5.8.3)(vite@7.0.6(@types/node@24.0.15)(jiti@2.4.2)(tsx@4.20.3))
@@ -2184,6 +2193,9 @@ packages:
   decimal.js@10.6.0:
     resolution: {integrity: sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==}
 
+  decode-formdata@0.9.0:
+    resolution: {integrity: sha512-q5uwOjR3Um5YD+ZWPOF/1sGHVW9A5rCrRwITQChRXlmPkxDFBqCm4jNTIVdGHNH9OnR+V9MoZVgRhsFb+ARbUw==}
+
   deep-eql@5.0.2:
     resolution: {integrity: sha512-h5k/5U50IJJFpzfL6nO9jaaumfjO/f2NjK/oYB2Djzm4p9L+3T9qWpZqZ2hAbLPuuYq9wrU08WQyBTL5GbPk5Q==}
     engines: {node: '>=6'}
@@ -3009,6 +3021,11 @@ packages:
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+
+  nanoid@5.1.5:
+    resolution: {integrity: sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw==}
+    engines: {node: ^18 || >=20}
     hasBin: true
 
   napi-postinstall@0.3.2:
@@ -6551,6 +6568,8 @@ snapshots:
 
   decimal.js@10.6.0: {}
 
+  decode-formdata@0.9.0: {}
+
   deep-eql@5.0.2: {}
 
   deep-is@0.1.4: {}
@@ -7578,6 +7597,8 @@ snapshots:
   mute-stream@2.0.0: {}
 
   nanoid@3.3.11: {}
+
+  nanoid@5.1.5: {}
 
   napi-postinstall@0.3.2: {}
 
