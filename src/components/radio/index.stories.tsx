@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
+import { Symbol } from "@/components/symbol";
 import { Radio, RadioGroup, TwoLineRadioLabel } from ".";
 
 const meta = {
@@ -7,12 +8,14 @@ const meta = {
   render: (args) => (
     <RadioGroup {...args}>
       <Radio value="judge">
+        <Symbol>gavel</Symbol>
         <TwoLineRadioLabel
           label="Judge"
           description="Winner is decided by a single player"
         />
       </Radio>
       <Radio value="jury">
+        <Symbol>ballot</Symbol>
         <TwoLineRadioLabel
           label="Jury"
           description="Winner is decided by the most votes"
