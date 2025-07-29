@@ -32,6 +32,9 @@
         transform: scale(1);
       }
     }
+    .symbol {
+      --icon-fill: 1;
+    }
   }
   &[data-disabled] {
     .radio__icon {

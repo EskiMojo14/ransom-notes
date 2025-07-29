@@ -43,7 +43,7 @@ export function Symbol({
         "--icon-weight": weight,
         "--icon-grade": grade,
         "--icon-optical-size": opticalSize,
-        "--icon-fill": fill ? 1 : 0,
+        "--icon-fill": typeof fill === "boolean" ? (fill ? 1 : 0) : fill,
       }}
     />
   );
