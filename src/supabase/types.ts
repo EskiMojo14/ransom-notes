@@ -39,36 +39,6 @@ export type Database = {
   };
   public: {
     Tables: {
-      game_packs: {
-        Row: {
-          game_id: number;
-          pack_id: number;
-        };
-        Insert: {
-          game_id: number;
-          pack_id: number;
-        };
-        Update: {
-          game_id?: number;
-          pack_id?: number;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "game_pack_game_id_fkey";
-            columns: ["game_id"];
-            isOneToOne: false;
-            referencedRelation: "games";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "game_pack_pack_id_fkey";
-            columns: ["pack_id"];
-            isOneToOne: false;
-            referencedRelation: "user_packs";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
       games: {
         Row: {
           active_round: number | null;
@@ -261,41 +231,6 @@ export type Database = {
           },
           {
             foreignKeyName: "submissions_user_id_fkey1";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      user_packs: {
-        Row: {
-          created_at: string;
-          id: number;
-          questions: string[];
-          title: string;
-          user_id: string;
-          words: string[];
-        };
-        Insert: {
-          created_at?: string;
-          id?: number;
-          questions: string[];
-          title: string;
-          user_id: string;
-          words: string[];
-        };
-        Update: {
-          created_at?: string;
-          id?: number;
-          questions?: string[];
-          title?: string;
-          user_id?: string;
-          words?: string[];
-        };
-        Relationships: [
-          {
-            foreignKeyName: "user_packs_user_id_fkey1";
             columns: ["user_id"];
             isOneToOne: false;
             referencedRelation: "profiles";

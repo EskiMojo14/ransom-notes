@@ -1,4 +1,4 @@
-import { randRecentDate, randUserName } from "@ngneat/falso";
+import { randUserName } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
@@ -25,7 +25,6 @@ const meta = {
           >([
             {
               rows: randSubmission(),
-              created_at: randRecentDate().toISOString(),
               user_id: "1",
               author: {
                 display_name: randUserName(),
