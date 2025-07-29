@@ -2,7 +2,7 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import { useState } from "react";
 import { Button } from "@/components/button";
 import { Symbol } from "@/components/symbol";
-import { InlineTextField } from "@/components/textfield";
+import { InlineTextField } from "@/components/textfield/inline";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import type { Enums } from "@/supabase/types";
 import { useGetGameByInviteCodeQuery } from "./api";

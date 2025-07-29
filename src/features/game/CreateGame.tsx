@@ -3,7 +3,7 @@ import * as v from "valibot";
 import { Button } from "@/components/button";
 import { Radio, RadioGroup, TwoLineRadioLabel } from "@/components/radio";
 import { Symbol } from "@/components/symbol";
-import { InlineTextField } from "@/components/textfield";
+import { InlineTextField } from "@/components/textfield/inline";
 import { useFormSchema } from "@/hooks/use-form-schema";
 import type { Enums, TablesInsert } from "@/supabase/types";
 import { Constants } from "@/supabase/types";

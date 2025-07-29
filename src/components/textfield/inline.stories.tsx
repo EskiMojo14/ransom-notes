@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 import { Symbol } from "@/components/symbol";
-import { InlineTextField } from ".";
+import { InlineTextField } from "./inline";
 
 const meta = {
   component: InlineTextField,
