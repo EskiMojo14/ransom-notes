@@ -10,7 +10,7 @@ import { Button } from "@/components/button";
 import { Radio } from "@/components/radio";
 import { Symbol } from "@/components/symbol";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { useGetWordPoolQuery } from "../round/api";
+import { useGetWordPoolQuery } from "@/features/round/api";
 import {
   clearSubmission,
   nextRow,

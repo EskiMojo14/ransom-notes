@@ -1,4 +1,5 @@
 import type { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
+import { string } from "@/utils";
 import { hasLength } from "@/utils/types";
 import type { Database, Tables } from "./types";
 import { supabase } from ".";
@@ -24,8 +25,6 @@ export const listenTo = <TableName extends keyof Database["public"]["Tables"]>(
       filter,
     },
     (payload) =>
-      handlers[payload.eventType.toLowerCase() as keyof typeof handlers]?.(
-        payload as never,
-      ),
+      handlers[string.toLowerCase(payload.eventType)]?.(payload as never),
   );
 };

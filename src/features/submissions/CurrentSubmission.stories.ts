@@ -5,7 +5,7 @@ import type { MswParameters } from "msw-storybook-addon";
 import { getStore, withRedux } from "@/storybook/decorators";
 import { randIndexes, randQuestion, randWordPool } from "@/storybook/mocks";
 import { tableUrl } from "@/supabase/mocks";
-import type { roundApi } from "../round/api";
+import type { roundApi } from "@/features/round/api";
 import { CurrentSubmission } from "./CurrentSubmission";
 import { clearSubmission, wordToggled } from "./slice";
 

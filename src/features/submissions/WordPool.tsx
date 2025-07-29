@@ -1,7 +1,10 @@
 import { clsx } from "clsx";
 import { ToggleButton, ToggleButtonGroup } from "react-aria-components";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { useGetActiveRoundQuery, useGetWordPoolQuery } from "../round/api";
+import {
+  useGetActiveRoundQuery,
+  useGetWordPoolQuery,
+} from "@/features/round/api";
 import { selectAllIndexes, wordToggled } from "./slice";
 import styles from "./WordPool.module.css";
 

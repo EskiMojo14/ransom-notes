@@ -1,3 +1,5 @@
+import { random, shuffle } from "es-toolkit";
+
 const questions = [
   "You hand a note to the cashier telling them you're robbing the place, and it says:",
   "Describe what a hangover feels like",
@@ -6,12 +8,9 @@ const questions = [
   "Describe Piers Morgan",
 ];
 
-const randomNumberTo = (max: number, min = 0) =>
-  Math.floor(Math.random() * (max - min) + min) % max;
-
 export const randQuestion = () =>
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  questions[randomNumberTo(questions.length)]!;
+  questions[random(questions.length)]!;
 
 const words = [
   "cadaver",
@@ -91,23 +90,21 @@ const words = [
   "inquiry",
 ];
 
-export const randWordPool = () =>
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  Array.from(randIndexes(words.length, 75), (idx) => words[idx]!);
+export const randWordPool = () => shuffle(words);
 
 export const randSubmission = () =>
   Array.from({ length: 3 }, () => {
-    const start = randomNumberTo(words.length - 5);
-    const end = randomNumberTo(start + 5, start + 3);
+    const start = random(words.length - 5);
+    const end = random(start + 3, start + 5);
     return words.slice(start, end).join(" ");
   });
 
 export const randIndexes = (length: number, count: number) => {
   const picked = new Set<number>();
   while (picked.size < count) {
-    let idx = randomNumberTo(length);
+    let idx = random(length);
     while (picked.has(idx)) {
-      idx = randomNumberTo(length);
+      idx = random(length);
     }
     picked.add(idx);
   }

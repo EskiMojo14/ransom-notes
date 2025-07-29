@@ -1,4 +1,4 @@
-import { debounce } from "lodash";
+import { debounce } from "es-toolkit";
 import type { SetStateAction } from "react";
 import { useMemo } from "react";
 import { useDevDebugValue } from "./use-dev-debug-value";

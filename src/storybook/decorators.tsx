@@ -1,9 +1,10 @@
 import type { Decorator, Parameters } from "@storybook/react-vite";
+import { assert } from "es-toolkit";
 import { Provider } from "react-redux";
 import { SessionProvider } from "@/features/auth/session";
 import type { AppStore, PreloadedState } from "@/store";
 import { makeStore } from "@/store";
-import { assert, specify } from "@/utils";
+import { specify } from "@/utils";
 
 export const withRedux: Decorator = (Story, { parameters }) => {
   specify<ReduxParameters>(parameters);

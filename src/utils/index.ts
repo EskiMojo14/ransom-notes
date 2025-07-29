@@ -42,16 +42,18 @@ export const promiseOwnProperties = <T extends Record<string, unknown>>(
 ): Promise<{ [K in keyof T]: Awaited<T[K]> }> =>
   promiseFromEntries(Object.entries(obj)) as never;
 
-export function assert(
-  condition: unknown,
-  message?: string,
-): asserts condition {
-  if (!condition) throw new Error(message);
-}
-
 export function specify<T>(_value: T): asserts _value is T {
   // no-op
 }
 
 export const safeAssign: <T>(target: T, ...sources: Array<Partial<T>>) => T =
   Object.assign;
+
+export const string = {
+  toUpperCase<T extends string>(value: T) {
+    return value.toUpperCase() as Uppercase<T>;
+  },
+  toLowerCase<T extends string>(value: T) {
+    return value.toLowerCase() as Lowercase<T>;
+  },
+};

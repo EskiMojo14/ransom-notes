@@ -1,6 +1,6 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { assert } from "@/utils";
-import { roundApi } from "../round/api";
+import { assert } from "es-toolkit";
+import { roundApi } from "@/features/round/api";
 
 interface SubmissionState {
   rows: Array<Array<number>>;
