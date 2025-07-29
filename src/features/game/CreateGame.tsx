@@ -89,7 +89,6 @@ export function CreateGame() {
         icon={<Symbol>door_open</Symbol>}
         variant="elevated"
         isPending={isLoading}
-        isDisabled={isLoading}
       >
         {({ isPending }) => (isPending ? "Creating game" : "Create game")}
       </Button>
