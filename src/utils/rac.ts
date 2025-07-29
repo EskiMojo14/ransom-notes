@@ -1,18 +1,19 @@
+import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
-import type { RenderProps } from "react-aria-components";
 import BEMHelper from "react-bem-helper";
 
 export const bemHelper = BEMHelper.withDefaults({
   outputIsString: true,
 });
 
-type ClassNameOrFunction<T> = RenderProps<T>["className"];
-type ClassFunction<T> = Extract<
-  ClassNameOrFunction<T>,
-  (...args: never) => unknown
->;
+type ClassFunction<T> = (props: T) => ClassValue;
+type ClassValueOrFunction<T> = ClassValue | ClassFunction<T>;
+
+const isClassFunction = <T>(
+  value: ClassValueOrFunction<T>,
+): value is ClassFunction<T> => typeof value === "function";
 
 export const composeClasses =
-  <T>(...classes: Array<ClassNameOrFunction<T>>): ClassFunction<T> =>
-  (values) =>
-    clsx(classes.map((c) => (typeof c === "function" ? c(values) : c)));
+  <T>(...classes: Array<ClassValueOrFunction<T>>) =>
+  (values: T) =>
+    clsx(classes.map((c) => (isClassFunction(c) ? c(values) : c)));
