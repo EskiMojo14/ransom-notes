@@ -2,7 +2,7 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import { useState } from "react";
 import { Button } from "@/components/button";
 import { Symbol } from "@/components/symbol";
-import { TextField } from "@/components/textfield";
+import { InlineTextField } from "@/components/textfield";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import type { Enums } from "@/supabase/types";
 import { useGetGameByInviteCodeQuery } from "./api";
@@ -44,13 +44,15 @@ export function JoinGame({
   return (
     <div className={styles.container}>
       <div className={styles.form}>
-        <TextField
+        <InlineTextField
           label="Invite code"
           placeholder="Enter code"
           value={inviteCode}
           onChange={setInviteCode}
           isInvalid={!!errorMessage}
           errorMessage={errorMessage}
+          icon={<Symbol>password_2</Symbol>}
+          className={styles.inviteCode}
         />
         <Button
           variant="elevated"
