@@ -32,6 +32,15 @@ export interface SupabaseExtraOptions {
 
 const minPendingTime = 1000;
 
+const getPendingPromise = ({ minimumPendingTime }: SupabaseExtraOptions) => {
+  if (!minimumPendingTime) return undefined;
+  return wait(
+    minimumPendingTime === true
+      ? minPendingTime
+      : Math.max(minimumPendingTime, minPendingTime),
+  );
+};
+
 const serializePostgrestError = (
   error: PostgrestError,
   meta: SupabaseMeta,
@@ -85,13 +94,7 @@ export function supabaseQueryFn<RawResult, QueryArg, Result>(
     if (builder.abortSignal) builder = builder.abortSignal(signal);
     const [{ data, error, status, statusText }] = await Promise.all([
       builder,
-      extraOptions.minimumPendingTime
-        ? wait(
-            extraOptions.minimumPendingTime === true
-              ? minPendingTime
-              : extraOptions.minimumPendingTime,
-          )
-        : undefined,
+      getPendingPromise(extraOptions),
     ]);
     const meta: SupabaseMeta = { status, statusText };
     return error
