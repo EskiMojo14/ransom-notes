@@ -22,8 +22,6 @@ const mockGame = (
     avatar_url: null,
   },
   first_to: 10,
-  max_submission_length: 100,
-  pool_size: 7,
   state,
   voting_mode: "judge",
   created_at: randRecentDate().toISOString(),

@@ -12,6 +12,7 @@
     border-radius: var(--shape-medium);
     color: var(--on-input);
     min-height: 2.5rem;
+    box-shadow: 0 0.25rem inset var(--input-border);
     .textfield__icon {
       display: flex;
       align-items: center;
@@ -26,6 +27,7 @@
     }
   }
   .textfield__input {
+    flex: 1 0 auto;
     appearance: none;
     border: none;
     background: transparent;
@@ -70,6 +72,21 @@
   &.textfield--multiline {
     .textfield__input-container {
       align-items: flex-start;
+    }
+  }
+  &.textfield--inline {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+    .textfield__inline-text {
+      height: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.5rem;
+      > * {
+        margin: 0;
+      }
     }
   }
 }

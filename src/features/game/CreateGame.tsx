@@ -3,7 +3,7 @@ import * as v from "valibot";
 import { Button } from "@/components/button";
 import { Radio, RadioGroup, TwoLineRadioLabel } from "@/components/radio";
 import { Symbol } from "@/components/symbol";
-import { TextField } from "@/components/textfield";
+import { InlineTextField } from "@/components/textfield";
 import { useFormSchema } from "@/hooks/use-form-schema";
 import type { TablesInsert } from "@/supabase/types";
 import { makeInviteCode } from "./api";
@@ -37,12 +37,13 @@ export function CreateGame() {
         } satisfies GameInput);
       }, console.error)}
     >
-      <TextField
+      <InlineTextField
         name="first_to"
         type="number"
-        label="First to"
+        label="Points to win"
         defaultValue={defaults.first_to?.toString()}
-        description="Points needed to win"
+        icon={<Symbol>trophy</Symbol>}
+        className={styles.pointsToWin}
       />
       <RadioGroup
         name="voting_mode"
@@ -50,12 +51,14 @@ export function CreateGame() {
         defaultValue={defaults.voting_mode}
       >
         <Radio value="judge">
+          <Symbol>gavel</Symbol>
           <TwoLineRadioLabel
             label="Judge"
             description="Winner is decided by a single player"
           />
         </Radio>
         <Radio value="jury">
+          <Symbol>ballot</Symbol>
           <TwoLineRadioLabel
             label="Jury"
             description="Winner is decided by the most votes (judge becomes tiebreaker)"
