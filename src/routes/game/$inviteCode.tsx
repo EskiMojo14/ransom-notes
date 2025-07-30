@@ -86,8 +86,8 @@ function RouteComponent() {
   return (
     <>
       <Prompt />
-      <CurrentSubmission gameId={game.id} />
-      <WordPool gameId={game.id} />
+      <CurrentSubmission />
+      <WordPool />
     </>
   );
 }

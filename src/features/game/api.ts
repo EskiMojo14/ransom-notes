@@ -18,7 +18,7 @@ interface RawGame extends Tables<"games"> {
   participants: Array<{ profiles: Profile }>;
 }
 
-const transformGame = ({ participants, ...rawGame }: RawGame) => ({
+export const transformGame = ({ participants, ...rawGame }: RawGame) => ({
   ...rawGame,
   participants: participants.map(({ profiles }) => profiles),
 });

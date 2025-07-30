@@ -1,4 +1,3 @@
-import { skipToken } from "@reduxjs/toolkit/query";
 import { clsx } from "clsx";
 import { useRef } from "react";
 import { Form } from "react-aria-components";
@@ -26,7 +25,7 @@ export function Chat() {
     user: { id: userId },
   } = useSession();
   const { formErrors, handleSubmit, handleReset } = useFormSchema(formSchema);
-  const { groups = [] } = useGetChatMessagesQuery(gameId ?? skipToken, {
+  const { groups = [] } = useGetChatMessagesQuery(gameId, {
     selectFromResult: ({ data }) => ({
       groups: data && selectGroupedMessages(data),
     }),

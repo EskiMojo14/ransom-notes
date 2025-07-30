@@ -1,4 +1,3 @@
-import { skipToken } from "@reduxjs/toolkit/query";
 import { clsx } from "clsx";
 import { radEventListeners } from "rad-event-listeners";
 import { useEffect, useRef } from "react";
@@ -35,12 +34,10 @@ export function CurrentSubmission() {
   const session = useSession();
   const dispatch = useAppDispatch();
   const { words = [] } = useGetWordPoolQuery(
-    gameId != null
-      ? {
-          gameId,
-          userId: session.user.id,
-        }
-      : skipToken,
+    {
+      gameId,
+      userId: session.user.id,
+    },
     {
       selectFromResult: ({ data }) => ({ words: data }),
     },

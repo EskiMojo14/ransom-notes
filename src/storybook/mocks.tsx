@@ -2,7 +2,7 @@ import { randRecentDate, randUserName } from "@ngneat/falso";
 import { randomInt, shuffle } from "es-toolkit";
 import { http, HttpResponse } from "msw";
 import { spyOn } from "storybook/internal/test";
-import type { gameApi } from "@/features/game/api";
+import { transformGame, type gameApi } from "@/features/game/api";
 import type { roundApi } from "@/features/round/api";
 import { Route } from "@/routes/game/$inviteCode";
 import { tableUrl } from "@/supabase/mocks";
@@ -127,7 +127,33 @@ export const mockGame = ({
     typeof gameApi.endpoints.getGameByInviteCode.Types.RawResultType
   >;
 } = {}) => {
-  spyOn(Route, "useParams").mockReturnValue({ inviteCode: "FOO" });
+  const fullGame: typeof gameApi.endpoints.getGameByInviteCode.Types.RawResultType =
+    {
+      id: 1,
+      invite_code: "FOO",
+      creator_id: "1",
+      creator: {
+        display_name: randUserName(),
+        avatar_url: null,
+      },
+      first_to: 5,
+      state: "running",
+      voting_mode: "judge",
+      created_at: randRecentDate().toISOString(),
+      active_round: 1,
+      participants: [],
+      ...game,
+    };
+  spyOn(Route, "useLoaderData").mockImplementation(
+    ({
+      select,
+    }: {
+      select: (data: typeof Route.types.loaderData) => unknown;
+    }) =>
+      select({
+        game: transformGame(fullGame),
+      }),
+  );
   return http.get<
     {},
     undefined,
@@ -151,21 +177,6 @@ export const mockGame = ({
     }
     return HttpResponse.json<
       typeof gameApi.endpoints.getGameByInviteCode.Types.RawResultType
-    >({
-      id: 1,
-      invite_code: "FOO",
-      creator_id: "1",
-      creator: {
-        display_name: randUserName(),
-        avatar_url: null,
-      },
-      first_to: 5,
-      state: "running",
-      voting_mode: "judge",
-      created_at: randRecentDate().toISOString(),
-      active_round: 1,
-      participants: [],
-      ...game,
-    });
+    >(fullGame);
   });
 };

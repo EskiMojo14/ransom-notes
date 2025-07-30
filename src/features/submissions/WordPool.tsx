@@ -1,4 +1,3 @@
-import { skipToken } from "@reduxjs/toolkit/query";
 import { clsx } from "clsx";
 import { ToggleButton, ToggleButtonGroup } from "react-aria-components";
 import { useSession } from "@/features/auth/session";
@@ -16,12 +15,12 @@ export function WordPool() {
   const gameId = useGameId();
   const session = useSession();
   const { words = [] } = useGetWordPoolQuery(
-    gameId != null ? { gameId, userId: session.user.id } : skipToken,
+    { gameId, userId: session.user.id },
     {
       selectFromResult: ({ data }) => ({ words: data }),
     },
   );
-  const { phase } = useGetActiveRoundQuery(gameId ?? skipToken, {
+  const { phase } = useGetActiveRoundQuery(gameId, {
     selectFromResult: ({ data }) => ({ phase: data?.phase }),
   });
   const selectedKeys = useAppSelector(selectAllIndexes);
