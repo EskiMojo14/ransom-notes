@@ -11,7 +11,6 @@ import { Radio } from "@/components/radio";
 import { Symbol } from "@/components/symbol";
 import { useSession } from "@/features/auth/session";
 import type { Game } from "@/features/game/api";
-import type { Round } from "@/features/round/api";
 import { useGetWordPoolQuery } from "@/features/round/api";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import {
@@ -30,18 +29,16 @@ import poolStyles from "./WordPool.module.css";
 
 export interface CurrentSubmissionProps {
   gameId: Game["id"];
-  roundId: Round["id"];
 }
 
 const digitRegex = /\d/;
 
-export function CurrentSubmission({ gameId, roundId }: CurrentSubmissionProps) {
+export function CurrentSubmission({ gameId }: CurrentSubmissionProps) {
   const session = useSession();
   const dispatch = useAppDispatch();
   const { words = [] } = useGetWordPoolQuery(
     {
       gameId,
-      roundId,
       userId: session.user.id,
     },
     {

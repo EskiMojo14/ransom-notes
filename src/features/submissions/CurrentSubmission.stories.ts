@@ -24,7 +24,6 @@ const meta = {
   title: "Features/Submissions/CurrentSubmission",
   args: {
     gameId: 1,
-    roundId: 1,
   },
   async play({ parameters, userEvent }) {
     const store = getStore(parameters);

@@ -18,7 +18,6 @@ const meta = {
   title: "Features/Submissions/WordPool",
   args: {
     gameId: 1,
-    roundId: 1,
   },
   parameters: {
     session: mockSession(),

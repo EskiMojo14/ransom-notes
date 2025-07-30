@@ -2,7 +2,6 @@ import { clsx } from "clsx";
 import { ToggleButton, ToggleButtonGroup } from "react-aria-components";
 import { useSession } from "@/features/auth/session";
 import type { Game } from "@/features/game/api";
-import type { Round } from "@/features/round/api";
 import {
   useGetActiveRoundQuery,
   useGetWordPoolQuery,
@@ -13,14 +12,13 @@ import styles from "./WordPool.module.css";
 
 export interface WordPoolProps {
   gameId: Game["id"];
-  roundId: Round["id"];
 }
 
-export function WordPool({ gameId, roundId }: WordPoolProps) {
+export function WordPool({ gameId }: WordPoolProps) {
   const dispatch = useAppDispatch();
   const session = useSession();
   const { words = [] } = useGetWordPoolQuery(
-    { gameId, roundId, userId: session.user.id },
+    { gameId, userId: session.user.id },
     {
       selectFromResult: ({ data }) => ({ words: data }),
     },

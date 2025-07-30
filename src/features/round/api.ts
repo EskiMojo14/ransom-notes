@@ -1,6 +1,7 @@
 import type { Game } from "@/features/game/api";
 import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
+import { listenTo } from "@/supabase/realtime";
 import type { Tables } from "@/supabase/types";
 
 const roundSelect = `
@@ -22,7 +23,7 @@ const transformRound = ({ prompt: { prompt }, ...round }: RawRound) => ({
 export type Round = ReturnType<typeof transformRound>;
 
 export const roundApi = api
-  .enhanceEndpoints({ addTagTypes: ["Round", "Game", "Word"] })
+  .enhanceEndpoints({ addTagTypes: ["Round", "Game"] })
   .injectEndpoints({
     endpoints: (build) => ({
       getActiveRound: build.query<
@@ -64,7 +65,7 @@ export const roundApi = api
 
       getWordPool: build.query<
         Array<string>,
-        { gameId: Game["id"]; roundId: Round["id"]; userId: string },
+        { gameId: Game["id"]; userId: string },
         { words: Array<string> }
       >({
         queryFn: supabaseQueryFn({
@@ -77,10 +78,29 @@ export const roundApi = api
               .single(),
           transformResponse: (wordPool) => wordPool.words,
         }),
-        providesTags: (_res, _err, { roundId, userId }) => [
-          { type: "Word", id: roundId },
-          { type: "Word", id: userId },
-        ],
+        async onCacheEntryAdded(
+          { gameId, userId },
+          // eslint-disable-next-line @typescript-eslint/unbound-method
+          { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
+        ) {
+          try {
+            await cacheDataLoaded;
+            const channel = listenTo(
+              "word_pools",
+              {
+                update({ new: { game_id, words } }) {
+                  if (game_id !== gameId) return;
+                  updateCachedData(() => words);
+                },
+              },
+              `user_id=eq.${userId}`,
+            );
+            await cacheEntryRemoved;
+            await channel.unsubscribe();
+          } catch {
+            // cacheDataLoaded throws if the cache entry is removed before the promise resolves
+          }
+        },
       }),
     }),
   });
