@@ -5,6 +5,7 @@ import type { MswParameters } from "msw-storybook-addon";
 import type { userApi } from "@/features/auth/api";
 import type { SessionParameters } from "@/storybook/decorators";
 import { withRedux, withSession } from "@/storybook/decorators";
+import { mockGame } from "@/storybook/mocks";
 import { mockSession, tableUrl } from "@/supabase/mocks";
 import { getHandlers } from "@/supabase/realtime";
 import type { TablesInsert } from "@/supabase/types";
@@ -48,14 +49,12 @@ const meta = {
       },
     });
   },
-  args: {
-    gameId: 1,
-  },
   decorators: [withRedux, withSession],
   parameters: {
     session,
     msw: {
       handlers: [
+        mockGame(),
         http.get(tableUrl("profiles"), ({ request }) =>
           HttpResponse.json<
             typeof userApi.endpoints.getProfile.Types.RawResultType

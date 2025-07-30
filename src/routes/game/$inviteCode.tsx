@@ -82,13 +82,12 @@ function RouteComponent() {
   const { game } = useGetGameByInviteCodeQuery(inviteCode, {
     selectFromResult: ({ data }) => ({ game: data }),
   });
-  const roundId = 1;
   if (!game) return null;
   return (
     <>
-      <Prompt gameId={game.id} />
-      <CurrentSubmission gameId={game.id} roundId={roundId} />
-      <WordPool gameId={game.id} roundId={roundId} />
+      <Prompt />
+      <CurrentSubmission gameId={game.id} />
+      <WordPool gameId={game.id} />
     </>
   );
 }

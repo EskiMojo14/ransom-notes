@@ -1,3 +1,4 @@
+import { skipToken } from "@reduxjs/toolkit/query";
 import { clsx } from "clsx";
 import { radEventListeners } from "rad-event-listeners";
 import { useEffect, useRef } from "react";
@@ -10,7 +11,7 @@ import { Button } from "@/components/button";
 import { Radio } from "@/components/radio";
 import { Symbol } from "@/components/symbol";
 import { useSession } from "@/features/auth/session";
-import type { Game } from "@/features/game/api";
+import { useGameId } from "@/features/game/hooks";
 import { useGetWordPoolQuery } from "@/features/round/api";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import {
@@ -27,20 +28,19 @@ import {
 import styles from "./CurrentSubmission.module.css";
 import poolStyles from "./WordPool.module.css";
 
-export interface CurrentSubmissionProps {
-  gameId: Game["id"];
-}
-
 const digitRegex = /\d/;
 
-export function CurrentSubmission({ gameId }: CurrentSubmissionProps) {
+export function CurrentSubmission() {
+  const gameId = useGameId();
   const session = useSession();
   const dispatch = useAppDispatch();
   const { words = [] } = useGetWordPoolQuery(
-    {
-      gameId,
-      userId: session.user.id,
-    },
+    gameId != null
+      ? {
+          gameId,
+          userId: session.user.id,
+        }
+      : skipToken,
     {
       selectFromResult: ({ data }) => ({ words: data }),
     },

@@ -1,3 +1,4 @@
+import { skipToken } from "@reduxjs/toolkit/query";
 import { clsx } from "clsx";
 import { useRef } from "react";
 import { Form } from "react-aria-components";
@@ -6,7 +7,7 @@ import { Button } from "@/components/button";
 import { Symbol } from "@/components/symbol";
 import { TextField } from "@/components/textfield";
 import { useSession } from "@/features/auth/session";
-import type { Game } from "@/features/game/api";
+import { useGameId } from "@/features/game/hooks";
 import { useFormSchema } from "@/hooks/use-form-schema";
 import {
   selectGroupedMessages,
@@ -19,16 +20,13 @@ const formSchema = v.object({
   message: v.string(),
 });
 
-export interface ChatProps {
-  gameId: Game["id"];
-}
-
-export function Chat({ gameId }: ChatProps) {
+export function Chat() {
+  const gameId = useGameId();
   const {
     user: { id: userId },
   } = useSession();
   const { formErrors, handleSubmit, handleReset } = useFormSchema(formSchema);
-  const { groups = [] } = useGetChatMessagesQuery(gameId, {
+  const { groups = [] } = useGetChatMessagesQuery(gameId ?? skipToken, {
     selectFromResult: ({ data }) => ({
       groups: data && selectGroupedMessages(data),
     }),
@@ -73,6 +71,7 @@ export function Chat({ gameId }: ChatProps) {
         ref={formRef}
         className={styles.form}
         onSubmit={handleSubmit(({ message }) => {
+          if (!gameId) return;
           void sendChatMessage({
             gameId,
             userId,

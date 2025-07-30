@@ -1,13 +1,11 @@
-import type { Game } from "@/features/game/api";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { useGameId } from "@/features/game/hooks";
 import { useGetActiveRoundQuery } from "./api";
 import styles from "./Prompt.module.css";
 
-export interface PromptProps {
-  gameId: Game["id"];
-}
-
-export function Prompt({ gameId }: PromptProps) {
-  const { prompt } = useGetActiveRoundQuery(gameId, {
+export function Prompt() {
+  const gameId = useGameId();
+  const { prompt } = useGetActiveRoundQuery(gameId ?? skipToken, {
     selectFromResult: ({ data }) => ({ prompt: data?.prompt }),
   });
   return (

@@ -1,11 +1,10 @@
-import { randRecentDate } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { delay, http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
 import type { roundApi } from "@/features/round/api";
 import type { SessionParameters } from "@/storybook/decorators";
 import { getStore, withRedux, withSession } from "@/storybook/decorators";
-import { randIndexes, randQuestion, randWordPool } from "@/storybook/mocks";
+import { mockGame, randIndexes, randWordPool } from "@/storybook/mocks";
 import { mockSession, tableUrl } from "@/supabase/mocks";
 import { CurrentSubmission } from "./CurrentSubmission";
 import { clearSubmission, wordToggled } from "./slice";
@@ -22,9 +21,6 @@ const rows = [
 const meta = {
   component: CurrentSubmission,
   title: "Features/Submissions/CurrentSubmission",
-  args: {
-    gameId: 1,
-  },
   async play({ parameters, userEvent }) {
     const store = getStore(parameters);
 
@@ -43,28 +39,16 @@ const meta = {
   parameters: {
     session: mockSession(),
     msw: {
-      handlers: {
-        wordPool: http.get(tableUrl("word_pools"), () =>
+      handlers: [
+        http.get(tableUrl("word_pools"), () =>
           HttpResponse.json<
             typeof roundApi.endpoints.getWordPool.Types.RawResultType
           >({
             words: wordPool,
           }),
         ),
-        activeRound: http.get(tableUrl("games"), () =>
-          HttpResponse.json<
-            typeof roundApi.endpoints.getActiveRound.Types.RawResultType
-          >({
-            active_round: {
-              id: 1,
-              prompt: { prompt: randQuestion() },
-              judge: null,
-              created_at: randRecentDate().toISOString(),
-              phase: "submission",
-            },
-          }),
-        ),
-      },
+        mockGame(),
+      ],
     },
   } satisfies MswParameters & SessionParameters,
   decorators: [withRedux, withSession],

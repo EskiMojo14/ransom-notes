@@ -1,7 +1,8 @@
+import { skipToken } from "@reduxjs/toolkit/query";
 import { clsx } from "clsx";
 import { ToggleButton, ToggleButtonGroup } from "react-aria-components";
 import { useSession } from "@/features/auth/session";
-import type { Game } from "@/features/game/api";
+import { useGameId } from "@/features/game/hooks";
 import {
   useGetActiveRoundQuery,
   useGetWordPoolQuery,
@@ -10,20 +11,17 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { selectAllIndexes, wordToggled } from "./slice";
 import styles from "./WordPool.module.css";
 
-export interface WordPoolProps {
-  gameId: Game["id"];
-}
-
-export function WordPool({ gameId }: WordPoolProps) {
+export function WordPool() {
   const dispatch = useAppDispatch();
+  const gameId = useGameId();
   const session = useSession();
   const { words = [] } = useGetWordPoolQuery(
-    { gameId, userId: session.user.id },
+    gameId != null ? { gameId, userId: session.user.id } : skipToken,
     {
       selectFromResult: ({ data }) => ({ words: data }),
     },
   );
-  const { phase } = useGetActiveRoundQuery(gameId, {
+  const { phase } = useGetActiveRoundQuery(gameId ?? skipToken, {
     selectFromResult: ({ data }) => ({ phase: data?.phase }),
   });
   const selectedKeys = useAppSelector(selectAllIndexes);

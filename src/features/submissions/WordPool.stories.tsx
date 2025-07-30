@@ -1,13 +1,12 @@
-import { randRecentDate } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { assert } from "es-toolkit";
 import { delay, http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
-import type { Round } from "@/features/round/api";
+import type { Game } from "@/features/game/api";
 import { roundApi } from "@/features/round/api";
 import type { SessionParameters } from "@/storybook/decorators";
 import { getStore, withRedux, withSession } from "@/storybook/decorators";
-import { randIndexes, randQuestion, randWordPool } from "@/storybook/mocks";
+import { mockGame, randIndexes, randWordPool } from "@/storybook/mocks";
 import { mockSession, tableUrl } from "@/supabase/mocks";
 import type { Enums } from "@/supabase/types";
 import { clearSubmission } from "./slice";
@@ -16,9 +15,6 @@ import { WordPool } from "./WordPool";
 const meta = {
   component: WordPool,
   title: "Features/Submissions/WordPool",
-  args: {
-    gameId: 1,
-  },
   parameters: {
     session: mockSession(),
     msw: {
@@ -30,19 +26,7 @@ const meta = {
             words: randWordPool(),
           }),
         ),
-        activeRound: http.get(tableUrl("games"), () =>
-          HttpResponse.json<
-            typeof roundApi.endpoints.getActiveRound.Types.RawResultType
-          >({
-            active_round: {
-              id: 1,
-              prompt: { prompt: randQuestion() },
-              judge: null,
-              created_at: randRecentDate().toISOString(),
-              phase: "submission",
-            },
-          }),
-        ),
+        activeRound: mockGame(),
       },
     },
   } satisfies MswParameters & SessionParameters,
@@ -72,16 +56,13 @@ export const Default = {
   },
 } satisfies Story;
 
-const setRoundPhase = (roundId: Round["id"], phase: Enums<"round_phase">) =>
-  roundApi.util.updateQueryData("getActiveRound", roundId, (round) => {
+const setRoundPhase = (gameId: Game["id"], phase: Enums<"round_phase">) =>
+  roundApi.util.updateQueryData("getActiveRound", gameId, (round) => {
     assert(round, "Round should exist");
     round.phase = phase;
   });
 
 export const Disabled = {
-  args: {
-    gameId: 2,
-  },
   async play({ context, parameters, step }) {
     const store = getStore(parameters);
 
@@ -97,19 +78,7 @@ export const Disabled = {
   parameters: {
     msw: {
       handlers: {
-        activeRound: http.get(tableUrl("games"), () =>
-          HttpResponse.json<
-            typeof roundApi.endpoints.getActiveRound.Types.RawResultType
-          >({
-            active_round: {
-              id: 1,
-              prompt: { prompt: randQuestion() },
-              judge: null,
-              created_at: randRecentDate().toISOString(),
-              phase: "submission",
-            },
-          }),
-        ),
+        activeRound: mockGame({ game: { id: 2 } }),
       },
     },
   } satisfies MswParameters,

@@ -1,4 +1,11 @@
+import { randRecentDate, randUserName } from "@ngneat/falso";
 import { randomInt, shuffle } from "es-toolkit";
+import { http, HttpResponse } from "msw";
+import { spyOn } from "storybook/internal/test";
+import type { gameApi } from "@/features/game/api";
+import type { roundApi } from "@/features/round/api";
+import { Route } from "@/routes/game/$inviteCode";
+import { tableUrl } from "@/supabase/mocks";
 
 const questions = [
   "You hand a note to the cashier telling them you're robbing the place, and it says:",
@@ -109,4 +116,56 @@ export const randIndexes = (length: number, count: number) => {
     picked.add(idx);
   }
   return picked;
+};
+
+export const mockGame = ({
+  round,
+  game,
+}: {
+  round?: Partial<typeof roundApi.endpoints.getActiveRound.Types.RawResultType>;
+  game?: Partial<
+    typeof gameApi.endpoints.getGameByInviteCode.Types.RawResultType
+  >;
+} = {}) => {
+  spyOn(Route, "useParams").mockReturnValue({ inviteCode: "FOO" });
+  return http.get<
+    {},
+    undefined,
+    | typeof gameApi.endpoints.getGameByInviteCode.Types.RawResultType
+    | typeof roundApi.endpoints.getActiveRound.Types.RawResultType
+  >(tableUrl("games"), ({ request }) => {
+    const select = new URL(request.url).searchParams.get("select");
+    if (select?.startsWith("active_round")) {
+      return HttpResponse.json<
+        typeof roundApi.endpoints.getActiveRound.Types.RawResultType
+      >({
+        active_round: {
+          id: 1,
+          prompt: { prompt: randQuestion() },
+          judge: null,
+          created_at: randRecentDate().toISOString(),
+          phase: "submission",
+          ...round,
+        },
+      });
+    }
+    return HttpResponse.json<
+      typeof gameApi.endpoints.getGameByInviteCode.Types.RawResultType
+    >({
+      id: 1,
+      invite_code: "FOO",
+      creator_id: "1",
+      creator: {
+        display_name: randUserName(),
+        avatar_url: null,
+      },
+      first_to: 5,
+      state: "running",
+      voting_mode: "judge",
+      created_at: randRecentDate().toISOString(),
+      active_round: 1,
+      participants: [],
+      ...game,
+    });
+  });
 };
