@@ -26,7 +26,6 @@
   border-radius: var(--shape-medium);
   border-bottom-left-radius: 0;
   position: relative;
-  margin-bottom: 0.5rem;
   &::after {
     content: "";
     position: absolute;
