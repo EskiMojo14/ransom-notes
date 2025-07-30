@@ -1,16 +1,18 @@
 import { clsx } from "clsx";
 import { ToggleButton, ToggleButtonGroup } from "react-aria-components";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import type { Game } from "@/features/game/api";
+import type { Round } from "@/features/round/api";
 import {
   useGetActiveRoundQuery,
   useGetWordPoolQuery,
 } from "@/features/round/api";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { selectAllIndexes, wordToggled } from "./slice";
 import styles from "./WordPool.module.css";
 
 export interface WordPoolProps {
-  gameId: number;
-  roundId: number;
+  gameId: Game["id"];
+  roundId: Round["id"];
   userId: string;
 }
 

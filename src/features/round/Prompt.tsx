@@ -1,8 +1,9 @@
+import type { Game } from "@/features/game/api";
 import { useGetActiveRoundQuery } from "./api";
 import styles from "./Prompt.module.css";
 
 export interface PromptProps {
-  gameId: number;
+  gameId: Game["id"];
 }
 
 export function Prompt({ gameId }: PromptProps) {

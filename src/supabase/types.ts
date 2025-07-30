@@ -87,6 +87,45 @@ export type Database = {
           },
         ];
       };
+      messages: {
+        Row: {
+          created_at: string;
+          game_id: number;
+          id: number;
+          message: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          game_id: number;
+          id?: number;
+          message: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          game_id?: number;
+          id?: number;
+          message?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "messages_game_id_fkey";
+            columns: ["game_id"];
+            isOneToOne: false;
+            referencedRelation: "games";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "messages_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       participants: {
         Row: {
           game_id: number;

@@ -1,9 +1,10 @@
 import { clsx } from "clsx";
+import type { Round } from "@/features/round/api";
 import { selectSubmissionById, useGetSubmissionsQuery } from "./api";
 import styles from "./Submission.module.css";
 
 export interface SubmissionProps {
-  roundId: number;
+  roundId: Round["id"];
   authorId: string;
   showAuthor?: boolean;
 }

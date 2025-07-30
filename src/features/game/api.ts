@@ -1,16 +1,12 @@
 import { customAlphabet } from "nanoid";
+import type { Profile } from "@/features/auth/api";
+import { profileSelect } from "@/features/auth/api";
 import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
 import type { Tables, TablesInsert } from "@/supabase/types";
 import type { Compute, PickRequired } from "@/utils/types";
 
 export const makeInviteCode = customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5);
-
-const profileSelect = `
-  display_name, 
-  avatar_url
-` as const;
-type Profile = Pick<Tables<"profiles">, "display_name" | "avatar_url">;
 
 const gameSelect = `
   *,
@@ -66,7 +62,6 @@ export const gameApi = api
                 { type: "Game", id: res.invite_code },
               ]
             : [],
-        extraOptions: { minimumPendingTime: true },
       }),
     }),
   });

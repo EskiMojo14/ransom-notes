@@ -9,8 +9,10 @@ import {
 import { Button } from "@/components/button";
 import { Radio } from "@/components/radio";
 import { Symbol } from "@/components/symbol";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import type { Game } from "@/features/game/api";
+import type { Round } from "@/features/round/api";
 import { useGetWordPoolQuery } from "@/features/round/api";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import {
   clearSubmission,
   nextRow,
@@ -26,8 +28,8 @@ import styles from "./CurrentSubmission.module.css";
 import poolStyles from "./WordPool.module.css";
 
 export interface CurrentSubmissionProps {
-  gameId: number;
-  roundId: number;
+  gameId: Game["id"];
+  roundId: Round["id"];
   userId: string;
 }
 

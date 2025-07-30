@@ -27,12 +27,15 @@ export interface SupabaseExtraOptions {
    * Pend for at least this many milliseconds before returning, to avoid loading indicators from flashing on the screen.
    * If set to `true`, uses a default value of 1000ms.
    */
-  minimumPendingTime?: number | true;
+  minimumPendingTime?: number | boolean;
 }
 
 const minPendingTime = 1000;
 
-const getPendingPromise = ({ minimumPendingTime }: SupabaseExtraOptions) => {
+const getPendingPromise = (
+  { type }: BaseQueryApi,
+  { minimumPendingTime = type === "mutation" }: SupabaseExtraOptions,
+) => {
   if (!minimumPendingTime) return undefined;
   return wait(
     minimumPendingTime === true
@@ -82,7 +85,7 @@ export function supabaseQueryFn<RawResult, QueryArg, Result>(
     | ((arg: QueryArg) => QueryBuilder<RawResult>)
     | SupabaseQueryFnConfig<RawResult, QueryArg, Result>,
 ): SupabaseQueryFn<RawResult, QueryArg, Result> {
-  return async function queryFn(arg, { signal }, extraOptions = {}) {
+  return async function queryFn(arg, api, extraOptions = {}) {
     const {
       query,
       transformResponse = (data) => data as unknown as Result,
@@ -91,10 +94,10 @@ export function supabaseQueryFn<RawResult, QueryArg, Result>(
         ? { query: queryOrConfig }
         : queryOrConfig;
     let builder = query(arg);
-    if (builder.abortSignal) builder = builder.abortSignal(signal);
+    if (builder.abortSignal) builder = builder.abortSignal(api.signal);
     const [{ data, error, status, statusText }] = await Promise.all([
       builder,
-      getPendingPromise(extraOptions),
+      getPendingPromise(api, extraOptions),
     ]);
     const meta: SupabaseMeta = { status, statusText };
     return error

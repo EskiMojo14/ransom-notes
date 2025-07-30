@@ -3,11 +3,12 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { assert } from "es-toolkit";
 import { delay, http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
+import type { Round } from "@/features/round/api";
+import { roundApi } from "@/features/round/api";
 import { getStore, withRedux } from "@/storybook/decorators";
 import { randIndexes, randQuestion, randWordPool } from "@/storybook/mocks";
 import { tableUrl } from "@/supabase/mocks";
 import type { Enums } from "@/supabase/types";
-import { roundApi } from "@/features/round/api";
 import { clearSubmission } from "./slice";
 import { WordPool } from "./WordPool";
 
@@ -71,7 +72,7 @@ export const Default = {
   },
 } satisfies Story;
 
-const setRoundPhase = (roundId: number, phase: Enums<"round_phase">) =>
+const setRoundPhase = (roundId: Round["id"], phase: Enums<"round_phase">) =>
   roundApi.util.updateQueryData("getActiveRound", roundId, (round) => {
     assert(round, "Round should exist");
     round.phase = phase;

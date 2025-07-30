@@ -1,10 +1,21 @@
 import type { Session } from "@supabase/supabase-js";
+import { assert } from "es-toolkit";
 import { useEffect, useState, type ReactNode } from "react";
 import { createRequiredContext } from "required-react-context";
 import { supabase } from "@/supabase";
 
-const { SessionProvider: OriginalSessionProvider, useSession } =
-  createRequiredContext<Session | null>().with({ name: "session" });
+export const { OriginalSessionProvider, useNullableSession } =
+  createRequiredContext<Session | null>().with({
+    name: "session",
+    providerName: "OriginalSessionProvider",
+    hookName: "useNullableSession",
+  });
+
+export function useSession() {
+  const session = useNullableSession();
+  assert(session, "Session should exist");
+  return session;
+}
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
@@ -28,5 +39,3 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     </OriginalSessionProvider>
   );
 }
-
-export { useSession };

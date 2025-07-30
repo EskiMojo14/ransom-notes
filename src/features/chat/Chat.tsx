@@ -1,0 +1,104 @@
+import { clsx } from "clsx";
+import { Form } from "react-aria-components";
+import * as v from "valibot";
+import { Button } from "@/components/button";
+import { Symbol } from "@/components/symbol";
+import { TextField } from "@/components/textfield";
+import { useSession } from "@/features/auth/session";
+import type { Game } from "@/features/game/api";
+import { useAppDispatch } from "@/hooks/redux";
+import { useFormSchema } from "@/hooks/use-form-schema";
+import { useRealtimeChannel } from "@/hooks/use-realtime-channel";
+import {
+  listenToChat,
+  selectGroupedMessages,
+  useGetChatMessagesQuery,
+  useSendChatMessageMutation,
+} from "./api";
+import styles from "./Chat.module.css";
+
+const formSchema = v.object({
+  message: v.string(),
+});
+
+export interface ChatProps {
+  gameId: Game["id"];
+}
+
+export function Chat({ gameId }: ChatProps) {
+  const dispatch = useAppDispatch();
+  useRealtimeChannel(() => dispatch(listenToChat(gameId)), [gameId, dispatch]);
+  const {
+    user: { id: userId },
+  } = useSession();
+  const { formErrors, handleSubmit } = useFormSchema(formSchema);
+  const { groups = [] } = useGetChatMessagesQuery(gameId, {
+    selectFromResult: ({ data }) => ({
+      groups: data && selectGroupedMessages(data),
+    }),
+  });
+  const [sendChatMessage, { isLoading }] = useSendChatMessageMutation({
+    selectFromResult: ({ isLoading }) => ({ isLoading }),
+  });
+  return (
+    <div className={styles.container}>
+      <ul className={styles.messages}>
+        {groups.map((group) => {
+          const [first] = group;
+          if (!first) return null;
+          return (
+            <li
+              key={first.id}
+              className={clsx(styles.message, {
+                [styles.own ?? ""]: first.user_id === userId,
+              })}
+            >
+              <span className={clsx(styles.author, "overline")}>
+                {first.author.display_name}
+              </span>
+              {group.map((message) => (
+                <span key={message.id} className={clsx(styles.text, "body1")}>
+                  {message.message}
+                </span>
+              ))}
+            </li>
+          );
+        })}
+      </ul>
+      <Form
+        className={styles.form}
+        onSubmit={handleSubmit(({ message }, event) => {
+          void sendChatMessage({
+            gameId,
+            userId,
+            message,
+          })
+            .unwrap()
+            .then(() => {
+              (event.target as HTMLFormElement).reset();
+            });
+        }, console.error)}
+        validationErrors={formErrors}
+      >
+        <TextField
+          name="message"
+          aria-label="New message"
+          placeholder="New message"
+          multiline
+          className={styles.textField}
+          isRequired
+        />
+        <Button
+          type="submit"
+          iconOnly
+          icon={<Symbol>send</Symbol>}
+          isPending={isLoading}
+          variant="filled"
+          className={styles.sendButton}
+        >
+          Send
+        </Button>
+      </Form>
+    </div>
+  );
+}
