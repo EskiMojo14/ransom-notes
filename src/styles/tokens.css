@@ -96,6 +96,11 @@
   --radio-description-rgb: var(--paper-900-rgb);
   --radio-label-rgb: var(--paper-900-rgb);
   --radio-error: var(--red-a700);
+
+  --chat-message: var(--paper-100);
+  --on-chat-message: var(--black);
+  --chat-message-own: var(--teal-100);
+  --on-chat-message-own: var(--black);
 }
 
 %dark {
@@ -196,6 +201,11 @@
   --radio-description-rgb: var(--paper-100-rgb);
   --radio-label-rgb: var(--paper-100-rgb);
   --radio-error: var(--red-a400);
+
+  --chat-message: var(--paper-800);
+  --on-chat-message: var(--paper-50);
+  --chat-message-own: var(--teal-800);
+  --on-chat-message-own: var(--paper-50);
 }
 
 [data-theme="light"] {

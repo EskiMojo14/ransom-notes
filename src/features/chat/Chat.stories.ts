@@ -45,32 +45,6 @@ const meta = {
     session,
     msw: {
       handlers: [
-        http.get(tableUrl("messages"), () =>
-          HttpResponse.json<
-            typeof chatApi.endpoints.getChatMessages.Types.RawResultType
-          >([
-            {
-              id: 1,
-              created_at: randRecentDate().toISOString(),
-              message: randSentence(),
-              user_id: session.user.id,
-              author: {
-                display_name: session.user.user_metadata.user_name,
-                avatar_url: null,
-              },
-            },
-            {
-              id: 2,
-              created_at: new Date().toISOString(),
-              message: randSentence(),
-              user_id: "2",
-              author: {
-                display_name: names[2],
-                avatar_url: null,
-              },
-            },
-          ]),
-        ),
         http.get(tableUrl("profiles"), ({ request }) =>
           HttpResponse.json<
             typeof userApi.endpoints.getProfile.Types.RawResultType
@@ -84,6 +58,30 @@ const meta = {
             avatar_url: null,
           }),
         ),
+        http.get(tableUrl("messages"), () =>
+          HttpResponse.json<
+            typeof chatApi.endpoints.getChatMessages.Types.RawResultType
+          >([
+            {
+              id: 1,
+              created_at: randRecentDate().toISOString(),
+              message: randSentence(),
+              user_id: session.user.id,
+              author: {
+                display_name: session.user.user_metadata.user_name,
+              },
+            },
+            {
+              id: 2,
+              created_at: new Date().toISOString(),
+              message: randSentence(),
+              user_id: "2",
+              author: {
+                display_name: names[2],
+              },
+            },
+          ]),
+        ),
         http.post<{}, TablesInsert<"messages">>(
           tableUrl("messages"),
           async ({ request }) =>
@@ -94,7 +92,6 @@ const meta = {
               created_at: new Date().toISOString(),
               author: {
                 display_name: session.user.user_metadata.user_name,
-                avatar_url: null,
               },
               ...(await request.json()),
             }),

@@ -2,7 +2,7 @@ import type { EntityState } from "@reduxjs/toolkit";
 import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { randomInt } from "es-toolkit";
-import { profileSelect, userApi, type Profile } from "@/features/auth/api";
+import { userApi } from "@/features/auth/api";
 import type { Game } from "@/features/game/api";
 import type { AppThunk } from "@/store";
 import { supabase } from "@/supabase";
@@ -15,14 +15,14 @@ const messageSelect = `
   created_at,
   message,
   user_id,
-  author:profiles(${profileSelect})
+  author:profiles(display_name)
 ` as const;
 export interface Message
   extends Pick<
     Tables<"messages">,
     "id" | "created_at" | "message" | "user_id"
   > {
-  author: Profile;
+  author: Pick<Tables<"profiles">, "display_name">;
 }
 
 const messageAdapter = createEntityAdapter<Message>({

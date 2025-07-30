@@ -49,9 +49,10 @@ export function Chat({ gameId }: ChatProps) {
           return (
             <li
               key={first.id}
-              className={clsx(styles.message, {
-                [styles.own ?? ""]: first.user_id === userId,
-              })}
+              className={clsx(
+                styles.message,
+                first.user_id === userId && styles.own,
+              )}
             >
               <span className={clsx(styles.author, "overline")}>
                 {first.author.display_name}
@@ -61,6 +62,12 @@ export function Chat({ gameId }: ChatProps) {
                   {message.message}
                 </span>
               ))}
+              <time className={clsx(styles.timestamp, "caption")}>
+                {new Date(first.created_at).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </time>
             </li>
           );
         })}
@@ -87,6 +94,12 @@ export function Chat({ gameId }: ChatProps) {
           multiline
           className={styles.textField}
           isRequired
+          onKeyDown={(event) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+              event.preventDefault();
+              (event.target as HTMLTextAreaElement).form?.requestSubmit();
+            }
+          }}
         />
         <Button
           type="submit"
