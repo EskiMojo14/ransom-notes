@@ -1,10 +1,8 @@
 import type { EntityState } from "@reduxjs/toolkit";
 import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
-import type { RealtimeChannel } from "@supabase/supabase-js";
 import { randomInt } from "es-toolkit";
 import { userApi } from "@/features/auth/api";
 import type { Game } from "@/features/game/api";
-import type { AppThunk } from "@/store";
 import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
 import { listenTo } from "@/supabase/realtime";
@@ -48,6 +46,58 @@ export const chatApi = api
             messageAdapter.getInitialState(undefined, messages),
         }),
         providesTags: (_res, _err, gameId) => [{ type: "Chat", id: gameId }],
+        async onCacheEntryAdded(
+          gameId,
+          // eslint-disable-next-line @typescript-eslint/unbound-method
+          { dispatch, updateCachedData, cacheDataLoaded, cacheEntryRemoved },
+        ) {
+          try {
+            await cacheDataLoaded;
+            const subscriptions: Array<{ unsubscribe: () => void }> = [];
+            const channel = listenTo(
+              "messages",
+              {
+                async insert({ new: { user_id, id, created_at, message } }) {
+                  const sub = dispatch(
+                    userApi.endpoints.getProfile.initiate(user_id),
+                  );
+                  subscriptions.push(sub);
+                  const author = await sub.unwrap();
+                  updateCachedData((draft) =>
+                    messageAdapter.addOne(draft, {
+                      id,
+                      created_at,
+                      message,
+                      user_id,
+                      author,
+                    }),
+                  );
+                },
+                update({ new: { id, message } }) {
+                  updateCachedData((draft) =>
+                    messageAdapter.updateOne(draft, {
+                      id,
+                      changes: { message },
+                    }),
+                  );
+                },
+                delete({ old: { id } }) {
+                  if (id) {
+                    updateCachedData((draft) =>
+                      messageAdapter.removeOne(draft, id),
+                    );
+                  }
+                },
+              },
+              `game_id=eq.${gameId}`,
+            );
+            await cacheEntryRemoved;
+            await channel.unsubscribe();
+            for (const sub of subscriptions) sub.unsubscribe();
+          } catch {
+            // cacheDataLoaded throws if the cache entry is removed before the promise resolves
+          }
+        },
       }),
       sendChatMessage: build.mutation<
         Message,
@@ -138,45 +188,3 @@ export const selectGroupedMessages = createSelector(
     return result;
   },
 );
-
-export const listenToChat =
-  (gameId: Game["id"]): AppThunk<RealtimeChannel> =>
-  (dispatch) =>
-    listenTo(
-      "messages",
-      {
-        async insert({ new: { user_id, id, created_at, message } }) {
-          const author = await dispatch(
-            userApi.endpoints.getProfile.initiate(user_id),
-          ).unwrap();
-          dispatch(
-            chatApi.util.updateQueryData("getChatMessages", gameId, (draft) =>
-              messageAdapter.addOne(draft, {
-                id,
-                created_at,
-                message,
-                user_id,
-                author,
-              }),
-            ),
-          );
-        },
-        update({ new: { id, message } }) {
-          dispatch(
-            chatApi.util.updateQueryData("getChatMessages", gameId, (draft) =>
-              messageAdapter.updateOne(draft, { id, changes: { message } }),
-            ),
-          );
-        },
-        delete({ old: { id } }) {
-          if (id) {
-            dispatch(
-              chatApi.util.updateQueryData("getChatMessages", gameId, (draft) =>
-                messageAdapter.removeOne(draft, id),
-              ),
-            );
-          }
-        },
-      },
-      `game_id=eq.${gameId}`,
-    );

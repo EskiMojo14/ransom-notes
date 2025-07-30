@@ -7,11 +7,8 @@ import { Symbol } from "@/components/symbol";
 import { TextField } from "@/components/textfield";
 import { useSession } from "@/features/auth/session";
 import type { Game } from "@/features/game/api";
-import { useAppDispatch } from "@/hooks/redux";
 import { useFormSchema } from "@/hooks/use-form-schema";
-import { useRealtimeChannel } from "@/hooks/use-realtime-channel";
 import {
-  listenToChat,
   selectGroupedMessages,
   useGetChatMessagesQuery,
   useSendChatMessageMutation,
@@ -27,8 +24,6 @@ export interface ChatProps {
 }
 
 export function Chat({ gameId }: ChatProps) {
-  const dispatch = useAppDispatch();
-  useRealtimeChannel(() => dispatch(listenToChat(gameId)), [gameId, dispatch]);
   const {
     user: { id: userId },
   } = useSession();
