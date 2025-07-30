@@ -1,11 +1,16 @@
 import type { Decorator, Preview } from "@storybook/react-vite";
 import { initialize, mswLoader } from "msw-storybook-addon";
+import { env } from "@/env";
 import type { Theme } from "@/features/theme/storage";
 import { themeSchema, themeStore } from "@/features/theme/storage";
 import "@/styles.css";
 
 initialize({
   onUnhandledRequest(request, print) {
+    if (request.url.startsWith(env.VITE_SUPABASE_URL)) {
+      print.error();
+      throw new Error("Unhandled request: " + request.url);
+    }
     if (
       !(
         request.url.includes("/src/") ||
