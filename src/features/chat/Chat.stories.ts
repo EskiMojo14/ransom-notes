@@ -36,6 +36,17 @@ const meta = {
         game_id: 1,
       },
     });
+    await delay(2000);
+    handlers.insert({
+      old: {},
+      new: {
+        id: id++,
+        created_at: new Date(Date.now() + 1000 * 60 * 5).toISOString(),
+        message: randSentence(),
+        user_id: "2",
+        game_id: 1,
+      },
+    });
   },
   args: {
     gameId: 1,
