@@ -4,6 +4,7 @@ import { decode } from "decode-formdata";
 import type { FormEvent } from "react";
 import { useState } from "react";
 import * as v from "valibot";
+import { useDevDebugValue } from "./use-dev-debug-value";
 
 export function useFormSchema<T extends v.GenericSchema>(
   schema: T,
@@ -21,6 +22,7 @@ export function useFormSchema<T extends v.GenericSchema>(
     ) => void | Promise<void>,
   ) {
     return function onSubmit(event: FormEvent<HTMLFormElement>) {
+      setFormErrors(undefined);
       event.preventDefault();
       const formData = new FormData(event.currentTarget);
       const decoded = decode(formData, formInfo);
@@ -30,9 +32,15 @@ export function useFormSchema<T extends v.GenericSchema>(
         void onError?.(parseRes.issues, event);
         return;
       }
-      setFormErrors(undefined);
       void onSuccess(parseRes.output, event);
     };
   }
-  return { handleSubmit, formErrors };
+  useDevDebugValue(formErrors);
+  return {
+    handleSubmit,
+    handleReset: () => {
+      setFormErrors(undefined);
+    },
+    formErrors,
+  };
 }

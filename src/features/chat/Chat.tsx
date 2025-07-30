@@ -1,4 +1,5 @@
 import { clsx } from "clsx";
+import { useRef } from "react";
 import { Form } from "react-aria-components";
 import * as v from "valibot";
 import { Button } from "@/components/button";
@@ -31,7 +32,7 @@ export function Chat({ gameId }: ChatProps) {
   const {
     user: { id: userId },
   } = useSession();
-  const { formErrors, handleSubmit } = useFormSchema(formSchema);
+  const { formErrors, handleSubmit, handleReset } = useFormSchema(formSchema);
   const { groups = [] } = useGetChatMessagesQuery(gameId, {
     selectFromResult: ({ data }) => ({
       groups: data && selectGroupedMessages(data),
@@ -40,6 +41,7 @@ export function Chat({ gameId }: ChatProps) {
   const [sendChatMessage, { isLoading }] = useSendChatMessageMutation({
     selectFromResult: ({ isLoading }) => ({ isLoading }),
   });
+  const formRef = useRef<HTMLFormElement>(null);
   return (
     <div className={styles.container}>
       <ul className={styles.messages}>
@@ -73,8 +75,9 @@ export function Chat({ gameId }: ChatProps) {
         })}
       </ul>
       <Form
+        ref={formRef}
         className={styles.form}
-        onSubmit={handleSubmit(({ message }, event) => {
+        onSubmit={handleSubmit(({ message }) => {
           void sendChatMessage({
             gameId,
             userId,
@@ -82,9 +85,10 @@ export function Chat({ gameId }: ChatProps) {
           })
             .unwrap()
             .then(() => {
-              (event.target as HTMLFormElement).reset();
+              formRef.current?.reset();
             });
         }, console.error)}
+        onReset={handleReset}
         validationErrors={formErrors}
       >
         <TextField
@@ -97,7 +101,7 @@ export function Chat({ gameId }: ChatProps) {
           onKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
-              (event.target as HTMLTextAreaElement).form?.requestSubmit();
+              formRef.current?.requestSubmit();
             }
           }}
         />

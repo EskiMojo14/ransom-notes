@@ -2,6 +2,7 @@ import type { Session } from "@supabase/supabase-js";
 import { assert } from "es-toolkit";
 import { useEffect, useState, type ReactNode } from "react";
 import { createRequiredContext } from "required-react-context";
+import { useDevDebugValue } from "@/hooks/use-dev-debug-value";
 import { supabase } from "@/supabase";
 
 export const { OriginalSessionProvider, useNullableSession } =
@@ -13,6 +14,7 @@ export const { OriginalSessionProvider, useNullableSession } =
 
 export function useSession() {
   const session = useNullableSession();
+  useDevDebugValue(session);
   assert(session, "Session should exist");
   return session;
 }
