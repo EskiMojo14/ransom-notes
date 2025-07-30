@@ -5,9 +5,10 @@ import { delay, http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
 import type { Round } from "@/features/round/api";
 import { roundApi } from "@/features/round/api";
-import { getStore, withRedux } from "@/storybook/decorators";
+import type { SessionParameters } from "@/storybook/decorators";
+import { getStore, withRedux, withSession } from "@/storybook/decorators";
 import { randIndexes, randQuestion, randWordPool } from "@/storybook/mocks";
-import { tableUrl } from "@/supabase/mocks";
+import { mockSession, tableUrl } from "@/supabase/mocks";
 import type { Enums } from "@/supabase/types";
 import { clearSubmission } from "./slice";
 import { WordPool } from "./WordPool";
@@ -18,9 +19,9 @@ const meta = {
   args: {
     gameId: 1,
     roundId: 1,
-    userId: "1",
   },
   parameters: {
+    session: mockSession(),
     msw: {
       handlers: {
         wordPool: http.get(tableUrl("word_pools"), () =>
@@ -45,8 +46,8 @@ const meta = {
         ),
       },
     },
-  } satisfies MswParameters,
-  decorators: [withRedux],
+  } satisfies MswParameters & SessionParameters,
+  decorators: [withRedux, withSession],
 } satisfies Meta<typeof WordPool>;
 
 export default meta;

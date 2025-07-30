@@ -1,16 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
-import { withRedux } from "@/storybook/decorators";
-import { tableUrl } from "@/supabase/mocks";
+import type { SessionParameters } from "@/storybook/decorators";
+import { withRedux, withSession } from "@/storybook/decorators";
+import { mockSession, tableUrl } from "@/supabase/mocks";
 import type { gameApi } from "./api";
 import { CreateGame } from "./CreateGame";
 
 const meta = {
   component: CreateGame,
   title: "Features/Game/CreateGame",
-  decorators: [withRedux],
+  decorators: [withRedux, withSession],
   parameters: {
+    session: mockSession(),
     msw: {
       handlers: [
         http.post(tableUrl("games"), () =>
@@ -20,7 +22,7 @@ const meta = {
         ),
       ],
     },
-  } satisfies MswParameters,
+  } satisfies MswParameters & SessionParameters,
 } satisfies Meta<typeof CreateGame>;
 
 export default meta;

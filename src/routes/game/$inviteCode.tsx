@@ -65,10 +65,14 @@ export const Route = createFileRoute("/game/$inviteCode")({
     if (!env.VITE_USE_MOCKS) await ensureAuthenticated();
   },
   async loader({ params: { inviteCode }, context: { store } }) {
-    const game = await store
-      .dispatch(gameApi.endpoints.getGameByInviteCode.initiate(inviteCode))
-      .unwrap();
-    return { game };
+    const sub = store.dispatch(
+      gameApi.endpoints.getGameByInviteCode.initiate(inviteCode),
+    );
+    try {
+      return { game: await sub.unwrap() };
+    } finally {
+      sub.unsubscribe();
+    }
   },
   component: RouteComponent,
 });
@@ -79,13 +83,12 @@ function RouteComponent() {
     selectFromResult: ({ data }) => ({ game: data }),
   });
   const roundId = 1;
-  const userId = "1";
   if (!game) return null;
   return (
     <>
       <Prompt gameId={game.id} />
-      <CurrentSubmission gameId={game.id} roundId={roundId} userId={userId} />
-      <WordPool gameId={game.id} roundId={roundId} userId={userId} />
+      <CurrentSubmission gameId={game.id} roundId={roundId} />
+      <WordPool gameId={game.id} roundId={roundId} />
     </>
   );
 }

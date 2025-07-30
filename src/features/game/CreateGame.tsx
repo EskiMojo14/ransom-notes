@@ -4,6 +4,7 @@ import { Button } from "@/components/button";
 import { Radio, RadioGroup, TwoLineRadioLabel } from "@/components/radio";
 import { Symbol } from "@/components/symbol";
 import { InlineTextField } from "@/components/textfield/inline";
+import { useSession } from "@/features/auth/session";
 import { useFormSchema } from "@/hooks/use-form-schema";
 import type { Enums, TablesInsert } from "@/supabase/types";
 import { Constants } from "@/supabase/types";
@@ -45,6 +46,7 @@ const formSchema = v.object({
 });
 
 export function CreateGame() {
+  const session = useSession();
   const { formErrors, handleSubmit } = useFormSchema(formSchema, {
     numbers: ["first_to"],
   });
@@ -58,7 +60,7 @@ export function CreateGame() {
       onSubmit={handleSubmit(async (values) => {
         const data = await createGame({
           ...values,
-          creator_id: "1",
+          creator_id: session.user.id,
           invite_code: makeInviteCode(),
         }).unwrap();
         console.log(data);

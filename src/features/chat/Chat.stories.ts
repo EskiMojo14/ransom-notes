@@ -2,12 +2,12 @@ import { randRecentDate, randSentence, randUserName } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { delay, http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
+import type { userApi } from "@/features/auth/api";
 import type { SessionParameters } from "@/storybook/decorators";
 import { withRedux, withSession } from "@/storybook/decorators";
 import { mockSession, tableUrl } from "@/supabase/mocks";
 import { getHandlers } from "@/supabase/realtime";
 import type { TablesInsert } from "@/supabase/types";
-import type { userApi } from "../auth/api";
 import type { chatApi } from "./api";
 import { Chat } from "./Chat";
 

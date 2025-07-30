@@ -2,10 +2,11 @@ import { randRecentDate } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { delay, http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
-import { getStore, withRedux } from "@/storybook/decorators";
-import { randIndexes, randQuestion, randWordPool } from "@/storybook/mocks";
-import { tableUrl } from "@/supabase/mocks";
 import type { roundApi } from "@/features/round/api";
+import type { SessionParameters } from "@/storybook/decorators";
+import { getStore, withRedux, withSession } from "@/storybook/decorators";
+import { randIndexes, randQuestion, randWordPool } from "@/storybook/mocks";
+import { mockSession, tableUrl } from "@/supabase/mocks";
 import { CurrentSubmission } from "./CurrentSubmission";
 import { clearSubmission, wordToggled } from "./slice";
 
@@ -24,7 +25,6 @@ const meta = {
   args: {
     gameId: 1,
     roundId: 1,
-    userId: "1",
   },
   async play({ parameters, userEvent }) {
     const store = getStore(parameters);
@@ -42,6 +42,7 @@ const meta = {
     }
   },
   parameters: {
+    session: mockSession(),
     msw: {
       handlers: {
         wordPool: http.get(tableUrl("word_pools"), () =>
@@ -66,8 +67,8 @@ const meta = {
         ),
       },
     },
-  } satisfies MswParameters,
-  decorators: [withRedux],
+  } satisfies MswParameters & SessionParameters,
+  decorators: [withRedux, withSession],
 } satisfies Meta<typeof CurrentSubmission>;
 
 export default meta;
