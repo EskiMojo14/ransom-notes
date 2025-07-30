@@ -28,3 +28,13 @@ export const hasMinLength = <T, MinLength extends number>(
 ): arr is TupleOfAtLeast<T, MinLength> => arr.length >= minLength;
 
 export type Override<T, U> = Compute<Omit<T, keyof U> & U>;
+
+export type KeyOfUnion<T> = T extends T ? keyof T : never;
+
+export type PickFromUnion<T, K extends KeyOfUnion<T>> = T extends T
+  ? Pick<T, K & keyof T>
+  : never;
+
+export type OmitFromUnion<T, K extends PropertyKey> = T extends T
+  ? Omit<T, K>
+  : never;

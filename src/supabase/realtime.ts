@@ -1,6 +1,9 @@
-import type { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
+import type {
+  REALTIME_POSTGRES_CHANGES_LISTEN_EVENT,
+  RealtimePostgresChangesPayload,
+} from "@supabase/supabase-js";
 import { getOrInsertComputed, string } from "@/utils";
-import { hasLength } from "@/utils/types";
+import { hasLength, type PickFromUnion } from "@/utils/types";
 import type { Database, Tables } from "./types";
 import { supabase } from ".";
 
@@ -17,18 +20,32 @@ const handlerMap = new Map<TableName, Set<RealtimeHandlers<TableName>>>();
 export const getHandlers = <TTableName extends TableName>(table: TTableName) =>
   new Proxy(
     {} as {
-      [EventType in keyof RealtimeHandlers<TTableName>]-?: (
-        ...args: Parameters<
-          NonNullable<RealtimeHandlers<TTableName>[EventType]>
-        >
-      ) => void;
+      [Event in RealtimePostgresChangesPayload<Tables<TTableName>> as Lowercase<
+        Event["eventType"]
+      >]-?: (payload: Pick<Event, "old" | "new">) => void;
     },
     {
       get(_, prop) {
-        return (...args: [never]) => {
+        return (
+          partialEvent: PickFromUnion<
+            RealtimePostgresChangesPayload<Tables<TTableName>>,
+            "old" | "new"
+          >,
+        ) => {
+          const event = {
+            schema: "public",
+            table,
+            commit_timestamp: new Date().toISOString(),
+            errors: [],
+            ...partialEvent,
+            eventType: prop.toString().toUpperCase() as Exclude<
+              `${REALTIME_POSTGRES_CHANGES_LISTEN_EVENT}`,
+              "*"
+            >,
+          };
           for (const handlers of handlerMap.get(table) ?? []) {
             void handlers[prop as keyof RealtimeHandlers<TTableName>]?.(
-              ...args,
+              event as never,
             );
           }
         };

@@ -27,11 +27,6 @@ const meta = {
     await delay(2000);
     const handlers = getHandlers("messages");
     handlers.insert({
-      schema: "public",
-      table: "messages",
-      eventType: "INSERT",
-      commit_timestamp: new Date().toISOString(),
-      errors: [],
       old: {},
       new: {
         id: id++,
