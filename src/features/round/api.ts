@@ -9,7 +9,7 @@ const roundSelect = `
   created_at, 
   id, 
   phase,
-  judge:profiles(display_name)
+  judge:profiles!rounds_judge_id_fkey1(display_name)
 ` as const;
 interface RawRound
   extends Pick<Tables<"rounds">, "created_at" | "id" | "phase"> {
@@ -37,7 +37,7 @@ export const roundApi = api
               .from("games")
               .select(
                 `
-                  active_round:rounds(${roundSelect})
+                  active_round:rounds!games_active_round_fkey(${roundSelect})
                 `,
               )
               .eq("id", gameId)
@@ -85,7 +85,7 @@ export const roundApi = api
         ) {
           try {
             await cacheDataLoaded;
-            const channel = listenTo(
+            const channel = await listenTo(
               "word_pools",
               {
                 update({ new: { game_id, words } }) {

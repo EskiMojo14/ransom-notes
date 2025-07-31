@@ -1,0 +1,16 @@
+.game {
+  display: grid;
+  grid-template-columns: 1fr 20rem;
+  min-height: 100vh;
+  main {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  aside {
+    border-left: 1px solid var(--chat-border);
+    max-height: 100vh;
+    overflow-y: hidden;
+  }
+}

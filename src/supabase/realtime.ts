@@ -1,7 +1,9 @@
 import type {
+  RealtimeChannel,
   REALTIME_POSTGRES_CHANGES_LISTEN_EVENT,
   RealtimePostgresChangesPayload,
 } from "@supabase/supabase-js";
+import { REALTIME_SUBSCRIBE_STATES } from "@supabase/supabase-js";
 import { getOrInsertComputed, string } from "@/utils";
 import { hasLength, type PickFromUnion } from "@/utils/types";
 import type { Database, Tables } from "./types";
@@ -60,7 +62,7 @@ export const listenTo = <TTableName extends TableName>(
 ) => {
   getOrInsertComputed(handlerMap, table, () => new Set()).add(handlers);
   const events = Object.keys(handlers);
-  return supabase.channel(`public:${table} changes`).on(
+  const channel = supabase.channel(`public:${table} changes`).on(
     "postgres_changes",
     {
       schema: "public",
@@ -68,7 +70,14 @@ export const listenTo = <TTableName extends TableName>(
       table,
       filter,
     },
-    (payload) =>
-      void handlers[string.toLowerCase(payload.eventType)]?.(payload as never),
+    (payload) => {
+      void handlers[string.toLowerCase(payload.eventType)]?.(payload as never);
+    },
   );
+  const { promise, resolve, reject } = Promise.withResolvers<RealtimeChannel>();
+  channel.subscribe((state, err) => {
+    if (state === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) resolve(channel);
+    else if (err) reject(err);
+  });
+  return promise;
 };
