@@ -10,5 +10,9 @@ export function GithubSignin() {
       },
     });
   }
-  return <Button onPress={signInWithGithub}>Sign in with Github</Button>;
+  return (
+    <Button onPress={signInWithGithub} variant="elevated">
+      Sign in with Github
+    </Button>
+  );
 }
