@@ -5,6 +5,7 @@
 @import "@/styles/typography.css";
 
 @import "@/components/app-bar/index.css";
+@import "@/components/avatar/index.css";
 @import "@/components/button/index.css";
 @import "@/components/link/index.css";
 @import "@/components/radio/index.css";

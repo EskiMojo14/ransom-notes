@@ -36,6 +36,10 @@
   --whiteboard-border: var(--black);
   --on-whiteboard: var(--white);
 
+  --avatar: var(--paper-100);
+  --on-avatar: var(--black);
+  --avatar-size: 3rem;
+
   --button-primary: var(--teal-400);
   --on-button-primary: var(--black);
   --button-primary-hover-rgb: var(--teal-500-rgb);
@@ -148,6 +152,10 @@
   --whiteboard: rgb(var(--whiteboard-rgb));
   --whiteboard-border: var(--black);
   --on-whiteboard: var(--white);
+
+  --avatar: var(--paper-800);
+  --on-avatar: var(--white);
+  --avatar-size: 3rem;
 
   --button-primary: var(--teal-300);
   --on-button-primary: var(--black);
