@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import { SessionProvider } from "@/features/auth/session";
 import type { AppStore } from "@/store";
 import { store } from "@/store";
+import { supabase } from "@/supabase";
 
 export const Route = createRootRouteWithContext<{ store: AppStore }>()({
   head: () => ({
@@ -21,8 +22,18 @@ export const Route = createRootRouteWithContext<{ store: AppStore }>()({
       },
     ],
   }),
-  component: () => (
-    <SessionProvider>
+  loader: async () => ({
+    initialSession: await supabase.auth
+      .getSession()
+      .then(({ data }) => data.session),
+  }),
+  component: RootComponent,
+});
+
+function RootComponent() {
+  const { initialSession } = Route.useLoaderData();
+  return (
+    <SessionProvider initialSession={initialSession}>
       <Provider store={store}>
         <HeadContent />
         <Outlet />
@@ -30,5 +41,5 @@ export const Route = createRootRouteWithContext<{ store: AppStore }>()({
         <TanStackRouterDevtools />
       </Provider>
     </SessionProvider>
-  ),
-});
+  );
+}

@@ -1,6 +1,7 @@
 import type { Session } from "@supabase/supabase-js";
 import { assert } from "es-toolkit";
-import { use, useEffect, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { createRequiredContext } from "required-react-context";
 import { useDevDebugValue } from "@/hooks/use-dev-debug-value";
 import { supabase } from "@/supabase";
@@ -18,13 +19,14 @@ export function useSession() {
   assert(session, "Session should exist");
   return session;
 }
-
-const initialSessionPromise = supabase.auth
-  .getSession()
-  .then(({ data }) => data.session);
-
-export function SessionProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState(use(initialSessionPromise));
+export function SessionProvider({
+  children,
+  initialSession,
+}: {
+  children: ReactNode;
+  initialSession: Session | null;
+}) {
+  const [session, setSession] = useState(initialSession);
   useEffect(() => {
     const {
       data: { subscription },
