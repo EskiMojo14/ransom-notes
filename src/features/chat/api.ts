@@ -1,7 +1,7 @@
 import type { EntityState } from "@reduxjs/toolkit";
 import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import { randomInt } from "es-toolkit";
-import { userApi } from "@/features/auth/api";
+import { userApi } from "@/features/profile/api";
 import type { Game } from "@/features/game/api";
 import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";

@@ -2,7 +2,7 @@ import { randRecentDate, randSentence, randUserName } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { delay, http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
-import type { userApi } from "@/features/auth/api";
+import type { userApi } from "@/features/profile/api";
 import type { SessionParameters } from "@/storybook/decorators";
 import { withRedux, withSession } from "@/storybook/decorators";
 import { mockGame } from "@/storybook/mocks";

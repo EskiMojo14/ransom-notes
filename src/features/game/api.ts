@@ -1,6 +1,6 @@
 import { customAlphabet } from "nanoid";
-import type { Profile } from "@/features/auth/api";
-import { profileSelect } from "@/features/auth/api";
+import type { Profile } from "@/features/profile/api";
+import { profileSelect } from "@/features/profile/api";
 import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
 import type { Enums, Tables, TablesInsert } from "@/supabase/types";
