@@ -42,30 +42,26 @@ export function Button({
         className,
       )}
     >
-      {composeRenderProps(children, (children, renderProps) => {
-        return (
-          <>
-            {composeRenderProps(
-              icon,
-              (icon, { defaultChildren, isPending }) =>
-                !!icon && (
-                  <span className={cls("icon")}>
-                    {replaceIconWhenPending && isPending
-                      ? defaultChildren
-                      : icon}
-                  </span>
-                ),
-            )({
-              ...renderProps,
-              defaultChildren: replaceIconWhenPending ? (
-                // @ts-expect-error RMWC types are wrong
-                <CircularProgress />
-              ) : undefined,
-            })}
-            {iconOnly ? <span className="sr-only">{children}</span> : children}
-          </>
-        );
-      })}
+      {composeRenderProps(children, (children, renderProps) => (
+        <>
+          {composeRenderProps(
+            icon,
+            (icon, { defaultChildren, isPending }) =>
+              !!icon && (
+                <span className={cls("icon")}>
+                  {replaceIconWhenPending && isPending ? defaultChildren : icon}
+                </span>
+              ),
+          )({
+            ...renderProps,
+            defaultChildren: replaceIconWhenPending ? (
+              // @ts-expect-error RMWC types are wrong
+              <CircularProgress />
+            ) : undefined,
+          })}
+          {iconOnly ? <span className="sr-only">{children}</span> : children}
+        </>
+      ))}
     </AriaButton>
   );
 }
