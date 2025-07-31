@@ -105,6 +105,10 @@
   --on-chat-message: var(--black);
   --chat-message-own: var(--teal-100);
   --on-chat-message-own: var(--black);
+
+  --app-bar: var(--paper-100);
+  --on-app-bar: var(--black);
+  --app-bar-border: var(--paper-200);
 }
 
 %dark {
@@ -214,6 +218,10 @@
   --on-chat-message: var(--paper-50);
   --chat-message-own: var(--teal-800);
   --on-chat-message-own: var(--paper-50);
+
+  --app-bar: var(--paper-800);
+  --on-app-bar: var(--paper-50);
+  --app-bar-border: var(--paper-700);
 }
 
 [data-theme="light"] {

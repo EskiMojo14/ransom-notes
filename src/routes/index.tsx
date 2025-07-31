@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppBar } from "@/components/app-bar";
+import { Logout } from "@/features/auth/Logout";
 import { ensureAuthenticated } from "@/features/auth/user";
 import { CreateGame } from "@/features/game/CreateGame";
 import { JoinGame } from "@/features/game/JoinGame";
@@ -21,17 +23,20 @@ export const Route = createFileRoute("/")({
 
 function App() {
   return (
-    <main>
-      <div className="forms">
-        <div className="form">
-          <h2 className="headline4">Join game</h2>
-          <JoinGame />
+    <>
+      <AppBar actions={<Logout />} />
+      <main>
+        <div className="forms">
+          <div className="form">
+            <h2 className="headline4">Join game</h2>
+            <JoinGame />
+          </div>
+          <div className="form">
+            <h2 className="headline4">Create game</h2>
+            <CreateGame />
+          </div>
         </div>
-        <div className="form">
-          <h2 className="headline4">Create game</h2>
-          <CreateGame />
-        </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }

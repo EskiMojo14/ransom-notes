@@ -1,0 +1,20 @@
+.app-bar {
+  background-color: var(--app-bar);
+  color: var(--on-app-bar);
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--app-bar-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  h1 {
+    margin: 0;
+  }
+  .app-bar__actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+}

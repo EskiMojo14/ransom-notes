@@ -10,7 +10,6 @@
   justify-content: center;
   gap: 0.5rem;
   text-decoration: none;
-  translate: 0 -0.25rem;
   transition:
     background-color 120ms,
     box-shadow 120ms ease-in-out,
@@ -107,6 +106,7 @@
   &.button--elevated {
     background-color: var(--button);
     color: var(--on-button);
+    translate: 0 -0.25rem;
     &[data-hovered] {
       background-color: var(--button-hover);
     }
