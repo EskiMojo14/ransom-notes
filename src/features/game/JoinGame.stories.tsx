@@ -93,7 +93,7 @@ export const NotFound = {
     msw: {
       handlers: [
         http.get(tableUrl("games"), () =>
-          HttpResponse.json(NotFoundError, { status: 404 }),
+          HttpResponse.json(NotFoundError, { status: 406 }),
         ),
       ],
     },

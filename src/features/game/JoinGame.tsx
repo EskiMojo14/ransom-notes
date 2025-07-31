@@ -1,11 +1,11 @@
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useState } from "react";
-import { Button } from "@/components/button";
+import { LinkButton } from "@/components/button/link";
 import { Symbol } from "@/components/symbol";
 import { InlineTextField } from "@/components/textfield/inline";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import type { Enums } from "@/supabase/types";
-import { useGetGameByInviteCodeQuery } from "./api";
+import { useGetGameStateQuery } from "./api";
 import styles from "./JoinGame.module.css";
 
 const errorMessage: Partial<Record<Enums<"game_state">, string>> = {
@@ -17,7 +17,7 @@ function getErrorMessage(
   state: Enums<"game_state"> | undefined,
   status: number | undefined,
 ) {
-  if (status === 404) return "Game not found";
+  if (status === 406) return "Game not found";
   return state && state !== "open" ? errorMessage[state] : undefined;
 }
 
@@ -30,12 +30,11 @@ export function JoinGame({
 }: JoinGameProps) {
   const [inviteCode, setInviteCode] = useState(initialInviteCode);
   const debouncedInviteCode = useDebouncedValue(inviteCode);
-  const { state, status } = useGetGameByInviteCodeQuery(
+  const { state, status } = useGetGameStateQuery(
     debouncedInviteCode || skipToken,
     {
       selectFromResult: ({ data, error }) => ({
-        state: data?.state,
-        id: data?.id,
+        state: data,
         status: error && "status" in error ? error.status : undefined,
       }),
     },
@@ -54,7 +53,9 @@ export function JoinGame({
           icon={<Symbol>password_2</Symbol>}
           className={styles.inviteCode}
         />
-        <Button
+        <LinkButton
+          to="/game/$inviteCode"
+          params={{ inviteCode }}
           variant="elevated"
           icon={
             <Symbol>{state === "open" ? "door_open" : "door_front"}</Symbol>
@@ -62,7 +63,7 @@ export function JoinGame({
           isDisabled={state !== "open"}
         >
           Join
-        </Button>
+        </LinkButton>
       </div>
     </div>
   );

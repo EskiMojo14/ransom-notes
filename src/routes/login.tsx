@@ -1,14 +1,14 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { GithubSignin } from "@/features/auth/GithubSignin";
 import { supabase } from "@/supabase";
-import login from "./login.css?url";
+import styles from "./login.css?url";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
     links: [
       {
         rel: "stylesheet",
-        href: login,
+        href: styles,
       },
     ],
   }),

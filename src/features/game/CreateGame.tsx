@@ -1,3 +1,4 @@
+import { redirect } from "@tanstack/react-router";
 import { Form } from "react-aria-components";
 import * as v from "valibot";
 import { Button } from "@/components/button";
@@ -63,7 +64,10 @@ export function CreateGame() {
           creator_id: session.user.id,
           invite_code: makeInviteCode(),
         }).unwrap();
-        console.log(data);
+        throw redirect({
+          to: "/game/$inviteCode",
+          params: { inviteCode: data.invite_code },
+        });
       }, console.error)}
     >
       <InlineTextField
@@ -92,7 +96,7 @@ export function CreateGame() {
         variant="elevated"
         isPending={isLoading}
       >
-        {({ isPending }) => (isPending ? "Creating game" : "Create game")}
+        {({ isPending }) => (isPending ? "Creating" : "Create")}
       </Button>
     </Form>
   );

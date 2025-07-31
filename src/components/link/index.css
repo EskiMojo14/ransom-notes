@@ -1,0 +1,17 @@
+a:not(.button) {
+  color: var(--link);
+  outline: none;
+  transition:
+    font-weight 120ms,
+    color 120ms;
+  &:visited {
+    color: var(--link-visited);
+  }
+  &:hover,
+  &:focus {
+    font-weight: bold;
+  }
+  &:focus {
+    color: var(--link-focus);
+  }
+}

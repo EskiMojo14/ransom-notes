@@ -97,6 +97,10 @@
   --radio-label-rgb: var(--paper-900-rgb);
   --radio-error: var(--red-a700);
 
+  --link: var(--teal-400);
+  --link-visited: var(--teal-500);
+  --link-focus: var(--teal-a400);
+
   --chat-message: var(--paper-100);
   --on-chat-message: var(--black);
   --chat-message-own: var(--teal-100);
@@ -201,6 +205,10 @@
   --radio-description-rgb: var(--paper-100-rgb);
   --radio-label-rgb: var(--paper-100-rgb);
   --radio-error: var(--red-a400);
+
+  --link: var(--teal-300);
+  --link-visited: var(--teal-400);
+  --link-focus: var(--teal-a200);
 
   --chat-message: var(--paper-800);
   --on-chat-message: var(--paper-50);

@@ -1,5 +1,4 @@
-button.button,
-a.button {
+.button {
   appearance: none;
   border: none;
   border-radius: var(--shape-medium);

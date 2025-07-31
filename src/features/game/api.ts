@@ -3,14 +3,19 @@ import type { Profile } from "@/features/auth/api";
 import { profileSelect } from "@/features/auth/api";
 import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
-import type { Tables, TablesInsert } from "@/supabase/types";
+import type { Enums, Tables, TablesInsert } from "@/supabase/types";
 import type { Compute, PickRequired } from "@/utils/types";
 
 export const makeInviteCode = customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5);
 
+const gameStateSelect = `
+  state
+` as const;
+interface GameState extends Pick<Tables<"games">, "state"> {}
+
 const gameSelect = `
   *,
-  creator:profiles!games_creator_fkey1(${profileSelect}),
+  creator:profiles!games_creator_id_fkey1(${profileSelect}),
   participants:profiles!participants(${profileSelect})
 ` as const;
 interface RawGame extends Tables<"games"> {
@@ -28,6 +33,21 @@ export const gameApi = api
   .enhanceEndpoints({ addTagTypes: ["Game"] })
   .injectEndpoints({
     endpoints: (build) => ({
+      getGameState: build.query<
+        Enums<"game_state">,
+        Game["invite_code"],
+        GameState
+      >({
+        queryFn: supabaseQueryFn({
+          query: (inviteCode) =>
+            supabase
+              .from("games")
+              .select(gameStateSelect)
+              .eq("invite_code", inviteCode)
+              .single(),
+          transformResponse: ({ state }) => state,
+        }),
+      }),
       getGameByInviteCode: build.query<Game, Game["invite_code"], RawGame>({
         queryFn: supabaseQueryFn({
           query: (inviteCode) =>
@@ -67,6 +87,7 @@ export const gameApi = api
   });
 
 export const {
+  useGetGameStateQuery,
   useGetGameByInviteCodeQuery,
   useLazyGetGameByInviteCodeQuery,
   useCreateGameMutation,

@@ -1,6 +1,6 @@
 import type { Session } from "@supabase/supabase-js";
 import { assert } from "es-toolkit";
-import { useEffect, useState, type ReactNode } from "react";
+import { use, useEffect, useState, type ReactNode } from "react";
 import { createRequiredContext } from "required-react-context";
 import { useDevDebugValue } from "@/hooks/use-dev-debug-value";
 import { supabase } from "@/supabase";
@@ -19,8 +19,14 @@ export function useSession() {
   return session;
 }
 
+const initialSessionPromise = supabase.auth
+  .getSession()
+  .then(({ data }) => data.session);
+
 export function SessionProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<Session | null>(
+    use(initialSessionPromise),
+  );
   useEffect(() => {
     const {
       data: { subscription },
