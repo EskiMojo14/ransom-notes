@@ -1,6 +1,7 @@
 import { mergeRefs } from "@react-aria/utils";
-import type { ReactNode, RefAttributes } from "react";
-import { useRef } from "react";
+import { radEventListeners } from "rad-event-listeners";
+import type { ReactNode, RefAttributes, RefCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type {
   TextFieldProps as AriaTextFieldProps,
   ValidationResult,
@@ -27,10 +28,12 @@ export interface TextFieldProps extends AriaTextFieldProps {
 
 export const cls = bemHelper("textfield");
 
-function useTextareaResize() {
-  const ref = useRef<HTMLTextAreaElement>(null);
-  function onChange() {
-    const input = ref.current;
+function useTextareaResize(): {
+  ref: RefCallback<HTMLTextAreaElement>;
+  onChange: () => void;
+} {
+  const [input, setRef] = useState<HTMLTextAreaElement | null>(null);
+  const onChange = useCallback(() => {
     if (!input) return;
     const { alignSelf: prevAlignment, overflow: prevOverflow } = input.style;
 
@@ -46,8 +49,21 @@ function useTextareaResize() {
       alignSelf: prevAlignment,
       overflow: prevOverflow,
     });
-  }
-  return { ref, onChange };
+  }, [input]);
+  useEffect(() => {
+    if (!input?.form) return;
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const unsub = radEventListeners(input.form, {
+      reset() {
+        timeoutId = setTimeout(onChange, 0);
+      },
+    });
+    return () => {
+      unsub();
+      clearTimeout(timeoutId);
+    };
+  }, [input?.form, onChange]);
+  return { ref: setRef, onChange };
 }
 
 export function TextField({
