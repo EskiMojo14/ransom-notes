@@ -2,7 +2,7 @@ import type { EntityState } from "@reduxjs/toolkit";
 import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import { randomInt } from "es-toolkit";
 import type { Game } from "@/features/game/api";
-import { profileApi, profileSelect } from "@/features/profile/api";
+import { profileApi } from "@/features/profile/api";
 import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
 import { listenTo } from "@/supabase/realtime";
@@ -108,9 +108,7 @@ export const chatApi = api
           supabase
             .from("messages")
             .insert({ game_id: gameId, user_id: userId, message })
-            .select(
-              `id, created_at, message, user_id, author:profiles(${profileSelect})`,
-            )
+            .select(messageSelect)
             .single(),
         ),
         async onQueryStarted(
