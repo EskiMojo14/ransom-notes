@@ -4,6 +4,7 @@ import { Logout } from "@/features/auth/Logout";
 import { ensureAuthenticated } from "@/features/auth/user";
 import { CreateGame } from "@/features/game/CreateGame";
 import { JoinGame } from "@/features/game/JoinGame";
+import { ProfileDialog } from "@/features/profile/ProfileDialog";
 import styles from "./index.css?url";
 
 export const Route = createFileRoute("/")({
@@ -24,7 +25,14 @@ export const Route = createFileRoute("/")({
 function App() {
   return (
     <>
-      <AppBar actions={<Logout />} />
+      <AppBar
+        actions={
+          <>
+            <ProfileDialog />
+            <Logout />
+          </>
+        }
+      />
       <main>
         <div className="forms">
           <div className="form">

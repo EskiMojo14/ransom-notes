@@ -1,8 +1,8 @@
 import type { EntityState } from "@reduxjs/toolkit";
 import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import { randomInt } from "es-toolkit";
-import { userApi } from "@/features/profile/api";
 import type { Game } from "@/features/game/api";
+import { profileApi } from "@/features/profile/api";
 import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
 import { listenTo } from "@/supabase/realtime";
@@ -59,7 +59,7 @@ export const chatApi = api
               {
                 async insert({ new: { user_id, id, created_at, message } }) {
                   const sub = dispatch(
-                    userApi.endpoints.getProfile.initiate(user_id),
+                    profileApi.endpoints.getProfile.initiate(user_id),
                   );
                   subscriptions.push(sub);
                   const author = await sub.unwrap();
@@ -119,7 +119,7 @@ export const chatApi = api
         ) {
           const tempId = -randomInt(20);
           const profile = await dispatch(
-            userApi.endpoints.getProfile.initiate(userId),
+            profileApi.endpoints.getProfile.initiate(userId),
           ).unwrap();
           const { undo } = dispatch(
             chatApi.util.updateQueryData("getChatMessages", gameId, (draft) =>

@@ -115,7 +115,7 @@
   --app-bar-border: var(--paper-200);
 
   --dialog-overlay-rgb: var(--paper-1000-rgb);
-  --dialog: var(--paper-100);
+  --dialog: var(--paper-50);
   --on-dialog: var(--black);
 }
 
@@ -236,7 +236,7 @@
   --app-bar-border: var(--paper-700);
 
   --dialog-overlay-rgb: var(--paper-100-rgb);
-  --dialog: var(--paper-800);
+  --dialog: var(--paper-900);
   --on-dialog: var(--paper-50);
 }
 

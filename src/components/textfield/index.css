@@ -13,6 +13,7 @@
     color: var(--on-input);
     min-height: 2.5rem;
     box-shadow: 0 0.25rem inset var(--input-border);
+    overflow: hidden;
     .textfield__icon {
       display: flex;
       align-items: center;

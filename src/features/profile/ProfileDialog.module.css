@@ -1,0 +1,13 @@
+.resetButton {
+  margin-right: auto;
+  &:dir(rtl) {
+    margin-right: 0;
+    margin-left: auto;
+  }
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

@@ -24,9 +24,7 @@ const initialSessionPromise = supabase.auth
   .then(({ data }) => data.session);
 
 export function SessionProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session | null>(
-    use(initialSessionPromise),
-  );
+  const [session, setSession] = useState(use(initialSessionPromise));
   useEffect(() => {
     const {
       data: { subscription },

@@ -2,7 +2,7 @@ import { randRecentDate, randSentence, randUserName } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { delay, http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
-import type { userApi } from "@/features/profile/api";
+import type { profileApi } from "@/features/profile/api";
 import type { SessionParameters } from "@/storybook/decorators";
 import { withRedux, withSession } from "@/storybook/decorators";
 import { mockGame } from "@/storybook/mocks";
@@ -57,7 +57,7 @@ const meta = {
         mockGame(),
         http.get(tableUrl("profiles"), ({ request }) =>
           HttpResponse.json<
-            typeof userApi.endpoints.getProfile.Types.RawResultType
+            typeof profileApi.endpoints.getProfile.Types.RawResultType
           >({
             display_name:
               names[
