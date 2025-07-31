@@ -90,10 +90,6 @@
   &.button--outlined {
     border: 2px solid var(--button);
     box-shadow: none;
-    &[data-hovered],
-    &[data-focus-visible] {
-      border-width: 4px;
-    }
     &[data-hovered] {
       border-color: var(--button-hover);
     }
@@ -106,7 +102,6 @@
   &.button--elevated {
     background-color: var(--button);
     color: var(--on-button);
-    translate: 0 -0.25rem;
     &[data-hovered] {
       background-color: var(--button-hover);
     }
@@ -121,6 +116,7 @@
     }
   }
   &.button--elevated {
+    translate: 0 -0.25rem;
     box-shadow: 0 0.25rem var(--button-shadow);
     &[data-hovered] {
       box-shadow: 0 0.5rem var(--button-shadow);

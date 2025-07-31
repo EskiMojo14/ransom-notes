@@ -113,6 +113,10 @@
   --app-bar: var(--paper-100);
   --on-app-bar: var(--black);
   --app-bar-border: var(--paper-200);
+
+  --dialog-overlay-rgb: var(--paper-1000-rgb);
+  --dialog: var(--paper-100);
+  --on-dialog: var(--black);
 }
 
 %dark {
@@ -230,6 +234,10 @@
   --app-bar: var(--paper-800);
   --on-app-bar: var(--paper-50);
   --app-bar-border: var(--paper-700);
+
+  --dialog-overlay-rgb: var(--paper-100-rgb);
+  --dialog: var(--paper-800);
+  --on-dialog: var(--paper-50);
 }
 
 [data-theme="light"] {
