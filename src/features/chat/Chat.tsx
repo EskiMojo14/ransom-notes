@@ -36,36 +36,38 @@ export function Chat() {
   const formRef = useRef<HTMLFormElement>(null);
   return (
     <div className={styles.container}>
-      <ul className={styles.messages}>
-        {groups.map((group) => {
-          const [first] = group;
-          if (!first) return null;
-          return (
-            <li
-              key={first.id}
-              className={clsx(
-                styles.message,
-                first.user_id === userId && styles.own,
-              )}
-            >
-              <span className={clsx(styles.author, "overline")}>
-                {first.author.display_name}
-              </span>
-              {group.map((message) => (
-                <span key={message.id} className={clsx(styles.text, "body1")}>
-                  {message.message}
-                </span>
-              ))}
-              <time className={clsx(styles.timestamp, "caption")}>
-                {new Date(first.created_at).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </time>
-            </li>
-          );
-        })}
-      </ul>
+      <div className={styles.messagesContainer}>
+        <ul className={styles.messages}>
+          {groups.map((group) => {
+            const [first] = group;
+            if (!first) return null;
+            const isOwn = first.user_id === userId;
+            return (
+              <li
+                key={first.id}
+                className={clsx(styles.message, isOwn && styles.own)}
+              >
+                <div className={styles.details}>
+                  <span className={clsx(styles.author, "overline")}>
+                    {first.author.display_name}
+                  </span>
+                  <time className={clsx(styles.timestamp, "caption")}>
+                    {new Date(first.created_at).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </time>
+                </div>
+                {group.map((message) => (
+                  <span key={message.id} className={clsx(styles.text, "body1")}>
+                    {message.message}
+                  </span>
+                ))}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
       <Form
         ref={formRef}
         className={styles.form}
