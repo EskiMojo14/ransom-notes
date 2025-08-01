@@ -85,7 +85,6 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   padding: 1.5rem;
-  max-width: 50rem;
   border: 2px dashed var(--input-border);
   border-radius: 1rem;
 }
