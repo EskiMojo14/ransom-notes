@@ -2,20 +2,31 @@ import { randUserName } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
 import type { MswParameters } from "msw-storybook-addon";
+import type { ComponentProps } from "react";
+import { ToggleButtonGroup } from "react-aria-components";
+import { fn } from "storybook/test";
+import type { submissionApi } from "@/features/submissions/api";
 import { withRedux } from "@/storybook/decorators";
 import { randSubmission } from "@/storybook/mocks";
 import { tableUrl } from "@/supabase/mocks";
-import type { submissionApi } from "./api";
 import { Submission } from "./Submission";
 
 const meta = {
   component: Submission,
-  title: "Features/Submissions/Submission",
+  title: "Features/Votes/Submission",
   args: {
     roundId: 1,
     authorId: "1",
-    showAuthor: true,
+    onSelectionChange: fn(),
   },
+  render: ({ onSelectionChange, ...args }) => (
+    <ToggleButtonGroup
+      selectionMode="single"
+      onSelectionChange={onSelectionChange}
+    >
+      <Submission {...args} />
+    </ToggleButtonGroup>
+  ),
   parameters: {
     msw: {
       handlers: [
@@ -36,7 +47,9 @@ const meta = {
     },
   } satisfies MswParameters,
   decorators: [withRedux],
-} satisfies Meta<typeof Submission>;
+} satisfies Meta<
+  ComponentProps<typeof Submission> & { onSelectionChange: () => void }
+>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

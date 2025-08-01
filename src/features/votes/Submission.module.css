@@ -1,0 +1,81 @@
+.submission {
+  --background-rgb: var(--whiteboard-rgb);
+  background-color: rgb(var(--background-rgb));
+  border: 0.5rem solid var(--whiteboard-border);
+  padding: 1rem;
+  border-radius: var(--shape-large);
+  min-height: 10rem;
+  min-width: 10rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  transition:
+    background-color 120ms ease-in-out,
+    border-color 120ms ease-in-out;
+  &::before {
+    background-size: 512px 512px;
+    background-repeat: repeat;
+    background-blend-mode: darken;
+    background-color: rgba(var(--background-rgb), 0.75);
+    background-image: url(/assets/grime.jpg);
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
+  }
+  &[data-hovered] {
+    --background-rgb: var(--whiteboard-hover-rgb);
+  }
+  &[data-pressed] {
+    --background-rgb: var(--whiteboard-pressed-rgb);
+  }
+  &[data-selected] {
+    --background-rgb: var(--whiteboard-selected-rgb);
+    border-color: var(--whiteboard-selected-border);
+    &[data-hovered] {
+      --background-rgb: var(--whiteboard-selected-hover-rgb);
+    }
+    &[data-pressed] {
+      --background-rgb: var(--whiteboard-selected-pressed-rgb);
+    }
+  }
+  &:focus {
+    outline: none;
+  }
+  &[data-focus-visible] {
+    border-color: var(--whiteboard-focus-border);
+  }
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 1;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--magnet);
+  color: var(--on-magnet);
+  padding: 0.5rem;
+  user-select: none;
+  box-shadow: 0 0.25rem var(--black);
+}
+
+.author {
+  color: var(--on-whiteboard);
+  z-index: 1;
+}

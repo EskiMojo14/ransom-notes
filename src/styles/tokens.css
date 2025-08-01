@@ -34,7 +34,19 @@
   --whiteboard-rgb: var(--paper-1100-rgb);
   --whiteboard: rgb(var(--whiteboard-rgb));
   --whiteboard-border: var(--black);
+  --whiteboard-selected-border: var(--teal-900);
+  --whiteboard-focus-border: var(--teal-a400);
   --on-whiteboard: var(--white);
+  --whiteboard-hover-rgb: var(--paper-1000-rgb);
+  --whiteboard-hover: rgb(var(--whiteboard-hover-rgb));
+  --whiteboard-pressed-rgb: var(--paper-900-rgb);
+  --whiteboard-pressed: rgb(var(--whiteboard-pressed-rgb));
+  --whiteboard-selected-rgb: var(--teal-700-rgb);
+  --whiteboard-selected: rgb(var(--whiteboard-selected-rgb));
+  --whiteboard-selected-hover-rgb: var(--teal-800-rgb);
+  --whiteboard-selected-hover: rgb(var(--whiteboard-selected-hover-rgb));
+  --whiteboard-selected-pressed-rgb: var(--teal-900-rgb);
+  --whiteboard-selected-pressed: rgb(var(--whiteboard-selected-pressed-rgb));
 
   --avatar: var(--paper-100);
   --on-avatar: var(--black);

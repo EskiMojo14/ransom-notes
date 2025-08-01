@@ -1,19 +1,18 @@
 import { clsx } from "clsx";
+import { ToggleButton } from "react-aria-components";
 import type { Round } from "@/features/round/api";
-import { selectSubmissionById, useGetSubmissionsQuery } from "./api";
+import {
+  selectSubmissionById,
+  useGetSubmissionsQuery,
+} from "@/features/submissions/api";
 import styles from "./Submission.module.css";
 
 export interface SubmissionProps {
   roundId: Round["id"];
   authorId: string;
-  showAuthor?: boolean;
 }
 
-export function Submission({
-  roundId,
-  authorId,
-  showAuthor = true,
-}: SubmissionProps) {
+export function Submission({ roundId, authorId }: SubmissionProps) {
   const { submission } = useGetSubmissionsQuery(roundId, {
     selectFromResult: ({ data }) => ({
       submission: data && selectSubmissionById(data, authorId),
@@ -23,7 +22,7 @@ export function Submission({
     return null;
   }
   return (
-    <div className={styles.submission}>
+    <ToggleButton className={styles.submission} id={authorId}>
       <div className={styles.rows}>
         {submission.rows.map((row, index) => (
           // eslint-disable-next-line @eslint-react/no-array-index-key
@@ -37,11 +36,9 @@ export function Submission({
           </div>
         ))}
       </div>
-      {showAuthor && (
-        <div className={clsx("subtitle1", styles.author)}>
-          {submission.author.display_name}
-        </div>
-      )}
-    </div>
+      <div className={clsx("subtitle1", styles.author)}>
+        {submission.author.display_name}
+      </div>
+    </ToggleButton>
   );
 }
