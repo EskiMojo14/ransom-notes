@@ -67,6 +67,7 @@ export function CurrentSubmission() {
         value={currentRow.toString()}
         onChange={(value) => dispatch(rowSelected(parseInt(value)))}
         className={styles.rows}
+        aria-label="Submission rows"
       >
         {rows.map((row, rowIndex) => (
           <div
@@ -100,6 +101,7 @@ export function CurrentSubmission() {
                   onPress={() =>
                     dispatch(wordDeselected({ rowIndex, wordIndex }))
                   }
+                  aria-label={`Remove ${words[wordIndex]}`}
                 >
                   {words[wordIndex]}
                 </AriaButton>
