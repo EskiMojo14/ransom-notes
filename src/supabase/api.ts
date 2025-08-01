@@ -20,6 +20,7 @@ export interface SerializedPostgrestError
 export interface SupabaseMeta {
   status?: number;
   statusText?: string;
+  count?: number | null;
 }
 
 export interface SupabaseExtraOptions {
@@ -65,7 +66,7 @@ interface QueryBuilder<Response>
 
 interface SupabaseQueryFnConfig<RawResult, QueryArg, Result = RawResult> {
   query: (arg: QueryArg) => QueryBuilder<RawResult>;
-  transformResponse?: (data: RawResult) => Result;
+  transformResponse?: (data: RawResult, meta: SupabaseMeta) => Result;
 }
 
 type SupabaseQueryFn<RawResult, QueryArg, Result = RawResult> = (
@@ -95,14 +96,14 @@ export function supabaseQueryFn<RawResult, QueryArg, Result>(
         : queryOrConfig;
     let builder = query(arg);
     if (builder.abortSignal) builder = builder.abortSignal(api.signal);
-    const [{ data, error, status, statusText }] = await Promise.all([
+    const [{ data, error, count, status, statusText }] = await Promise.all([
       builder,
       getPendingPromise(api, extraOptions),
     ]);
-    const meta: SupabaseMeta = { status, statusText };
+    const meta: SupabaseMeta = { status, statusText, count };
     return error
       ? { error: serializePostgrestError(error, meta), meta }
-      : { data: transformResponse(data), meta };
+      : { data: transformResponse(data, meta), meta };
   };
 }
 
