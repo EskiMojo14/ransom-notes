@@ -1,6 +1,6 @@
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useState } from "react";
-import { LinkButton } from "@/components/button/link";
+import { LinkButton, _LinkButton } from "@/components/button/link";
 import { Symbol } from "@/components/symbol";
 import { InlineTextField } from "@/components/textfield/inline";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
@@ -23,10 +23,12 @@ function getErrorMessage(
 
 export interface JoinGameProps {
   inviteCode?: string;
+  _useNormalLink?: boolean;
 }
 
 export function JoinGame({
   inviteCode: initialInviteCode = "",
+  _useNormalLink,
 }: JoinGameProps) {
   const [inviteCode, setInviteCode] = useState(initialInviteCode);
   const debouncedInviteCode = useDebouncedValue(inviteCode);
@@ -40,6 +42,7 @@ export function JoinGame({
     },
   );
   const errorMessage = getErrorMessage(state, status);
+  const LinkButton_ = _useNormalLink ? _LinkButton : LinkButton;
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -53,9 +56,14 @@ export function JoinGame({
           icon={<Symbol>password_2</Symbol>}
           className={styles.inviteCode}
         />
-        <LinkButton
+        <LinkButton_
           to="/game/$inviteCode"
           params={{ inviteCode }}
+          {...(_useNormalLink
+            ? {
+                href: "#",
+              }
+            : {})}
           variant="elevated"
           icon={
             <Symbol>{state === "open" ? "door_open" : "door_front"}</Symbol>
@@ -63,7 +71,7 @@ export function JoinGame({
           isDisabled={state !== "open"}
         >
           Join
-        </LinkButton>
+        </LinkButton_>
       </div>
     </div>
   );

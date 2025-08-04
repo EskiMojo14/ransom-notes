@@ -32,6 +32,16 @@ const mockGame = (
 const meta = {
   component: JoinGame,
   title: "Features/Game/JoinGame",
+  args: {
+    _useNormalLink: true,
+  },
+  argTypes: {
+    _useNormalLink: {
+      table: {
+        disable: true,
+      },
+    },
+  },
   decorators: [withRedux],
   parameters: {
     msw: {
