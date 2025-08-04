@@ -108,3 +108,8 @@ export function getOrInsertComputed<K extends object, V>(
 
   return map.set(key, compute(key)).get(key) as V;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function assertNever(_value: never): never {
+  throw new Error("This should never happen");
+}

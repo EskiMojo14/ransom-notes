@@ -9,10 +9,11 @@ const roundSelect = `
   created_at, 
   id, 
   phase,
+  judge_id,
   judge:profiles!rounds_judge_id_fkey1(display_name)
 ` as const;
 interface RawRound
-  extends Pick<Tables<"rounds">, "created_at" | "id" | "phase"> {
+  extends Pick<Tables<"rounds">, "created_at" | "id" | "phase" | "judge_id"> {
   judge: Pick<Tables<"profiles">, "display_name"> | null;
   prompt: { prompt: string };
 }

@@ -1,10 +1,11 @@
 import { randRecentDate, randUserName } from "@ngneat/falso";
+import type { AnyRoute } from "@tanstack/react-router";
 import { randomInt, shuffle } from "es-toolkit";
 import { http, HttpResponse } from "msw";
 import { spyOn } from "storybook/internal/test";
 import { transformGame, type gameApi } from "@/features/game/api";
 import type { roundApi } from "@/features/round/api";
-import { Route } from "@/routes/game/$inviteCode";
+import { Route as GameInviteCodeRoute } from "@/routes/game/$inviteCode";
 import { tableUrl } from "@/supabase/mocks";
 
 const questions = [
@@ -122,7 +123,9 @@ export const mockGame = ({
   round,
   game,
 }: {
-  round?: Partial<typeof roundApi.endpoints.getActiveRound.Types.RawResultType>;
+  round?: Partial<
+    (typeof roundApi.endpoints.getActiveRound.Types.RawResultType)["active_round"]
+  >;
   game?: Partial<
     typeof gameApi.endpoints.getGameByInviteCode.Types.RawResultType
   >;
@@ -144,16 +147,9 @@ export const mockGame = ({
       participants: [],
       ...game,
     };
-  spyOn(Route, "useLoaderData").mockImplementation(
-    ({
-      select,
-    }: {
-      select: (data: typeof Route.types.loaderData) => unknown;
-    }) =>
-      select({
-        game: transformGame(fullGame),
-      }),
-  );
+  mockRoute(GameInviteCodeRoute).loaderData({
+    game: transformGame(fullGame),
+  });
   return http.get<
     {},
     undefined,
@@ -169,6 +165,7 @@ export const mockGame = ({
           id: 1,
           prompt: { prompt: randQuestion() },
           judge: null,
+          judge_id: null,
           created_at: randRecentDate().toISOString(),
           phase: "submission",
           ...round,
@@ -180,3 +177,24 @@ export const mockGame = ({
     >(fullGame);
   });
 };
+
+const withSelect =
+  <T, U>(data: T) =>
+  ({ select }: { select: (data: T) => U }) =>
+    select(data);
+
+export function mockRoute<T extends AnyRoute>(route: T) {
+  const mocks = {
+    params: (params: T["types"]["params"]) => {
+      // @ts-expect-error unresolved generics
+      spyOn(route, "useParams").mockImplementation(withSelect(params));
+      return mocks;
+    },
+    loaderData: (data: T["types"]["loaderData"]) => {
+      // @ts-expect-error unresolved generics
+      spyOn(route, "useLoaderData").mockImplementation(withSelect(data));
+      return mocks;
+    },
+  };
+  return mocks;
+}
