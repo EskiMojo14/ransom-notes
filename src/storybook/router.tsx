@@ -5,35 +5,53 @@ import {
   createRoute,
   createRouter,
   interpolatePath,
+  Outlet,
   RouterProvider,
+  type AnyRoute,
+  type FileRoutesByPath,
+  type RootRouteId,
 } from "@tanstack/react-router";
 import type { RouterContext } from "@/routes/__root";
 import type { FileRoutesByFullPath } from "@/routeTree.gen";
 import type { Compute, HasRequiredKeys, IfMaybeUndefined } from "@/utils/types";
 import { getStore } from "./decorators";
 
+type RouteDataFor<TPath extends keyof FileRoutesByPath> = {
+  path: FileRoutesByPath[TPath]["path"];
+} & IfMaybeUndefined<
+  FileRoutesByPath[TPath]["preLoaderRoute"]["types"]["loaderData"],
+  {
+    loaderData?: FileRoutesByPath[TPath]["preLoaderRoute"]["types"]["loaderData"];
+  },
+  {
+    loaderData: FileRoutesByPath[TPath]["preLoaderRoute"]["types"]["loaderData"];
+  }
+>;
+
+type RoutesFor<
+  TPath extends keyof FileRoutesByPath,
+  TAcc extends Array<RouteDataFor<keyof FileRoutesByPath>> = [],
+> = FileRoutesByPath[TPath]["parentRoute"]["id"] extends RootRouteId
+  ? [RouteDataFor<TPath>, ...TAcc]
+  : RoutesFor<
+      FileRoutesByPath[TPath]["parentRoute"]["fullPath"],
+      [RouteDataFor<TPath>, ...TAcc]
+    >;
+
 type RouteData = {
   [Path in keyof FileRoutesByFullPath]: Compute<
     {
       path: Path;
-    } & IfMaybeUndefined<
-      FileRoutesByFullPath[Path]["types"]["loaderData"],
+      routes: RoutesFor<Path>;
+    } & HasRequiredKeys<
+      FileRoutesByFullPath[Path]["types"]["params"],
       {
-        loaderData?: FileRoutesByFullPath[Path]["types"]["loaderData"];
+        params: FileRoutesByFullPath[Path]["types"]["params"];
       },
       {
-        loaderData: FileRoutesByFullPath[Path]["types"]["loaderData"];
+        params?: FileRoutesByFullPath[Path]["types"]["params"];
       }
-    > &
-      HasRequiredKeys<
-        FileRoutesByFullPath[Path]["types"]["params"],
-        {
-          params: FileRoutesByFullPath[Path]["types"]["params"];
-        },
-        {
-          params?: FileRoutesByFullPath[Path]["types"]["params"];
-        }
-      >
+    >
   >;
 }[keyof FileRoutesByFullPath];
 
@@ -47,29 +65,35 @@ declare module "@storybook/react-vite" {
   interface Parameters extends RouterParameters {}
 }
 
-const defaultRoute: RouteData = { path: "/" };
+const defaultRoute: Extract<RouteData, { path: "/" }> = {
+  path: "/",
+  routes: [{ path: "/" }],
+};
 
 export const withRouter: Decorator = (Story, { parameters }) => {
-  const { currentRoute = defaultRoute } = parameters.router ?? {};
+  const { currentRoute: { path, routes, params } = defaultRoute } =
+    parameters.router ?? {};
   const rootRoute = createRootRouteWithContext<RouterContext>()({});
-  const storyRoute = createRoute({
-    component: Story,
-    path: currentRoute.path,
-    getParentRoute: () => rootRoute,
-    loader: () => currentRoute.loaderData,
+  let parentRoute: AnyRoute = rootRoute;
+  routes.forEach((route, idx) => {
+    const parent = parentRoute;
+    const newRoute = createRoute({
+      path: route.path,
+      getParentRoute: () => parent,
+      loader: () => route.loaderData,
+      component: idx === routes.length - 1 ? Story : Outlet,
+    });
+    parentRoute.addChildren([newRoute]);
+    parentRoute = newRoute;
   });
-  rootRoute.addChildren([storyRoute]);
+
+  const initialPath = params
+    ? interpolatePath({ path, params }).interpolatedPath
+    : path;
 
   const router = createRouter({
     history: createMemoryHistory({
-      initialEntries: currentRoute.params
-        ? [
-            interpolatePath({
-              path: currentRoute.path,
-              params: currentRoute.params,
-            }).interpolatedPath,
-          ]
-        : [currentRoute.path],
+      initialEntries: [initialPath],
       initialIndex: 0,
     }),
     routeTree: rootRoute,

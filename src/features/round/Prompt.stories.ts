@@ -13,7 +13,10 @@ const meta = {
       currentRoute: {
         path: "/game/$inviteCode",
         params: { inviteCode: game.invite_code },
-        loaderData: { game: transformGame(game) },
+        routes: [
+          { path: "/game" },
+          { path: "/$inviteCode", loaderData: { game: transformGame(game) } },
+        ],
       },
     },
     msw: {
