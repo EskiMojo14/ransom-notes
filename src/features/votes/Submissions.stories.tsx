@@ -23,8 +23,10 @@ const meta = {
         path: "/game/$inviteCode",
         params: { inviteCode: game.invite_code },
         routes: [
-          { path: "/game" },
-          { path: "/$inviteCode", loaderData: { game: transformGame(game) } },
+          {
+            path: "/game/$inviteCode",
+            loaderData: { game: transformGame(game) },
+          },
         ],
       },
     },
