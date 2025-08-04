@@ -5,7 +5,7 @@ import { gameApi, useGetGameByInviteCodeQuery } from "@/features/game/api";
 import { Prompt } from "@/features/round/Prompt";
 import { CurrentSubmission } from "@/features/submissions/CurrentSubmission";
 import { WordPool } from "@/features/submissions/WordPool";
-import styles from "./$inviteCode.css?url";
+import styles from "./game.$inviteCode.css?url";
 
 export const Route = createFileRoute("/game/$inviteCode")({
   head: () => ({

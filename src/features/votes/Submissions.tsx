@@ -10,7 +10,7 @@ import {
   selectSubmissionIds,
   useGetSubmissionsQuery,
 } from "@/features/submissions/api";
-import { Route } from "@/routes/game/$inviteCode";
+import { Route } from "@/routes/game.$inviteCode";
 import { assertNever } from "@/utils";
 import { selectVoteById, useGetVotesQuery, useUpsertVoteMutation } from "./api";
 import { Submission } from "./Submission";

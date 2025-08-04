@@ -1,4 +1,4 @@
-import { Route } from "@/routes/game/$inviteCode";
+import { Route } from "@/routes/game.$inviteCode";
 
 export function useGameId() {
   const gameId = Route.useLoaderData({
