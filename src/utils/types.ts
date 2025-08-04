@@ -38,3 +38,22 @@ export type PickFromUnion<T, K extends KeyOfUnion<T>> = T extends T
 export type OmitFromUnion<T, K extends PropertyKey> = T extends T
   ? Omit<T, K>
   : never;
+
+export type IfMaybeUndefined<T, True, False> = undefined extends T
+  ? True
+  : False;
+
+export type RequiredKeys<T> = {
+  [K in keyof T]: undefined extends T[K] ? never : K;
+}[keyof T];
+
+export type HasRequiredKeys<T, True, False> =
+  RequiredKeys<T> extends never ? False : True;
+
+export type StripIndexSignature<T> = {
+  [K in keyof T as string extends K
+    ? never
+    : number extends K
+      ? never
+      : K]: T[K];
+};

@@ -373,7 +373,10 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      request_join_game: {
+        Args: { p_user_id: string; p_game_id: number };
+        Returns: undefined;
+      };
     };
     Enums: {
       game_state: "open" | "running" | "finished";

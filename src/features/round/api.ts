@@ -12,12 +12,12 @@ const roundSelect = `
   judge_id,
   judge:profiles!rounds_judge_id_fkey1(display_name)
 ` as const;
-interface RawRound
+export interface RawRound
   extends Pick<Tables<"rounds">, "created_at" | "id" | "phase" | "judge_id"> {
   judge: Pick<Tables<"profiles">, "display_name"> | null;
   prompt: { prompt: string };
 }
-const transformRound = ({ prompt: { prompt }, ...round }: RawRound) => ({
+export const transformRound = ({ prompt: { prompt }, ...round }: RawRound) => ({
   ...round,
   prompt,
 });

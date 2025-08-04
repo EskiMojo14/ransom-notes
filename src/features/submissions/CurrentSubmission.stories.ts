@@ -1,10 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { delay, http, HttpResponse } from "msw";
-import type { MswParameters } from "msw-storybook-addon";
+import { transformGame } from "@/features/game/api";
 import type { roundApi } from "@/features/round/api";
-import type { SessionParameters } from "@/storybook/decorators";
-import { getStore, withRedux, withSession } from "@/storybook/decorators";
-import { mockGame, randIndexes, randWordPool } from "@/storybook/mocks";
+import { getStore, withSession } from "@/storybook/decorators";
+import {
+  mockGame,
+  randIndexes,
+  randRawGame,
+  randWordPool,
+} from "@/storybook/mocks";
 import { mockSession, tableUrl } from "@/supabase/mocks";
 import { CurrentSubmission } from "./CurrentSubmission";
 import { clearSubmission, wordToggled } from "./slice";
@@ -17,6 +21,8 @@ const rows = [
   idxs.slice(perRow, perRow * 2),
   idxs.slice(perRow * 2),
 ];
+
+const game = randRawGame();
 
 const meta = {
   component: CurrentSubmission,
@@ -37,6 +43,13 @@ const meta = {
     }
   },
   parameters: {
+    router: {
+      currentRoute: {
+        path: "/game/$inviteCode",
+        params: { inviteCode: game.invite_code },
+        loaderData: { game: transformGame(game) },
+      },
+    },
     session: mockSession(),
     msw: {
       handlers: [
@@ -47,11 +60,11 @@ const meta = {
             words: wordPool,
           }),
         ),
-        mockGame(),
+        mockGame({ game }),
       ],
     },
-  } satisfies MswParameters & SessionParameters,
-  decorators: [withRedux, withSession],
+  },
+  decorators: [withSession],
 } satisfies Meta<typeof CurrentSubmission>;
 
 export default meta;

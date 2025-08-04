@@ -1,11 +1,10 @@
 import { randRecentDate, randSentence, randUserName } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { delay, http, HttpResponse } from "msw";
-import type { MswParameters } from "msw-storybook-addon";
+import { transformGame } from "@/features/game/api";
 import type { profileApi } from "@/features/profile/api";
-import type { SessionParameters } from "@/storybook/decorators";
-import { withRedux, withSession } from "@/storybook/decorators";
-import { mockGame } from "@/storybook/mocks";
+import { withSession } from "@/storybook/decorators";
+import { mockGame, randRawGame } from "@/storybook/mocks";
 import { mockSession, tableUrl } from "@/supabase/mocks";
 import { getHandlers } from "@/supabase/realtime";
 import type { TablesInsert } from "@/supabase/types";
@@ -20,6 +19,8 @@ const names = {
 };
 
 let id = 3;
+
+const game = randRawGame();
 
 const meta = {
   component: Chat,
@@ -49,12 +50,19 @@ const meta = {
       },
     });
   },
-  decorators: [withRedux, withSession],
+  decorators: [withSession],
   parameters: {
     session,
+    router: {
+      currentRoute: {
+        path: "/game/$inviteCode",
+        params: { inviteCode: game.invite_code },
+        loaderData: { game: transformGame(game) },
+      },
+    },
     msw: {
       handlers: [
-        mockGame(),
+        mockGame({ game }),
         http.get(tableUrl("profiles"), ({ request }) =>
           HttpResponse.json<
             typeof profileApi.endpoints.getProfile.Types.RawResultType
@@ -108,7 +116,7 @@ const meta = {
         ),
       ],
     },
-  } satisfies MswParameters & SessionParameters,
+  },
 } satisfies Meta<typeof Chat>;
 
 export default meta;

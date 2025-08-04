@@ -1,12 +1,10 @@
 import { randUserName } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
-import type { MswParameters } from "msw-storybook-addon";
 import type { ComponentProps } from "react";
 import { ToggleButtonGroup } from "react-aria-components";
 import { fn } from "storybook/test";
 import type { submissionApi } from "@/features/submissions/api";
-import { withRedux } from "@/storybook/decorators";
 import { randSubmission } from "@/storybook/mocks";
 import { tableUrl } from "@/supabase/mocks";
 import { Submission } from "./Submission";
@@ -45,8 +43,7 @@ const meta = {
         ),
       ],
     },
-  } satisfies MswParameters,
-  decorators: [withRedux],
+  },
 } satisfies Meta<
   ComponentProps<typeof Submission> & { onSelectionChange: () => void }
 >;

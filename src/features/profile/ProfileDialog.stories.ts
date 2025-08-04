@@ -1,11 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
-import type { MswParameters } from "msw-storybook-addon";
-import {
-  withRedux,
-  withSession,
-  type SessionParameters,
-} from "@/storybook/decorators";
+import { withSession } from "@/storybook/decorators";
 import { mockSession, tableUrl } from "@/supabase/mocks";
 import type { TablesInsert } from "@/supabase/types";
 import type { profileApi } from "./api";
@@ -20,7 +15,7 @@ const session = mockSession({
 const meta = {
   component: ProfileDialog,
   title: "Features/Profile/ProfileDialog",
-  decorators: [withRedux, withSession],
+  decorators: [withSession],
   parameters: {
     session,
     msw: {
@@ -47,7 +42,7 @@ const meta = {
         }),
       ],
     },
-  } satisfies SessionParameters & MswParameters,
+  },
 } satisfies Meta<typeof ProfileDialog>;
 
 export default meta;

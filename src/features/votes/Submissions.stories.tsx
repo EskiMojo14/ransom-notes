@@ -1,30 +1,35 @@
 import { randUserName } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
-import type { MswParameters } from "msw-storybook-addon";
+import { transformGame } from "@/features/game/api";
+import type { profileApi } from "@/features/profile/api";
 import type { submissionApi } from "@/features/submissions/api";
-import { Route } from "@/routes/game/$inviteCode";
-import type { SessionParameters } from "@/storybook/decorators";
-import { withRedux, withSession } from "@/storybook/decorators";
-import { mockGame, mockRoute, randSubmission } from "@/storybook/mocks";
+import { withSession } from "@/storybook/decorators";
+import { mockGame, randRawGame, randSubmission } from "@/storybook/mocks";
 import { mockSession, tableUrl } from "@/supabase/mocks";
-import type { profileApi } from "../profile/api";
 import type { voteApi } from "./api";
 import { Submissions } from "./Submissions";
 
-mockRoute(Route).params({ inviteCode: "FOO" });
-
+const game = randRawGame();
 const session = mockSession();
 
 const meta = {
   component: Submissions,
   title: "Features/Votes/Submissions",
-  decorators: [withRedux, withSession],
+  decorators: [withSession],
   parameters: {
+    router: {
+      currentRoute: {
+        path: "/game/$inviteCode",
+        params: { inviteCode: game.invite_code },
+        loaderData: { game: transformGame(game) },
+      },
+    },
     session,
     msw: {
       handlers: {
         game: mockGame({
+          game,
           round: {
             judge_id: session.user.id,
             phase: "voting",
@@ -79,7 +84,7 @@ const meta = {
         ),
       },
     },
-  } satisfies MswParameters & SessionParameters,
+  },
 } satisfies Meta<typeof Submissions>;
 
 export default meta;
@@ -94,5 +99,5 @@ export const NotJudge = {
         game: mockGame(),
       },
     },
-  } satisfies MswParameters,
+  },
 } satisfies Story;

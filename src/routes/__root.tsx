@@ -11,7 +11,11 @@ import type { AppStore } from "@/store";
 import { store } from "@/store";
 import { supabase } from "@/supabase";
 
-export const Route = createRootRouteWithContext<{ store: AppStore }>()({
+export interface RouterContext {
+  store: AppStore;
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   head: () => ({
     meta: [
       { title: "Ransom Notes" },

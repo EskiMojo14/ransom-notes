@@ -1,4 +1,4 @@
-import { redirect } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import { Form } from "react-aria-components";
 import * as v from "valibot";
 import { Button } from "@/components/button";
@@ -10,15 +10,19 @@ import { useFormSchema } from "@/hooks/use-form-schema";
 import type { Enums, TablesInsert } from "@/supabase/types";
 import { Constants } from "@/supabase/types";
 import { unsafeEntries } from "@/utils";
-import { makeInviteCode, useCreateGameMutation } from "./api";
+import {
+  makeInviteCode,
+  useCreateGameMutation,
+  useRequestJoinGameMutation,
+} from "./api";
 import styles from "./CreateGame.module.css";
 
 type GameInput = TablesInsert<"games">;
 
-const defaults: Partial<GameInput> = {
+const defaults = {
   first_to: 5,
   voting_mode: "judge",
-};
+} satisfies Partial<GameInput>;
 
 const radioOptions: Record<
   Enums<"voting_mode">,
@@ -48,25 +52,35 @@ const formSchema = v.object({
 
 export function CreateGame() {
   const session = useSession();
+  const router = useRouter();
   const { formErrors, handleSubmit } = useFormSchema(formSchema, {
     numbers: ["first_to"],
   });
-  const [createGame, { isLoading }] = useCreateGameMutation({
+  const [createGame, { isLoading: isCreating }] = useCreateGameMutation({
     selectFromResult: ({ isLoading }) => ({ isLoading }),
   });
+  const [requestJoinGame, { isLoading: isJoining }] =
+    useRequestJoinGameMutation({
+      selectFromResult: ({ isLoading }) => ({ isLoading }),
+    });
   return (
     <Form
       className={styles.form}
       validationErrors={formErrors}
       onSubmit={handleSubmit(async (values) => {
-        const data = await createGame({
+        const inviteCode = makeInviteCode();
+        const { id } = await createGame({
           ...values,
           creator_id: session.user.id,
-          invite_code: makeInviteCode(),
+          invite_code: inviteCode,
         }).unwrap();
-        throw redirect({
+        await requestJoinGame({
+          userId: session.user.id,
+          gameId: id,
+        }).unwrap();
+        await router.navigate({
           to: "/game/$inviteCode",
-          params: { inviteCode: data.invite_code },
+          params: { inviteCode },
         });
       }, console.error)}
     >
@@ -74,7 +88,7 @@ export function CreateGame() {
         name="first_to"
         type="number"
         label="Points to win"
-        defaultValue={defaults.first_to?.toString()}
+        defaultValue={defaults.first_to.toString()}
         icon={<Symbol>trophy</Symbol>}
         className={styles.pointsToWin}
       />
@@ -94,7 +108,7 @@ export function CreateGame() {
         type="submit"
         icon={<Symbol>door_open</Symbol>}
         variant="elevated"
-        isPending={isLoading}
+        isPending={isCreating || isJoining}
       >
         {({ isPending }) => (isPending ? "Creating" : "Create")}
       </Button>

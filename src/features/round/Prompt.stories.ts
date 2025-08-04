@@ -1,18 +1,25 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import type { MswParameters } from "msw-storybook-addon";
-import { withRedux } from "@/storybook/decorators";
-import { mockGame } from "@/storybook/mocks";
+import { transformGame } from "@/features/game/api";
+import { mockGame, randRawGame } from "@/storybook/mocks";
 import { Prompt } from "./Prompt";
+
+const game = randRawGame();
 
 const meta = {
   component: Prompt,
   title: "Features/Round/Prompt",
-  decorators: [withRedux],
   parameters: {
-    msw: {
-      handlers: [mockGame()],
+    router: {
+      currentRoute: {
+        path: "/game/$inviteCode",
+        params: { inviteCode: game.invite_code },
+        loaderData: { game: transformGame(game) },
+      },
     },
-  } satisfies MswParameters,
+    msw: {
+      handlers: [mockGame({ game })],
+    },
+  },
 } satisfies Meta<typeof Prompt>;
 
 export default meta;

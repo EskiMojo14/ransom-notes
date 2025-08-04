@@ -3,11 +3,11 @@ import {
   createSelector,
   type EntityState,
 } from "@reduxjs/toolkit";
+import { profileApi } from "@/features/profile/api";
 import type { Round } from "@/features/round/api";
 import { supabase } from "@/supabase";
 import { api, supabaseQueryFn } from "@/supabase/api";
 import type { Tables, TablesInsert } from "@/supabase/types";
-import { profileApi } from "../profile/api";
 
 export const voteSelect = `
   *,

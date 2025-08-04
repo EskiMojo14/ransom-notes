@@ -18,7 +18,7 @@ const gameSelect = `
   creator:profiles!games_creator_id_fkey1(${profileSelect}),
   participants:profiles!participants(${profileSelect})
 ` as const;
-interface RawGame extends Tables<"games"> {
+export interface RawGame extends Tables<"games"> {
   creator: Profile;
   participants: Array<{ profiles: Profile }>;
 }
@@ -83,6 +83,20 @@ export const gameApi = api
               ]
             : [],
       }),
+      // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+      requestJoinGame: build.mutation<void, { userId: string; gameId: number }>(
+        {
+          queryFn: supabaseQueryFn(({ userId, gameId }) =>
+            supabase.rpc("request_join_game", {
+              p_user_id: userId,
+              p_game_id: gameId,
+            }),
+          ),
+          invalidatesTags: (_res, _err, { gameId }) => [
+            { type: "Game", id: gameId },
+          ],
+        },
+      ),
     }),
   });
 
@@ -91,4 +105,5 @@ export const {
   useGetGameByInviteCodeQuery,
   useLazyGetGameByInviteCodeQuery,
   useCreateGameMutation,
+  useRequestJoinGameMutation,
 } = gameApi;

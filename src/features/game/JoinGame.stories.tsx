@@ -1,33 +1,18 @@
-import { randRecentDate, randUserName } from "@ngneat/falso";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
-import type { MswParameters } from "msw-storybook-addon";
-import { withRedux } from "@/storybook/decorators";
+import { randRawGame } from "@/storybook/mocks";
 import { NotFoundError, tableUrl } from "@/supabase/mocks";
 import type { Enums } from "@/supabase/types";
-import type { gameApi } from "./api";
 import { JoinGame } from "./JoinGame";
 
-const mockGame = (
-  request: Request,
-  state: Enums<"game_state"> = "open",
-): typeof gameApi.endpoints.getGameByInviteCode.Types.RawResultType => ({
-  id: 1,
-  invite_code:
-    new URL(request.url).searchParams.get("invite_code")?.replace("eq.", "") ??
-    "",
-  creator_id: "1",
-  creator: {
-    display_name: randUserName(),
-    avatar_url: null,
-  },
-  first_to: 10,
-  state,
-  voting_mode: "judge",
-  created_at: randRecentDate().toISOString(),
-  active_round: 1,
-  participants: [],
-});
+const mockGame = (request: Request, state: Enums<"game_state"> = "open") =>
+  randRawGame({
+    invite_code:
+      new URL(request.url).searchParams
+        .get("invite_code")
+        ?.replace("eq.", "") ?? "",
+    state,
+  });
 
 const meta = {
   component: JoinGame,
@@ -42,7 +27,6 @@ const meta = {
       },
     },
   },
-  decorators: [withRedux],
   parameters: {
     msw: {
       handlers: [
@@ -51,7 +35,7 @@ const meta = {
         ),
       ],
     },
-  } satisfies MswParameters,
+  },
 } satisfies Meta<typeof JoinGame>;
 
 export default meta;
@@ -77,7 +61,7 @@ export const Running = {
         ),
       ],
     },
-  } satisfies MswParameters,
+  },
 } satisfies Story;
 
 export const Finished = {
@@ -92,7 +76,7 @@ export const Finished = {
         ),
       ],
     },
-  } satisfies MswParameters,
+  },
 } satisfies Story;
 
 export const NotFound = {
@@ -107,5 +91,5 @@ export const NotFound = {
         ),
       ],
     },
-  } satisfies MswParameters,
+  },
 } satisfies Story;

@@ -1,11 +1,14 @@
 import { randRecentDate, randUserName } from "@ngneat/falso";
 import type { AnyRoute } from "@tanstack/react-router";
-import { randomInt, shuffle } from "es-toolkit";
+import { flow, randomInt, shuffle } from "es-toolkit";
 import { http, HttpResponse } from "msw";
 import { spyOn } from "storybook/internal/test";
-import { transformGame, type gameApi } from "@/features/game/api";
-import type { roundApi } from "@/features/round/api";
-import { Route as GameInviteCodeRoute } from "@/routes/game/$inviteCode";
+import { transformGame, type gameApi, type RawGame } from "@/features/game/api";
+import {
+  transformRound,
+  type RawRound,
+  type roundApi,
+} from "@/features/round/api";
 import { tableUrl } from "@/supabase/mocks";
 
 const questions = [
@@ -119,6 +122,37 @@ export const randIndexes = (length: number, count: number) => {
   return picked;
 };
 
+export const randRawGame = (partial?: Partial<RawGame>): RawGame => ({
+  id: 1,
+  invite_code: "FOO",
+  creator_id: "1",
+  creator: {
+    display_name: randUserName(),
+    avatar_url: null,
+  },
+  first_to: 5,
+  state: "running",
+  voting_mode: "judge",
+  created_at: randRecentDate().toISOString(),
+  active_round: 1,
+  participants: [],
+  ...partial,
+});
+
+export const randGame = flow(randRawGame, transformGame);
+
+export const randRawRound = (partial?: Partial<RawRound>): RawRound => ({
+  id: 1,
+  prompt: { prompt: randQuestion() },
+  judge: null,
+  judge_id: null,
+  created_at: randRecentDate().toISOString(),
+  phase: "submission",
+  ...partial,
+});
+
+export const randRound = flow(randRawRound, transformRound);
+
 export const mockGame = ({
   round,
   game,
@@ -130,26 +164,6 @@ export const mockGame = ({
     typeof gameApi.endpoints.getGameByInviteCode.Types.RawResultType
   >;
 } = {}) => {
-  const fullGame: typeof gameApi.endpoints.getGameByInviteCode.Types.RawResultType =
-    {
-      id: 1,
-      invite_code: "FOO",
-      creator_id: "1",
-      creator: {
-        display_name: randUserName(),
-        avatar_url: null,
-      },
-      first_to: 5,
-      state: "running",
-      voting_mode: "judge",
-      created_at: randRecentDate().toISOString(),
-      active_round: 1,
-      participants: [],
-      ...game,
-    };
-  mockRoute(GameInviteCodeRoute).loaderData({
-    game: transformGame(fullGame),
-  });
   return http.get<
     {},
     undefined,
@@ -161,20 +175,12 @@ export const mockGame = ({
       return HttpResponse.json<
         typeof roundApi.endpoints.getActiveRound.Types.RawResultType
       >({
-        active_round: {
-          id: 1,
-          prompt: { prompt: randQuestion() },
-          judge: null,
-          judge_id: null,
-          created_at: randRecentDate().toISOString(),
-          phase: "submission",
-          ...round,
-        },
+        active_round: randRawRound(round),
       });
     }
     return HttpResponse.json<
       typeof gameApi.endpoints.getGameByInviteCode.Types.RawResultType
-    >(fullGame);
+    >(randRawGame(game));
   });
 };
 

@@ -3,6 +3,8 @@ import { initialize, mswLoader } from "msw-storybook-addon";
 import { env } from "@/env";
 import type { Theme } from "@/features/theme/storage";
 import { themeSchema, themeStore } from "@/features/theme/storage";
+import { withRedux } from "@/storybook/decorators";
+import { withRouter } from "@/storybook/router";
 import "@/styles.css";
 
 initialize({
@@ -23,14 +25,18 @@ initialize({
   },
 });
 
-const themeDecorator: Decorator<{ theme: Theme }> = (Story, { args }) => {
-  themeStore.set(args.theme);
+const withTheme: Decorator<{ theme?: Theme }> = (Story, { args }) => {
+  if (args.theme) {
+    themeStore.set(args.theme);
+  }
 
   return <Story />;
 };
 
-const rtlDecorator: Decorator<{ dir: "ltr" | "rtl" }> = (Story, { args }) => {
-  document.documentElement.dir = args.dir;
+const withDir: Decorator<{ dir?: "ltr" | "rtl" }> = (Story, { args }) => {
+  if (args.dir) {
+    document.documentElement.dir = args.dir;
+  }
 
   return <Story />;
 };
@@ -45,7 +51,7 @@ const preview: Preview = {
     },
     layout: "centered",
   },
-  decorators: [themeDecorator as Decorator, rtlDecorator as Decorator],
+  decorators: [withTheme, withDir, withRouter, withRedux],
   argTypes: {
     theme: {
       control: {
