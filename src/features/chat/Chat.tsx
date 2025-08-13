@@ -40,7 +40,6 @@ export function Chat() {
         <ul className={styles.messages}>
           {groups.map((group) => {
             const [first] = group;
-            if (!first) return null;
             const isOwn = first.user_id === userId;
             return (
               <li

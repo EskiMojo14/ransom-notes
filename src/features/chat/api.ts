@@ -153,30 +153,29 @@ export const {
   selectTotal: selectTotalMessages,
 } = messageAdapter.getSelectors();
 
+type MessageGroup = [Message, ...Array<Message>];
+
 export const selectGroupedMessages = createSelector(
   selectMessages,
   (messages) => {
     // group messages by author if they're within 30 seconds of each other
-    const result: Array<Array<Message>> = [];
-    let currentGroup: Array<Message> = [];
-    let lastMessage: Message | undefined;
+    const result: Array<MessageGroup> = [];
+    let currentGroup: MessageGroup | undefined = undefined;
     for (const message of messages) {
       if (
-        lastMessage &&
-        (lastMessage.user_id !== message.user_id ||
-          new Date(message.created_at).getTime() -
-            new Date(lastMessage.created_at).getTime() >
-            30_000)
+        !currentGroup ||
+        currentGroup[0].user_id !== message.user_id ||
+        new Date(message.created_at).getTime() -
+          new Date(currentGroup[0].created_at).getTime() >
+          30_000
       ) {
-        result.push(currentGroup);
-        currentGroup = [];
+        if (currentGroup) result.push(currentGroup);
+        currentGroup = [message];
+      } else {
+        currentGroup.push(message);
       }
-      currentGroup.push(message);
-      lastMessage = message;
     }
-    if (currentGroup.length) {
-      result.push(currentGroup);
-    }
+    if (currentGroup) result.push(currentGroup);
     return result;
   },
 );
